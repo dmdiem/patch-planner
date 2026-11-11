@@ -11,13 +11,13 @@
       {
         "id": "d0-winter",
         "reset": "day",
-        "title": "Winter Countdown: check in twice",
+        "title": "Winter Countdown: don’t lose day 1",
         "where": [
           "main",
           "cw"
         ],
         "card": "Winter Countdown",
-        "how": "Join and check in right after maintenance, then again after the daily reset. These count as two separate days, which is how the 14-day window fits 15 rewards."
+        "how": "Day 1 of the check-in only lasts from maintenance to the daily reset, about 2 hours. Join and check in before the reset, then check in again after it for day 2. The window has 14 days for 15 reward tiers, so every day counts."
       },
       {
         "id": "d0-supply",
@@ -27,7 +27,7 @@
           "main"
         ],
         "card": "Operation Ultima",
-        "how": "Join Operation Ultima and log in once now and once after the daily reset. You get two of this week’s 5 supply days in one evening."
+        "how": "Join Operation Ultima, log in once before the daily reset and once after it. Both days count toward this week’s 5 supply collections."
       },
       {
         "id": "d0-dailies",
@@ -77,7 +77,7 @@
       {
         "id": "bossafter",
         "title": "Do weekly bosses after joining, solo",
-        "how": "Shadow Bounties only pay for solo boss kills. If you still have bosses left this week, kill them after joining Ultima so they count.",
+        "how": "Shadow Bounties only pays for solo kills, so join Operation Ultima and take the Hard-Fought Intel quest before you do your weekly bosses.",
         "tag": "Lv.101+",
         "where": [
           "main",
@@ -166,7 +166,7 @@
         ],
         "card": "Item Burning Plus",
         "tag": "once per account",
-        "how": "Only one Challenger World character per account, ever. Deleting it doesn’t give you another try. It must be made after the patch, be Lv.200+ with “A Greater Power” done, and not be a Quanah character."
+        "how": "Only one Challenger World character per account, ever. Deleting it doesn’t give you another try. It must be made after the patch, be Lv.200+ with “A Greater Power” done, and not be a Quanah character. It also can’t be in another Item Burning event."
       },
       {
         "id": "sj-pick",
@@ -176,7 +176,7 @@
         ],
         "card": "Challenger extras",
         "tag": "can’t change",
-        "how": "One Lv.260+ Challenger character gets Sol Janus Lv.30 while in Challenger World. You can’t switch to another character later, even by deleting it."
+        "how": "One Lv.260+ Challenger character gets Sol Janus Lv.30 while in Challenger World. You can’t switch to another character later, even by deleting it. That character also can’t level Sol Janus itself, and the skill goes back to its old level after a World Leap."
       }
     ]
   },
@@ -184,7 +184,7 @@
     {
       "id": "login",
       "title": "Log in on one character",
-      "how": "Gives the Ultima Supply Report reward (three 3x EXP Coupons) once per account per day, up to 5 times a week and 60 in total. Missed weeks can be bought back for 3,000 Maple Points each.",
+      "how": "Gives the Ultima Supply Report reward (three 3x EXP Coupons), shared across your account, up to 5 times a week and 60 in total. Missed days from earlier weeks can be bought back for 3,000 Maple Points each.",
       "freq": "5 of 7 days",
       "until": "2027-02-09T23:59:00",
       "where": [
@@ -301,7 +301,7 @@
     {
       "id": "shop",
       "title": "Bounty Coin Shop purchases",
-      "how": "Items marked “weekly” refresh {THU}. Buy them before the reset or lose that week’s purchases. {H|Weekly-limited picks: Karma Solid Cube x2 Coupons (6), Extreme Growth Potion x3 (3), Black Circulator x3 (2).}{I|Weekly-limited picks: Karma Bonus Bright Cubes (3 Intermediate, 7 Advanced), plus Incredible Chaos and Ark Innocence scrolls.}",
+      "how": "Items marked “weekly” refresh {THU}. Buy them before the reset or lose that week’s purchases. Weekly items in every world: 4x EXP Coupons (2) and Karma Bright Cubes (3 + 7). {H|Also Solid Cube x2 Coupons (6), Extreme Growth Potion x3 (3), Black Circulator x3 (2) and Karma Solid Cubes (20).}{I|Also Karma Bonus Bright Cubes (3 + 7).}",
       "freq": "refreshes weekly",
       "total": "",
       "until": "2027-02-09T23:59:00",
@@ -695,8 +695,8 @@
       "how": "Cash Inventory → Cash Transfer",
       "starts": "2026-12-09T00:00:00",
       "ends": "2026-12-16T14:00:00",
-      "what": "For one week you can move cash items (outfits, etc.) to another character, as long as it’s in the same class group and a different job.",
-      "tip": "Not allowed: Friendship Rings, Promise Rings, Potion Pots, or splitting stacks.",
+      "what": "For one week you can send cash items to a character in a different class group, such as Explorer to Cygnus Knights. Characters in the same group (same job category) can’t use this feature with each other.",
+      "tip": "Not allowed: Friendship Rings, Promise Rings, Potion Pots, EXP Coupons, or splitting stacks.",
       "where": [
         "main"
       ],
@@ -758,7 +758,7 @@
       "who": "Challenger World Lv.200+ characters made after the patch, after “A Greater Power”",
       "how": "Event List → Item Burning Plus → Participate",
       "ends": "2027-02-09T23:59:00",
-      "what": "A free Challenger equipment set that upgrades through 11 stages as you hit levels, solo bosses and collect Challenge Crests (18★ and Unique at stage 1, up to 19★ and Legendary later).",
+      "what": "A free Challenger equipment set that upgrades through 11 stages as you hit levels, solo bosses and collect Challenge Crests. Stage 1 gives 18★ and Unique, and stage 10 reaches 21★. The last stage needs Lv.280 and a solo Normal Mayrin.",
       "tip": "Once per account and not for Quanah characters. The gear expires Feb 9 and stops upgrading after a World Leap."
     },
     {
@@ -826,7 +826,7 @@
       "id": "cst",
       "by": "2026-12-16T14:00:00",
       "title": "Do any Cash Shop transfers",
-      "how": "Cash Inventory → Cash Transfer. Same class group only.",
+      "how": "Cash Inventory → Cash Transfer. Only to characters in a different class group.",
       "opens": "2026-12-09T00:00:00",
       "where": [
         "main"
@@ -868,7 +868,7 @@
       "id": "credit",
       "by": "2027-02-09T23:59:00",
       "title": "Spend Alliance Credit",
-      "how": "Alliance Credit Shop (Cygnus Supplier or Ultima Report). {H|Extra stock: Black Rebirth Flames (10 credit each, 200 max).}{I|Extra stock: Bonus Mystical Cubes, Special Bonus and Bonus Epic Potential scrolls, Innocence and Pure Clean Slate scrolls, Special Heart scroll selector.}",
+      "how": "Alliance Credit Shop (Cygnus Supplier or Ultima Report). Also has 5 Infinite Revitalizers a day and 5 Golden Strawberry Farm passes a week (Lv.101–259). {H|Extra stock: Black Rebirth Flames (10 credit each, 200 max).}{I|Extra stock: Bonus Mystical Cubes, Special Bonus and Bonus Epic Potential scrolls, Innocence and Pure Clean Slate scrolls, Special Heart scroll selector.}",
       "where": [
         "main"
       ],
@@ -1030,7 +1030,7 @@
       "starts": "2026-12-09T00:00:00",
       "ends": "2026-12-16T14:00:00",
       "title": "Cash Shop Transfer",
-      "how": "Cash Inventory → Cash Transfer button. Moves cash items between characters in the same class group (not the same job).",
+      "how": "Cash Inventory → Cash Transfer button. Sends cash items to a character in a different class group.",
       "card": "Cash Shop Transfer",
       "where": [
         "main"
