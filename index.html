@@ -254,6 +254,8 @@ details.fold[open] > summary{padding-bottom:8px}
   .tabs{flex:0 0 auto;width:100%;max-width:100%}
   .results{left:0;right:auto;width:100%}
 }
+.nlink{font-size:13px;font-weight:600;color:var(--ice);text-decoration:none;margin-top:auto;align-self:flex-start}
+.nlink:hover{text-decoration:underline}
 [hidden]{display:none!important}
 </style>
 
@@ -448,7 +450,7 @@ details.fold[open] > summary{padding-bottom:8px}
     return `<div class="item ${checked?'checked':''}" data-item="${prefix}-${i.id}">
       <input type="checkbox" id="${prefix}-${i.id}" data-id="${i.id}" ${checked?'checked':''}>
       <label for="${prefix}-${i.id}"><span class="title">${esc(i.title)}${whereChips(i)}${i.tag?`<span class="tag">${i.tag}</span>`:''}</span>
-      <span class="how">${esc(i.how)}</span></label>${(right || hist || i.card) ? `<div class="metarow">${right?`<span class="freq">${right}</span>`:''}${i.card?`<a href="#" class="evlink" data-card="${i.card}">${i.card} →</a>`:''}${hist||''}</div>` : ''}</div>`;
+      <span class="how">${esc(i.how)}</span></label>${(right || hist || i.card || i.notes) ? `<div class="metarow">${right?`<span class="freq">${right}</span>`:''}${i.card?`<a href="#" class="evlink" data-card="${i.card}">${i.card} →</a>`:''}${!i.card && i.notes && P && P.notesUrl ?`<a class="evlink" href="${P.notesUrl}#${i.notes}" target="_blank" rel="noopener">Patch notes ↗</a>`:''}${hist||''}</div>` : ''}</div>`;
   }
   function bindList(rootId, store, keyFn){
     document.querySelectorAll(`#${rootId} input`).forEach(el => el.onchange = () => {
@@ -733,10 +735,11 @@ details.fold[open] > summary{padding-bottom:8px}
         : `<span class="pill live">● active${end ? ` · ends in ${r.txt}` : ''}</span>`;
       return `<article class="card ${stt}"><div class="meta">${pill}<span class="pill">${gName[c.g]||c.g}</span></div>
         <h3>${c.name}</h3><div class="wherebar">${whereChips(c)}</div><p>${W(c.what)}</p>
-        <dl><dt>Who</dt><dd>${W(c.who)}</dd><dt>How</dt><dd>${W(c.start)}</dd>
+        <dl><dt>Who</dt><dd>${W(c.who)}</dd><dt>How</dt><dd>${W(c.how)}</dd>
         ${st ? `<dt>Opens</dt><dd>${fmtDate(st)}, ${fmtYear(st)} · <span class="mono">${fmtTime(st)}</span></dd>`:''}
         ${end ? `<dt>Ends</dt><dd>${fmtDate(end)}, ${fmtYear(end)} · <span class="mono">${fmtTime(end)}</span></dd>`:''}</dl>
-        ${c.tip?`<p class="tip">${W(c.tip)}</p>`:''}</article>`;
+        ${c.tip?`<p class="tip">${W(c.tip)}</p>`:''}
+        ${c.notes && P.notesUrl ? `<a class="nlink" href="${P.notesUrl}#${c.notes}" target="_blank" rel="noopener">Read it in the patch notes ↗</a>` : ''}</article>`;
     }).join('') : `<p class="muted">Nothing here for this filter.</p>`;
   }
 

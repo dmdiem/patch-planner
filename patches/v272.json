@@ -49,7 +49,8 @@
         "tag": "everyone",
         "where": [
           "main"
-        ]
+        ],
+        "notes": "LegionChanges"
       },
       {
         "id": "ultima",
@@ -101,7 +102,8 @@
         "tag": "Lv.260+",
         "where": [
           "main"
-        ]
+        ],
+        "notes": "HEXAMatrixErdaLinkResetScroll"
       },
       {
         "id": "beyond",
@@ -117,7 +119,7 @@
       {
         "id": "hbm",
         "title": "Set up Hyper Burning MAX alt",
-        "how": "New character, or an existing Lv.200–258 one. Gives +4 extra levels per level up to 260. Same rule: set it up before you level.",
+        "how": "New character, or an existing Lv.200–258 one. Gives +4 extra levels per level up to 260. Same rule: set it up before you level. Level rewards are once per account, so use it on the character you’ll actually level.",
         "tag": "alts",
         "where": [
           "main",
@@ -144,6 +146,26 @@
         ],
         "card": "Event World: Quanah",
         "how": "When creating a Challenger World character, tick <b>Quanah World Leap</b>. It can’t be added later. That character gets Hyper Burning MAX to Lv.260, then leaps to Quanah after 6th job. It can’t use Beyond Burning, Item Burning or most events. Quanah ends Mar 9, so start early if you want one."
+      },
+      {
+        "id": "ibp-pick",
+        "title": "Pick your Item Burning Plus character",
+        "where": [
+          "cw"
+        ],
+        "card": "Item Burning Plus",
+        "tag": "once per account",
+        "how": "Only one Challenger World character per account, ever. Deleting it doesn’t give you another try. It must be made after the patch, be Lv.200+ with “A Greater Power” done, and not be a Quanah character."
+      },
+      {
+        "id": "sj-pick",
+        "title": "Pick your Sol Janus Support character",
+        "where": [
+          "cw"
+        ],
+        "card": "Challenger extras",
+        "tag": "can’t change",
+        "how": "One Lv.260+ Challenger character gets Sol Janus Lv.30 while in Challenger World. You can’t switch to another character later, even by deleting it."
       }
     ]
   },
@@ -432,96 +454,111 @@
       "g": "all",
       "name": "Operation Ultima",
       "who": "Lv.101+",
-      "start": "Event List → Operation Ultima → Participate",
+      "how": "Event List → Operation Ultima → Participate",
       "ends": "2027-02-09T23:59:00",
       "what": "The main event this patch. It bundles a story chapter, two weekly kill missions, a solo-boss coin shop, and EXP boxes. Most of the progress is shared across your account.",
       "tip": "Do the weekly 10,000-kill missions on any one character.",
       "where": [
         "main",
         "cw"
+      ],
+      "notes": "OperationUltimaChapter1",
+      "covers": [
+        "UltimaReport",
+        "AllianceCreditShop",
+        "OperationUltimaMesoShop"
       ]
     },
     {
       "g": "all",
       "name": "Etherion Relics",
       "who": "Lv.101+",
-      "start": "Event List → Etherion Relics",
+      "how": "Event List → Etherion Relics",
       "ends": "2027-02-09T23:59:00",
       "what": "Each week you do 10,000 solo kills to unlock a bonus: more daily-quest EXP, Monster Park EXP, Sol Erda, Epic Dungeon EXP. Bosses drop Etherion, which you use to upgrade those bonuses.",
       "tip": "You choose the cores yourself, and a choice can’t be undone.",
       "where": [
         "main"
-      ]
+      ],
+      "notes": "EtherionRelics"
     },
     {
       "g": "all",
       "name": "Shadow Bounties",
       "who": "Lv.101+",
-      "start": "Starts after the Hard-Fought Intel quest",
+      "how": "Starts after the Hard-Fought Intel quest",
       "ends": "2027-02-09T23:59:00",
       "what": "Solo your weekly bosses (Lotus and up) for Bounty Coins, then spend them in the Bounty Coin Shop (Hawk, or Event List).",
       "tip": "Coins only work in the world where you earned them.",
       "where": [
         "main",
         "cw"
+      ],
+      "notes": "ShadowBounties",
+      "covers": [
+        "BountyCoinShop"
       ]
     },
     {
       "g": "all",
       "name": "Shadow Supplies",
       "who": "Lv.101+",
-      "start": "Turns on by itself in hunting maps",
+      "how": "Turns on by itself in hunting maps",
       "ends": "2026-12-15T23:59:00",
       "what": "Kill 500 monsters near your level and an EXP box spawns. Break it for a big EXP chunk (one level at most).",
       "tip": "Charges stop stacking at 50, so log in at least every 5 days.",
       "where": [
         "main",
         "cw"
-      ]
+      ],
+      "notes": "ShadowSupplies"
     },
     {
       "g": "main",
       "name": "Specter Blast",
       "who": "Lv.260+ (after \"A Divine Power\")",
-      "start": "Event List → Specter Blast",
+      "how": "Event List → Specter Blast",
       "ends": "2026-12-15T23:59:00",
       "what": "A 2-player minigame where you play as Gaon or Keira. Clear it once a week for EXP based on your level.",
       "tip": "Leaving a Quick Start game early carries a penalty.",
       "where": [
         "main"
-      ]
+      ],
+      "notes": "SpecterBlast"
     },
     {
       "g": "all",
       "name": "Sunny Sundays",
       "who": "Lv.101+",
-      "start": "Just log in that Sunday (UTC)",
+      "how": "Just log in that Sunday (UTC)",
       "ends": "2026-12-13T23:59:00",
       "what": "Five Sundays of buffs: Nov 15 and Dec 13 for EXP, Nov 22 and Dec 6 for Star Force, Nov 29 for everything plus a free gift.",
       "tip": "Save Star Force attempts for Nov 22, Nov 29 and Dec 6.",
       "where": [
         "main",
         "cw"
-      ]
+      ],
+      "notes": "SunnySunday"
     },
     {
       "g": "main",
       "name": "Beyond Burning",
       "who": "Lv.260–278",
-      "start": "Event List → Beyond Burning",
+      "how": "Event List → Beyond Burning",
       "ends": "2027-02-09T23:59:00",
       "what": "+1 extra level per level up to 280, plus milestone rewards. One character per account, permanent.",
       "tip": "Levels you already passed don’t pay out, so set it up before you level.",
       "where": [
         "main",
         "cw"
-      ]
+      ],
+      "notes": "BeyondBurning"
     },
     {
       "g": "main",
       "name": "Luxe Sauna",
       "who": "Lv.101+",
-      "start": "Event List → Luxe Sauna",
+      "how": "Event List → Luxe Sauna",
       "ends": "2027-06-08T23:59:00",
       "what": "An AFK EXP room. Time costs 3,000 Maple Points an hour or comes from event coupons. Timer only runs while you’re inside.",
       "tip": "Charge cap is 48h per week (resets {WED}).",
@@ -529,26 +566,28 @@
         "main",
         "cw",
         "quanah"
-      ]
+      ],
+      "notes": "LuxeSauna"
     },
     {
       "g": "alt",
       "name": "Lethe (new job)",
       "who": "New characters",
-      "start": "Character creation",
+      "how": "Character creation",
       "ends": null,
       "what": "A Magician that summons demon vassals that chase enemies on their own. INT main stat.",
       "tip": "New Recruit Support gives extra rewards to Lethe characters.",
       "where": [
         "main",
         "cw"
-      ]
+      ],
+      "notes": "NewJobLethe"
     },
     {
       "g": "alt",
       "name": "Hyper Burning MAX + Hyper Blink",
       "who": "New characters, or Lv.200–258",
-      "start": "\"Set as Hyper Burning MAX\"",
+      "how": "\"Set as Hyper Burning MAX\"",
       "ends": "2027-02-09T23:59:00",
       "what": "+4 extra levels per level up to 260. Brand-new characters also get +5,000% EXP from 200 to 259.",
       "tip": "Level rewards are once per account.",
@@ -556,109 +595,178 @@
         "main",
         "cw",
         "quanah"
+      ],
+      "notes": "HyperBurningMAX",
+      "covers": [
+        "HyperBlink"
       ]
     },
     {
       "g": "alt",
       "name": "Arthur’s Equipment Rental",
       "who": "Lv.200+",
-      "start": "Event List → Arthur’s Equipment Rental",
+      "how": "Event List → Arthur’s Equipment Rental",
       "ends": "2027-02-09T23:59:00",
       "what": "Rent 20★ gear for 2 days, up to 3 times per item per week. Repeat rentals cost Maple Points (2,000–4,000). {H|First rental: 200M–300M mesos.}{I|First rental: 100M–150M mesos, and the gear also comes with Unique bonus potential and bonus stats.}",
       "tip": "Useful for pushing a boss you’re just short on.",
       "where": [
         "main",
         "cw"
-      ]
+      ],
+      "notes": "ArthursEquipmentRental"
     },
     {
       "g": "cw",
       "name": "Challenger World S4",
       "who": "New characters (up to 5)",
-      "start": "Pick Challenger-Heroic or -Interactive",
+      "how": "Pick Challenger-Heroic or -Interactive",
       "ends": "2027-02-09T23:59:00",
       "what": "A fresh season world. Missions earn points to climb from Bronze to Challenger tier, and the higher tiers give rewards you can claim on your main.",
       "tip": "Mayrin (season boss) opens Nov 12. World Leap opens Dec 16. {H|Legendary emblem or secondary missions pay 1,500 Challenger Coins each.}{I|Legendary emblem or secondary missions pay 1,000 coins each, plus 500 for Unique bonus potential on each.}",
       "where": [
         "cw"
-      ]
+      ],
+      "notes": "ChallengerWorld"
     },
     {
       "g": "quanah",
       "name": "Event World: Quanah",
       "who": "Challenger character marked for Quanah, Lv.260 + 6th job",
-      "start": "Mark at creation, then leap via the Event List",
+      "how": "Mark at creation, then leap via the Event List",
       "ends": "2027-03-09T23:59:00",
       "what": "A roguelite training world with a big buff (+1,000% EXP), its own gear system and the Battlesim dungeon. Dying resets your Inspector Level.",
       "tip": "Your Use tab must be empty to leap. No Cash Shop and no cubes there. After Quanah you can only leap to the same world type your Challenger character started in.",
       "where": [
         "quanah"
+      ],
+      "notes": "QuanahWorld",
+      "covers": [
+        "DimensionalSkillsandMissions",
+        "ProvingFields",
+        "InfiniteDungeonBattlesim",
+        "HealingTreeInfirmary",
+        "QuanahMesoShop",
+        "QuanahMaplePointShop"
       ]
     },
     {
       "g": "paid",
       "name": "Genesis Pass",
       "who": "Lv.255+ who haven’t finished the final Genesis awakening",
-      "start": "Buy in the Cash Shop, then use it from your Cash inventory",
+      "how": "Buy in the Cash Shop, then use it from your Cash inventory",
       "starts": "2026-11-12T00:00:00",
       "ends": "2027-02-08T23:59:00",
       "what": "3× Traces of Darkness from bosses (up to 3,000), parties of up to 6 for Genesis missions from Lotus on, and a stat buff against Trace bosses. Bosses you already killed this week or month are paid out retroactively.",
       "tip": "Once per account. The pass’s effects last until Feb 9.",
       "where": [
         "main"
-      ]
+      ],
+      "notes": "GenesisPass"
     },
     {
       "g": "paid",
       "name": "Genesis Pass Plus",
       "who": "Genesis Pass holders past “Power Unbound, Stage 2”",
-      "start": "Event List → Genesis Pass Plus → Participate",
+      "how": "Event List → Genesis Pass Plus → Participate",
       "starts": "2026-11-12T00:00:00",
       "ends": "2027-02-09T23:59:00",
       "what": "Weekly boss missions after you liberate your Genesis weapon: Black Mage first, then Seren (Dec 17), Kalos (Dec 24), First Adversary (Dec 31), Kaling (Jan 7), Bellona (Jan 14). Rewards are cubes, flames and Adversary Coins.",
       "tip": "Free track for pass holders. A 30,000 NX Premium ticket adds more Adversary Coins. Practice Mode doesn’t count.",
       "where": [
         "main"
-      ]
+      ],
+      "notes": "GenesisPassPlus"
     },
     {
       "g": "all",
       "name": "Cash Shop Transfer",
       "who": "Lv.101+",
-      "start": "Cash Inventory → Cash Transfer",
+      "how": "Cash Inventory → Cash Transfer",
       "starts": "2026-12-09T00:00:00",
       "ends": "2026-12-16T14:00:00",
       "what": "For one week you can move cash items (outfits, etc.) to another character, as long as it’s in the same class group and a different job.",
       "tip": "Not allowed: Friendship Rings, Promise Rings, Potion Pots, or splitting stacks.",
       "where": [
         "main"
-      ]
+      ],
+      "notes": "CashShopTransferEvent"
     },
     {
       "g": "all",
       "name": "Winter Countdown",
       "who": "Lv.101+",
-      "start": "Event List → Winter Countdown → Participate",
+      "how": "Event List → Winter Countdown → Participate",
       "ends": "2026-11-24T23:59:00",
       "what": "A daily check-in that pays out Winter Gifts as your check-in count goes up.",
       "tip": "Gifts expire Nov 25, 2:00 AM UTC, so use them right away.",
       "where": [
         "main",
         "cw"
-      ]
+      ],
+      "notes": "WinterCountdown"
     },
     {
       "g": "alt",
       "name": "New Recruit Support",
       "who": "Newly created characters",
-      "start": "Event List → New Recruit Missions",
+      "how": "Event List → New Recruit Missions",
       "ends": "2027-02-09T23:59:00",
       "what": "Rewards for milestones: 5th job, Lv.250, 6th job, solo Chaos Vellum, solo Easy Lucid.",
       "tip": "Lethe characters unlock extra rewards.",
       "where": [
         "main",
         "cw"
-      ]
+      ],
+      "notes": "NewRecruitSupportMission"
+    },
+    {
+      "g": "cw",
+      "name": "Mayrin and Kai",
+      "where": [
+        "cw"
+      ],
+      "notes": "NewSeasonBossMayrin",
+      "covers": [
+        "DefeatMayrinEvent",
+        "ReturningBossKai"
+      ],
+      "who": "Challenger World characters: Mayrin Lv.270+ (Hard 280+), Kai Lv.235+",
+      "how": "Event List → Season Boss Mayrin, or Annette in town; Kai from the Boss menu",
+      "starts": "2026-11-12T00:00:00",
+      "ends": "2027-02-09T23:59:00",
+      "what": "Mayrin is the season boss: solo, weekly, once per account, 20 minutes. Drops Eternal armor fragments and boxes, pitched accessory boxes and Sol Erda Fragments. Kai is back with 90% less HP and only counts toward Challenger and Item Burning Plus missions.",
+      "tip": "Master tier needs a solo Normal Mayrin and Challenger tier needs a solo Hard Mayrin. Defeat Mayrin Event rewards are claimed in the Event List."
+    },
+    {
+      "g": "cw",
+      "name": "Item Burning Plus",
+      "where": [
+        "cw"
+      ],
+      "notes": "ItemBurningPlus",
+      "who": "Challenger World Lv.200+ characters made after the patch, after “A Greater Power”",
+      "how": "Event List → Item Burning Plus → Participate",
+      "ends": "2027-02-09T23:59:00",
+      "what": "A free Challenger equipment set that upgrades through 11 stages as you hit levels, solo bosses and collect Challenge Crests (18★ and Unique at stage 1, up to 19★ and Legendary later).",
+      "tip": "Once per account and not for Quanah characters. The gear expires Feb 9 and stops upgrading after a World Leap."
+    },
+    {
+      "g": "cw",
+      "name": "Challenger extras",
+      "where": [
+        "cw"
+      ],
+      "notes": "ChallengerPass",
+      "covers": [
+        "SolJanusSkillSupport",
+        "ArcaneSeal",
+        "ChallengerWorldShop"
+      ],
+      "who": "Challenger World characters",
+      "how": "Event List",
+      "ends": "2027-02-09T23:59:00",
+      "what": "Challenger Pass: weekly missions for up to 500 points, Lv.30 max, with optional 19,800 NX EXP and Premium tracks. Sol Janus Support: one Lv.260+ character gets Sol Janus Lv.30 while in Challenger World. Arcane Seal: 3 free Sealing Wands a day for stat cores. Challenger World Shop: spend Challenger Coins.",
+      "tip": "Sol Janus Support and Arcane Core stats go away when you World Leap."
     }
   ],
   "wrapup": [
@@ -700,7 +808,8 @@
       "how": "They expire Dec 16, 2:00 AM UTC.",
       "where": [
         "main"
-      ]
+      ],
+      "notes": "HEXAMatrixErdaLinkResetScroll"
     },
     {
       "id": "cst",
@@ -889,7 +998,7 @@
       "ends": "2027-02-09T23:59:00",
       "title": "Mayrin and Kai (Challenger World bosses)",
       "how": "Season boss Mayrin and returning Kai. Challenger World only.",
-      "card": "Challenger World S4",
+      "card": "Mayrin and Kai",
       "where": [
         "cw"
       ]
@@ -953,5 +1062,312 @@
     }
   ],
   "liveAt": "2026-11-11T22:00:00",
-  "liveAtNote": "Maintenance expected to end 2:00 PM PST"
+  "liveAtNote": "Maintenance expected to end 2:00 PM PST",
+  "sections": [
+    {
+      "anchor": "NewJobLethe",
+      "title": "New Job: Lethe",
+      "kind": "system"
+    },
+    {
+      "anchor": "BlueberryFarm",
+      "title": "Blueberry Farm",
+      "kind": "system",
+      "skip": "Lv.260+ EXP map; entry passes come from the Challenger Pass"
+    },
+    {
+      "anchor": "EnhancementChanges",
+      "title": "Enhancement Changes",
+      "kind": "system",
+      "skip": "System change: Auto-Enhancement and enhancement UI"
+    },
+    {
+      "anchor": "EpicDungeonChanges",
+      "title": "Epic Dungeon Changes",
+      "kind": "system",
+      "skip": "System change"
+    },
+    {
+      "anchor": "MonsterParkChanges",
+      "title": "Monster Park Changes",
+      "kind": "system",
+      "skip": "System change"
+    },
+    {
+      "anchor": "GuildChanges",
+      "title": "Guild Changes",
+      "kind": "system",
+      "skip": "System change: account groups in guilds"
+    },
+    {
+      "anchor": "LegionChanges",
+      "title": "Legion Changes",
+      "kind": "system",
+      "coveredBy": "day0.setup:legion"
+    },
+    {
+      "anchor": "MVPChanges",
+      "title": "MVP Changes",
+      "kind": "system",
+      "skip": "System change: MVP Resort UI"
+    },
+    {
+      "anchor": "SpecialSkillRing",
+      "title": "Special Skill Ring",
+      "kind": "system",
+      "skip": "System change: craftable Special Skill Rings"
+    },
+    {
+      "anchor": "SkillChanges",
+      "title": "Skill Changes",
+      "kind": "system",
+      "skip": "Balance changes"
+    },
+    {
+      "anchor": "JobSkills",
+      "title": "Job Skills",
+      "kind": "system",
+      "skip": "Balance changes"
+    },
+    {
+      "anchor": "GeneralSkills",
+      "title": "General Skills",
+      "kind": "system",
+      "skip": "Balance changes"
+    },
+    {
+      "anchor": "HEXAMatrixErdaLinkResetScroll",
+      "title": "HEXA Matrix and Erda Link Reset Scroll",
+      "kind": "system",
+      "coveredBy": "day0.setup:hexa"
+    },
+    {
+      "anchor": "SkillRepeatedInput",
+      "title": "Repeated Skill Input Improvement",
+      "kind": "system",
+      "skip": "Settings option"
+    },
+    {
+      "anchor": "BossMobChanges",
+      "title": "Boss & Mob Changes",
+      "kind": "system",
+      "skip": "Balance changes"
+    },
+    {
+      "anchor": "ItemChanges",
+      "title": "Item Changes",
+      "kind": "system",
+      "skip": "Item changes"
+    },
+    {
+      "anchor": "MapChanges",
+      "title": "Map Changes",
+      "kind": "system",
+      "skip": "Map changes"
+    },
+    {
+      "anchor": "QuestStoryChanges",
+      "title": "Quest & Story Changes",
+      "kind": "system",
+      "skip": "Quest changes"
+    },
+    {
+      "anchor": "UIChanges",
+      "title": "UI Changes",
+      "kind": "system",
+      "skip": "UI changes"
+    },
+    {
+      "anchor": "ContentImprovements",
+      "title": "Content Improvements",
+      "kind": "system",
+      "skip": "Content tweaks"
+    },
+    {
+      "anchor": "OperationUltimaChapter1",
+      "title": "Operation Ultima: Chapter 1",
+      "kind": "event"
+    },
+    {
+      "anchor": "UltimaReport",
+      "title": "Ultima Report",
+      "kind": "event"
+    },
+    {
+      "anchor": "EtherionRelics",
+      "title": "Etherion Relics",
+      "kind": "event"
+    },
+    {
+      "anchor": "ShadowBounties",
+      "title": "Shadow Bounties",
+      "kind": "event"
+    },
+    {
+      "anchor": "BountyCoinShop",
+      "title": "Bounty Coin Shop",
+      "kind": "event"
+    },
+    {
+      "anchor": "ShadowSupplies",
+      "title": "Shadow Supplies",
+      "kind": "event"
+    },
+    {
+      "anchor": "SpecterBlast",
+      "title": "Specter Blast",
+      "kind": "event"
+    },
+    {
+      "anchor": "AllianceCreditShop",
+      "title": "Alliance Credit Shop",
+      "kind": "event"
+    },
+    {
+      "anchor": "OperationUltimaMesoShop",
+      "title": "Operation Ultima Meso Shop",
+      "kind": "event"
+    },
+    {
+      "anchor": "ChallengerWorld",
+      "title": "Challenger World",
+      "kind": "event"
+    },
+    {
+      "anchor": "ChallengerWorldShop",
+      "title": "Challenger World Shop",
+      "kind": "event"
+    },
+    {
+      "anchor": "NewSeasonBossMayrin",
+      "title": "New Season Boss: Mayrin",
+      "kind": "event"
+    },
+    {
+      "anchor": "DefeatMayrinEvent",
+      "title": "Defeat Mayrin Event",
+      "kind": "event"
+    },
+    {
+      "anchor": "ReturningBossKai",
+      "title": "Returning Boss: Kai",
+      "kind": "event"
+    },
+    {
+      "anchor": "SolJanusSkillSupport",
+      "title": "Sol Janus Skill Support",
+      "kind": "event"
+    },
+    {
+      "anchor": "ChallengerPass",
+      "title": "Challenger Pass",
+      "kind": "event"
+    },
+    {
+      "anchor": "ArcaneSeal",
+      "title": "Arcane Seal",
+      "kind": "event"
+    },
+    {
+      "anchor": "QuanahWorld",
+      "title": "Quanah World",
+      "kind": "event"
+    },
+    {
+      "anchor": "DimensionalSkillsandMissions",
+      "title": "Dimensional Skills and Missions",
+      "kind": "event"
+    },
+    {
+      "anchor": "ProvingFields",
+      "title": "Proving Fields",
+      "kind": "event"
+    },
+    {
+      "anchor": "InfiniteDungeonBattlesim",
+      "title": "Infinite Dungeon: Battlesim",
+      "kind": "event"
+    },
+    {
+      "anchor": "HealingTreeInfirmary",
+      "title": "Healing Tree Infirmary",
+      "kind": "event"
+    },
+    {
+      "anchor": "QuanahMesoShop",
+      "title": "Quanah Meso Shop",
+      "kind": "event"
+    },
+    {
+      "anchor": "QuanahMaplePointShop",
+      "title": "Quanah Maple Point Shop",
+      "kind": "event"
+    },
+    {
+      "anchor": "HyperBurningMAX",
+      "title": "Hyper Burning MAX",
+      "kind": "event"
+    },
+    {
+      "anchor": "HyperBlink",
+      "title": "Hyper Blink",
+      "kind": "event"
+    },
+    {
+      "anchor": "BeyondBurning",
+      "title": "Beyond Burning",
+      "kind": "event"
+    },
+    {
+      "anchor": "ItemBurningPlus",
+      "title": "Item Burning Plus",
+      "kind": "event"
+    },
+    {
+      "anchor": "ArthursEquipmentRental",
+      "title": "Arthur’s Equipment Rental",
+      "kind": "event"
+    },
+    {
+      "anchor": "NewRecruitSupportMission",
+      "title": "New Recruit Support Mission",
+      "kind": "event"
+    },
+    {
+      "anchor": "GenesisPass",
+      "title": "Genesis Pass",
+      "kind": "event"
+    },
+    {
+      "anchor": "GenesisPassPlus",
+      "title": "Genesis Pass Plus",
+      "kind": "event"
+    },
+    {
+      "anchor": "WinterCountdown",
+      "title": "Winter Countdown",
+      "kind": "event"
+    },
+    {
+      "anchor": "CashShopTransferEvent",
+      "title": "Cash Shop Transfer",
+      "kind": "event"
+    },
+    {
+      "anchor": "CharacterCreationGuide",
+      "title": "Character Creation Guide",
+      "kind": "event",
+      "skip": "One-time tutorial prompt on login; nothing to do"
+    },
+    {
+      "anchor": "LuxeSauna",
+      "title": "Luxe Sauna",
+      "kind": "event"
+    },
+    {
+      "anchor": "SunnySunday",
+      "title": "Sunny Sunday",
+      "kind": "event"
+    }
+  ]
 }
