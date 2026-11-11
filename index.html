@@ -530,8 +530,12 @@ h4.grp .where{margin:0;font-size:12px}
 
   const WHERE = {main:'Main world', cw:'Challenger World', quanah:'Quanah'};
   const whereChips = (x) => (x && x.where ? x.where : []).map(w => `<span class="where w-${w}">${WHERE[w]||w}</span>`).join('');
-  const srcLink = (x, cls = 'srcchip') => { const src = x && x.source && P && P.sources ? P.sources[x.source] : null;
-    return src ? `<a class="${cls}" href="${src.url}" target="_blank" rel="noopener" title="From ${src.title}, not the official patch notes">Community tip · ${src.title} ↗</a>` : ''; };
+  const srcLink = (x, cls = 'srcchip') => {
+    if (!x || !x.source || !P || !P.sources) return '';
+    return [].concat(x.source).map(k => P.sources[k]).filter(Boolean).map(src => src.url
+      ? `<a class="${cls}" href="${src.url}" target="_blank" rel="noopener" title="From ${src.title}, not the official patch notes">Community tip · ${src.title} ↗</a>`
+      : `<span class="${cls}" title="From ${src.title}, not the official patch notes">Community tip · ${src.title}</span>`).join('');
+  };
   function itemHTML(prefix, i, checked, right, hist){
     return `<div class="item ${checked?'checked':''}" data-item="${prefix}-${i.id}">
       <input type="checkbox" id="${prefix}-${i.id}" data-id="${i.id}" ${checked?'checked':''}>
@@ -850,7 +854,7 @@ h4.grp .where{margin:0;font-size:12px}
         ${c.tip?`<p class="tip">${W(c.tip)}</p>`:''}
         ${c.page && (P.pages||[]).find(x=>x.id===c.page) ? `<a class="nlink" href="${P.pages.find(x=>x.id===c.page).href}">Compare: ${P.pages.find(x=>x.id===c.page).title} →</a>` : ''}
         ${c.notes && P.notesUrl ? `<a class="nlink" href="${P.notesUrl}#${c.notes}" target="_blank" rel="noopener">Read it in the patch notes ↗</a>` : ''}
-        ${c.source && P.sources && P.sources[c.source] ? `<a class="nlink" href="${P.sources[c.source].url}" target="_blank" rel="noopener">Community guide: ${P.sources[c.source].title} ↗</a>` : ''}</div></details></article>`;
+        ${c.source && P.sources ? [].concat(c.source).map(k => P.sources[k]).filter(x => x && x.url).map(x => `<a class="nlink" href="${x.url}" target="_blank" rel="noopener">Community guide: ${x.title} ↗</a>`).join('') : ''}</div></details></article>`;
     }).join('') : `<p class="muted">Nothing here for this filter.</p>`;
     document.querySelectorAll('#cards details.cd').forEach(d => d.ontoggle = () => {
       const n = d.closest('.card').dataset.name; d.open ? openCards.add(n) : openCards.delete(n);

@@ -40,7 +40,7 @@ for (const [ln, arr] of Object.entries(lists)) for (const i of arr || []) {
 }
 for (const x of [...(d.dates || []), ...(d.openings || [])]) if (x.card && !names.has(x.card)) problems.push(`Date "${x.title}" links to missing card "${x.card}".`);
 // 4. Community sources exist
-for (const x of [...cards, ...Object.values(lists).flat().filter(Boolean)]) if (x.source && !(d.sources || {})[x.source]) problems.push(`"${x.name || x.title}" uses unknown source "${x.source}".`);
+for (const x of [...cards, ...Object.values(lists).flat().filter(Boolean)]) for (const sk of [].concat(x.source || [])) if (!(d.sources || {})[sk]) problems.push(`"${x.name || x.title}" uses unknown source "${sk}".`);
 // 5. Dates parse
 const bad = (t) => t && isNaN(new Date(t + 'Z'));
 for (const x of [d, ...cards, ...(d.dates||[]), ...(d.openings||[]), ...(d.wrapup||[]), ...(d.daily||[]), ...(d.weekly||[])])

@@ -174,8 +174,11 @@
           "quanah"
         ],
         "card": "Event World: Quanah",
-        "source": "quanahfiles",
-        "how": "Make drop gear, not meso gear. Potential your emblem and secondary weapon first, since cubes don’t work in Quanah. Get boss accessories (Zakum, Chaos Horntail, Pink Bean), totems, a Gollux ring and pendant, an Android (there’s no way to get one in Quanah) and familiar badges. Max V Matrix and Arcane Symbols if you can, and move every upgrade material into storage."
+        "source": [
+          "dubsmafh",
+          "quanahfiles"
+        ],
+        "how": "Essentials: an Android, a Greed Pendant, a boss accessory set and event rings. Optional: familiar badges and totems (totems are easy to get later, badges are harder). Android options: Grand Athenaeum’s, Plentyroid, or the Challenger Medal-roid (Bronze tier). A Quanah character can’t earn tiers itself, but last season players could move the Medal-roid between characters, so earn it on another Challenger World character and move it over before leaping. The v.272 notes don’t confirm this still works. Event rings come from the Alliance Credit Shop, which a Quanah character can’t use, so they’d have to come through storage from another character in the same world. For a fuller setup, The Quanah Files adds: drop gear (not meso), potential your emblem and secondary before leaving, a Gollux ring and pendant, and max V Matrix and Arcane Symbols."
       },
       {
         "id": "quanah-start",
@@ -1428,6 +1431,10 @@
     "quanahfiles": {
       "title": "The Quanah Files (PierecedMoon)",
       "url": "https://docs.google.com/document/d/1X2P51gaWxZ_Ltxr466CEH26pK9OouXyDT5rOdbYxOhE/edit"
+    },
+    "dubsmafh": {
+      "title": "Dubs and Mafh (community)",
+      "url": ""
     }
   },
   "pages": [
