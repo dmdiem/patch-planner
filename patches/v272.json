@@ -9,19 +9,9 @@
   "day0": {
     "beforeReset": [
       {
-        "id": "d0-cpass",
-        "title": "Challenger Pass: do this week’s missions now",
-        "how": "Its week resets at the shops & passes reset ({THU}), so patch day is a mini-week of its own. Log in plus kills gets points now, and again from Nov 12. Up to 500 points per mini-week.",
-        "reset": "thu",
-        "where": [
-          "cw"
-        ],
-        "card": "Challenger World S4"
-      },
-      {
         "id": "d0-bshop",
         "title": "Spend Bounty Coins before the shop reset",
-        "how": "Bounty Coin Shop limits refresh {THU}. Coins you earn from tonight’s solo bosses can be spent up to the limit now, and the limits open again a few hours later.",
+        "how": "Items marked “weekly” in the Bounty Coin Shop (4x EXP Coupons, Bright Cubes, Solid Cubes and more) refresh {THU}, a few hours after maintenance. Kill your weekly bosses solo after joining Operation Ultima, buy the weekly items now, then buy them again after the reset. Other items have event-long limits and don’t refresh.",
         "tag": "if bossing",
         "reset": "thu",
         "where": [
@@ -29,16 +19,6 @@
           "cw"
         ],
         "card": "Shadow Bounties"
-      },
-      {
-        "id": "d0-battlesim",
-        "title": "Burn Battlesim power",
-        "how": "Projected Weekly Power (150) refills {THU}, so anything left over at the reset is wasted.",
-        "reset": "thu",
-        "where": [
-          "quanah"
-        ],
-        "card": "Event World: Quanah"
       }
     ],
     "setup": [
@@ -173,7 +153,7 @@
     {
       "id": "login",
       "title": "Log in on one character",
-      "how": "Gives the Ultima Supply Report (3 × 3× EXP coupons). It only counts 5 days per event week (resets {WED}), so you can skip 2 days a week.",
+      "how": "Gives the Ultima Supply Report reward (three 3x EXP Coupons) once per account per day, up to 5 times a week and 60 in total. Missed weeks can be bought back for 3,000 Maple Points each.",
       "freq": "5 of 7 days",
       "until": "2027-02-09T23:59:00",
       "where": [
@@ -184,7 +164,7 @@
     {
       "id": "winter",
       "title": "Winter Countdown check-in",
-      "how": "One check-in per day. Missed days can’t be made up.",
+      "how": "One check-in per day, 14 days in total. Missed days can’t be made up.",
       "freq": "daily",
       "until": "2026-11-24T23:59:00",
       "where": [
@@ -248,7 +228,7 @@
     {
       "id": "bounty",
       "title": "Shadow Bounties (solo bosses)",
-      "how": "Weekly caps per world: 3,000 Basic, 2,000 Intermediate, 100 Advanced coins. Only the best boss each week pays the full amount.",
+      "how": "Solo (1-person party). Each week you get the coins of your single best boss, so killing a lower boss after a higher one adds nothing, and a higher one later pays only the difference. Caps per world: 3,000 Basic, 2,000 Intermediate, 100 Advanced.",
       "freq": "weekly cap",
       "total": "",
       "until": "2027-02-09T23:59:00",
@@ -290,7 +270,7 @@
     {
       "id": "shop",
       "title": "Bounty Coin Shop purchases",
-      "how": "Purchase limits refresh {THU}. Spend coins before then or lose that week’s limit. {H|Weekly-limited picks: Karma Solid Cube x2 Coupons (6), Extreme Growth Potion x3 (3), Black Circulator x3 (2).}{I|Weekly-limited picks: Karma Bonus Bright Cubes (3 Intermediate, 7 Advanced), plus Incredible Chaos and Ark Innocence scrolls.}",
+      "how": "Items marked “weekly” refresh {THU}. Buy them before the reset or lose that week’s purchases. {H|Weekly-limited picks: Karma Solid Cube x2 Coupons (6), Extreme Growth Potion x3 (3), Black Circulator x3 (2).}{I|Weekly-limited picks: Karma Bonus Bright Cubes (3 Intermediate, 7 Advanced), plus Incredible Chaos and Ark Innocence scrolls.}",
       "freq": "refreshes weekly",
       "total": "",
       "until": "2027-02-09T23:59:00",
@@ -304,7 +284,7 @@
     {
       "id": "cpass",
       "title": "Challenger Pass missions",
-      "how": "Challenger World only. Max 500 points a week, and Lv.30 needs 3,000, so plan on 6 full weeks.",
+      "how": "Lv.260+ Challenger World characters, once per account. Max 500 points a week, and Lv.30 needs 3,000, so plan on 6 full weeks.",
       "freq": "500 pts/wk",
       "total": "6 weeks to max",
       "until": "2027-02-09T23:59:00",
@@ -488,7 +468,7 @@
       "who": "Lv.101+",
       "how": "Starts after the Hard-Fought Intel quest",
       "ends": "2027-02-09T23:59:00",
-      "what": "Solo your weekly bosses (Lotus and up) for Bounty Coins, then spend them in the Bounty Coin Shop (Hawk, or Event List).",
+      "what": "Solo a weekly boss (Lotus and up) for Bounty Coins, then spend them in the Bounty Coin Shop (Hawk, or Event List). Each week pays the coins of your best boss only, so one hard kill is enough.",
       "tip": "Coins only work in the world where you earned them.",
       "where": [
         "main",
@@ -530,7 +510,7 @@
       "g": "all",
       "name": "Sunny Sundays",
       "who": "Lv.101+",
-      "how": "Just log in that Sunday (UTC)",
+      "how": "Just log in that Sunday. Sundays are in UTC, which on the US west coast is Saturday 4 PM to Sunday 4 PM.",
       "ends": "2026-12-13T23:59:00",
       "what": "Five Sundays of buffs: Nov 15 and Dec 13 for EXP, Nov 22 and Dec 6 for Star Force, Nov 29 for everything plus a free gift.",
       "tip": "Save Star Force attempts for Nov 22, Nov 29 and Dec 6.",
@@ -607,7 +587,7 @@
       "who": "Lv.200+",
       "how": "Event List → Arthur’s Equipment Rental",
       "ends": "2027-02-09T23:59:00",
-      "what": "Rent 20★ gear for 2 days, up to 3 times per item per week. Repeat rentals cost Maple Points (2,000–4,000). {H|First rental: 200M–300M mesos.}{I|First rental: 100M–150M mesos, and the gear also comes with Unique bonus potential and bonus stats.}",
+      "what": "Rent 20★ gear, rings and totems for 2 days, up to 3 times per item per week. The first rental of each item costs mesos and repeats cost 1,000–4,000 Maple Points. {H|First rentals cost 100M–300M mesos.}{I|First rentals cost 100M–150M mesos, and the gear also comes with Unique bonus potential and bonus stats.}",
       "tip": "Useful for pushing a boss you’re just short on.",
       "where": [
         "main",
@@ -698,7 +678,7 @@
       "how": "Event List → Winter Countdown → Participate",
       "ends": "2026-11-24T23:59:00",
       "what": "A daily check-in that pays out Winter Gifts as your check-in count goes up.",
-      "tip": "Gifts expire Nov 25, 2:00 AM UTC, so use them right away.",
+      "tip": "The window is only 14 days (Nov 11–24), so check in every day. Gifts expire Nov 25, 2:00 AM UTC.",
       "where": [
         "main",
         "cw"
