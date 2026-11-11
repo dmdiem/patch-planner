@@ -160,6 +160,16 @@
         "decide": "quanah"
       },
       {
+        "id": "quanah-prep",
+        "title": "Quanah prep before you leap",
+        "where": [
+          "quanah"
+        ],
+        "card": "Event World: Quanah",
+        "decide": "quanah",
+        "how": "Learn story-quest skills like Hero’s Echo first, because they can’t be learned in Quanah. Claim all Hyper Burning rewards and empty your Use tab. Gachapon items, Wonderberries and Star Stamps can’t come with you. Community tip (not in the notes): get an Android first."
+      },
+      {
         "id": "ibp-pick",
         "title": "Pick your Item Burning Plus character",
         "where": [
@@ -646,8 +656,8 @@
       "who": "Challenger character marked for Quanah, Lv.260 + 6th job",
       "how": "Mark at creation, then leap via the Event List",
       "ends": "2027-03-09T23:59:00",
-      "what": "A roguelite training world with a big buff (+1,000% EXP), its own gear system and the Battlesim dungeon. Dying resets your Inspector Level.",
-      "tip": "Your Use tab must be empty to leap. No Cash Shop and no cubes there. After Quanah you can only leap to the same world type your Challenger character started in.",
+      "what": "A roguelite training world with a big buff (+1,000% EXP), its own gear and enhancement system, the Proving Fields and the Battlesim dungeon. Dying resets your Inspector Level to 1. The Inspector’s Mapae badge from Black Mage (Hard or Extreme) is the main reward you can take to another character.",
+      "tip": "Use tab must be empty to leap, no Cash Shop, no cubes or flames, no MVP perks. Libae’s Supercharged Equipment stays in Quanah; other gear transfers up to 22★. You leave to the same world type you started in.",
       "where": [
         "quanah"
       ],
@@ -981,6 +991,17 @@
       ],
       "card": "Event World: Quanah",
       "how": "Event List once it reaches Lv.200 in Challenger World. Claim all Hyper Burning rewards before leaping, and empty your Use tab."
+    },
+    {
+      "id": "mapae",
+      "by": "2027-03-09T23:59:00",
+      "where": [
+        "quanah"
+      ],
+      "card": "Event World: Quanah",
+      "notes": "QuanahWorld",
+      "title": "Finish your Inspector’s Mapae before leaving Quanah",
+      "how": "It can’t be upgraded after the leap (Interactive worlds can still use bonus potential and scrolls). Max its Star Force (22★) and roll potential for the stat of the character you’ll give it to. It can be moved once within your account."
     },
     {
       "id": "quanah",
@@ -1389,16 +1410,16 @@
       "title": "Should I do Quanah?",
       "card": "Event World: Quanah",
       "notes": "QuanahWorld",
-      "intro": "Quanah is a limited-time event world (until Mar 9). Only a Challenger World character with “Quanah World Leap” ticked at creation can go there, after Lv.260 and 6th job.",
+      "intro": "Quanah is a limited-time event world that closes for everyone on Mar 9. Only a Challenger World character with “Quanah World Leap” ticked at creation can go, after Lv.260 and 6th job. Treat it as a second main for the next four months, not a side alt.",
       "start": "time",
       "nodes": {
         "time": {
-          "q": "Can you spare a few hours a week until Mar 9 for a second character?",
-          "help": "You’d level a new Challenger World character to 260 (Hyper Burning MAX makes this fast), finish 6th job, then play Quanah on top of your main’s weeklies.",
+          "q": "Can you play a second character like a second main until Mar 9?",
+          "help": "The notes don’t give hours, but here’s what it involves: level a brand-new character to 260 and finish 6th job, prep before leaping, then a farming-heavy world where your Inspector Level drops back to 1 every time you die, boss entries come from farming, and Battlesim allows 150 floors a week. The badge drops from Black Mage (Hard or Extreme), so you need a strong Quanah character. All of this is on top of your main’s weeklies.",
           "options": [
             {
-              "label": "Yes",
-              "next": "want"
+              "label": "Yes, I have that kind of time",
+              "next": "start"
             },
             {
               "label": "No",
@@ -1417,12 +1438,12 @@
             {
               "label": "The Inspector’s Mapae badge for my main",
               "next": "hbm",
-              "note": "Drops from Black Mage (Hard or Extreme) in Quanah. It can be moved once to another character on your account after you leave."
+              "note": "Drops from Black Mage (Hard or Extreme) in Quanah. Its attack grows with Star Force, up to 22★. It can be moved once to another character on your account after you leave, but can’t be upgraded after that. Community estimates put it around +92 ATT when maxed (not stated in the notes)."
             },
             {
               "label": "An extra Lv.260+ character from March",
               "next": "hbm",
-              "note": "It leaps into a world of the same type as its Challenger World (Heroic or Interactive)."
+              "note": "It leaps into a world of the same type as its Challenger World (Heroic or Interactive). Libae’s Supercharged Equipment stays behind; other gear transfers up to 22★."
             },
             {
               "label": "The gameplay itself",
@@ -1473,7 +1494,7 @@
         "skip-time": {
           "result": "skip",
           "title": "Skip Quanah",
-          "text": "Without spare time it isn’t worth it. Your main’s Operation Ultima weeklies, Shadow Bounties and Sunny Sundays don’t depend on Quanah at all.",
+          "text": "Quanah is closer to a second main than a side alt. Without that time, it isn’t worth it, and your main’s Operation Ultima weeklies, Shadow Bounties and Sunny Sundays don’t depend on it.",
           "points": [
             "Spend the time on your main’s weekly 10,000-kill missions and solo bosses.",
             "You can still use Hyper Burning MAX on a normal alt."
@@ -1499,14 +1520,16 @@
         "do": {
           "result": "do",
           "title": "Do Quanah",
-          "text": "You have the time, you want what it gives, and nothing else is competing for your Hyper Burning MAX rewards.",
+          "text": "You have the time, you can start soon, you want what it gives, and nothing else is competing for your Hyper Burning MAX rewards. Expect it to take most of the next four months.",
           "steps": [
             "Create a Challenger World character of the same type as your main (Challenger-Heroic for a Heroic main) and tick Quanah World Leap.",
-            "Level it with Hyper Burning MAX. At Lv.200, claim A Gift for the Future in the Event List.",
+            "Level it with Hyper Burning MAX. At Lv.200, claim A Gift for the Future in the Event List (the notes don’t list what it contains).",
             "Reach Lv.260 and finish 6th job.",
-            "Claim your Hyper Burning rewards, empty your Use tab, then Event List → Invitation to Another Dimension.",
-            "In Quanah, work toward Black Mage (Hard or Extreme) if you want the Mapae badge.",
-            "Finish before Mar 9, when Quanah closes and you’re moved to the leap zone."
+            "Before leaping: learn story-quest skills like Hero’s Echo (they can’t be learned in Quanah), claim all Hyper Burning rewards, and empty your Use tab. You get 5,000 Elixirs on arrival.",
+            "Community tip (not in the notes): get an Android before you leap.",
+            "Leap with Event List → Invitation to Another Dimension, and do the tutorial for 2,000 Quanah Crystals.",
+            "Farm toward Black Mage (Hard or Extreme) for the Inspector’s Mapae.",
+            "Before you leave Quanah, finish the Mapae’s Star Force and roll its potential for the stat of the character you’ll give it to. It can’t be upgraded after the leap."
           ]
         },
         "do-hbm": {
@@ -1516,8 +1539,11 @@
           "steps": [
             "Create a Challenger World character of the same type as your main and tick Quanah World Leap.",
             "Level it with Hyper Burning MAX and claim A Gift for the Future at Lv.200.",
-            "Reach Lv.260, finish 6th job, empty your Use tab and leap.",
-            "Aim for Black Mage (Hard or Extreme) in Quanah for the Mapae badge, before Mar 9."
+            "Reach Lv.260 and finish 6th job.",
+            "Before leaping: learn story-quest skills like Hero’s Echo (they can’t be learned in Quanah), claim all Hyper Burning rewards, and empty your Use tab. You get 5,000 Elixirs on arrival.",
+            "Community tip (not in the notes): get an Android before you leap.",
+            "Leap, then farm toward Black Mage (Hard or Extreme) for the Mapae badge.",
+            "Before you leave Quanah, finish the Mapae’s Star Force and roll its potential for the stat of the character you’ll give it to. It can’t be upgraded after the leap."
           ]
         },
         "middle": {
@@ -1526,9 +1552,32 @@
           "text": "The only thing you can’t add later is the Quanah tick at character creation. Make the character now and decide around Lv.260.",
           "steps": [
             "Create a Challenger World character of your main’s type and tick Quanah World Leap. It uses one of your 5 Challenger slots.",
-            "Level it casually with Hyper Burning MAX.",
+            "Level it with Hyper Burning MAX.",
             "Think before claiming its Hyper Burning level rewards, since they’re once per account.",
-            "At Lv.260, come back to this page and decide."
+            "Decide by around Lv.260. Starting Quanah late leaves less time before Mar 9."
+          ]
+        },
+        "start": {
+          "q": "Could you start levelling it within the next couple of weeks?",
+          "help": "Quanah closes on Mar 9 no matter when you arrive. Every week spent levelling or prepping is a week less inside Quanah.",
+          "options": [
+            {
+              "label": "Yes, soon",
+              "next": "want"
+            },
+            {
+              "label": "Not until later (December or after)",
+              "next": "late"
+            }
+          ]
+        },
+        "late": {
+          "result": "maybe",
+          "title": "Only if the badge is worth a rush",
+          "text": "Starting late leaves much less time inside Quanah before it closes on Mar 9, and Battlesim is capped at 150 floors a week, so you can’t fully catch up by playing more in one week. If the Mapae badge isn’t a must-have, skipping is reasonable.",
+          "points": [
+            "If you still want it, tick Quanah World Leap when you create the character so the option stays open.",
+            "The 1st Quanah World Leap opens after v.273; everyone is moved out on Mar 9."
           ]
         }
       }

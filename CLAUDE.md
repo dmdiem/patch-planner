@@ -26,6 +26,7 @@ The owner sends a MapleStory (GMS) patch-notes link. The job is to turn the **wh
 7. **Publish.** Add the patch to `patches/index.json`, commit, push, and republish the artifact at the same URL (https://claude.ai/artifact/9USrw4xJ9biTUUtLhtrVe6) with the new data file.
 
 ## Writing style
+Don't guess how long something takes. The notes rarely give hours, so describe what's involved (levels to reach, weekly caps, resets on death, deadlines) and let the reader judge. Label anything that comes from outside the notes, like a community tip or a creator's estimate.
 Plain English. Say what to do and where to click (`Event List → X`). Keep tips to one or two sentences. Use `{WED}`/`{THU}` instead of naming reset weekdays, because the page shows them in the viewer's clock.
 
 See README.md for every field.
