@@ -134,6 +134,16 @@
           "cw"
         ],
         "card": "Challenger World S4"
+      },
+      {
+        "id": "quanah-pick",
+        "title": "Decide on a Quanah character (only at creation)",
+        "where": [
+          "cw",
+          "quanah"
+        ],
+        "card": "Event World: Quanah",
+        "how": "When creating a Challenger World character, tick <b>Quanah World Leap</b>. It can’t be added later. That character gets Hyper Burning MAX to Lv.260, then leaps to Quanah after 6th job. It can’t use Beyond Burning, Item Burning or most events. Quanah ends Mar 9, so start early if you want one."
       }
     ]
   },
@@ -281,6 +291,18 @@
         "cw"
       ],
       "card": "Challenger World S4"
+    },
+    {
+      "id": "battlesim",
+      "reset": "thu",
+      "title": "Battlesim: use your Projected Weekly Power",
+      "where": [
+        "quanah"
+      ],
+      "card": "Event World: Quanah",
+      "how": "150 power a week, 1 per floor. Leftover power is wasted at the reset ({THU}). Only once your Quanah character has leaped.",
+      "freq": "150/wk",
+      "until": "2027-03-09T23:59:00"
     }
   ],
   "dates": [
@@ -827,6 +849,16 @@
         "cw"
       ],
       "card": "Challenger World S4"
+    },
+    {
+      "id": "quanah-gift",
+      "by": "2027-03-09T23:59:00",
+      "title": "Claim “A Gift for the Future” on your Quanah character",
+      "where": [
+        "cw"
+      ],
+      "card": "Event World: Quanah",
+      "how": "Event List once it reaches Lv.200 in Challenger World. Claim all Hyper Burning rewards before leaping, and empty your Use tab."
     },
     {
       "id": "quanah",
