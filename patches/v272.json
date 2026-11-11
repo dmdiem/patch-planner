@@ -428,6 +428,24 @@
       "ends": "2026-12-16T14:00:00",
       "what": "For one week you can move cash items (outfits, etc.) to another character, as long as it’s in the same class group and a different job.",
       "tip": "Not allowed: Friendship Rings, Promise Rings, Potion Pots, or splitting stacks."
+    },
+    {
+      "g": "all",
+      "name": "Winter Countdown",
+      "who": "Lv.101+",
+      "start": "Event List → Winter Countdown → Participate",
+      "ends": "2026-11-24T23:59:00",
+      "what": "A daily check-in that pays out Winter Gifts as your check-in count goes up.",
+      "tip": "Gifts expire Nov 25, 2:00 AM UTC, so use them right away."
+    },
+    {
+      "g": "alt",
+      "name": "New Recruit Support",
+      "who": "Newly created characters",
+      "start": "Event List → New Recruit Missions",
+      "ends": "2027-02-09T23:59:00",
+      "what": "Rewards for milestones: 5th job, Lv.250, 6th job, solo Chaos Vellum, solo Easy Lucid.",
+      "tip": "Lethe characters unlock extra rewards."
     }
   ],
   "wrapup": [
