@@ -156,7 +156,7 @@
           "quanah"
         ],
         "card": "Event World: Quanah",
-        "how": "When creating a Challenger World character, tick <b>Quanah World Leap</b>. It can’t be added later. That character gets Hyper Burning MAX to Lv.260, then leaps to Quanah after 6th job. It can’t use Beyond Burning, Item Burning or most events. Quanah ends Mar 9, so start early if you want one. Community tip: it’s fine to wait a day or two if you’re unsure of the class, because it’s your only Quanah character."
+        "how": "When creating a Challenger World character, tick <b>Quanah World Leap</b>. The notes only offer this at creation. That character gets Hyper Burning MAX to Lv.260, then leaps to Quanah after 6th job. It can’t use Beyond Burning, Item Burning or most events. Quanah ends Mar 9, so start early if you want one. Community tip: it’s fine to wait a day or two if you’re unsure of the class, because it’s your only Quanah character."
       },
       {
         "id": "quanah-prep",
@@ -178,7 +178,7 @@
           "dubsmafh",
           "quanahfiles"
         ],
-        "how": "Essentials: an Android, a Greed Pendant, a boss accessory set and event rings. Optional: familiar badges and totems (totems are easy to get later, badges are harder). Android options: Grand Athenaeum’s, Plentyroid, or the Challenger Medal-roid (Bronze tier). A Quanah character can’t earn tiers itself, but last season players could move the Medal-roid between characters, so earn it on another Challenger World character and move it over before leaping. The v.272 notes don’t confirm this still works. Event rings come from the Alliance Credit Shop, which a Quanah character can’t use, so they’d have to come through storage from another character in the same world. For a fuller setup, The Quanah Files adds: drop gear (not meso), potential your emblem and secondary before leaving, a Gollux ring and pendant, and max V Matrix and Arcane Symbols."
+        "how": "Essentials: an Android, a Greed Pendant, a boss accessory set and event rings. Optional: familiar badges and totems (totems are easy to get later, badges are harder). Android options: Grand Athenaeum’s, Plentyroid, or the Challenger Medal-roid (Bronze tier). A Quanah character can’t earn tiers itself, but last season players could move the Medal-roid between characters, so earn it on another Challenger World character and move it over before leaping. The v.272 notes don’t confirm this still works. This patch’s Event Ring Selector Coupon is in the Alliance Credit Shop, which a Quanah character can’t use. It’s tradable within account, so it would have to come through storage from another character in the same world. For a fuller setup, The Quanah Files adds: drop gear (not meso), potential your emblem and secondary before leaving, a Gollux ring and pendant, and max V Matrix and Arcane Symbols."
       },
       {
         "id": "quanah-start",
@@ -679,7 +679,7 @@
       "how": "Mark at creation, then leap via the Event List",
       "ends": "2027-03-09T23:59:00",
       "what": "A roguelite training world with a big buff (+1,000% EXP), its own gear and enhancement system, the Proving Fields and the Battlesim dungeon. Dying resets your Inspector Level to 1. The Inspector’s Mapae badge from Black Mage (Hard or Extreme) is the main reward you can take to another character.",
-      "tip": "Use tab must be empty to leap, no Cash Shop, no cubes or flames, no MVP perks. Libae’s Supercharged Equipment stays in Quanah; other gear transfers up to 22★. You leave to the same world type you started in.",
+      "tip": "Use tab must be empty to leap, no Cash Shop, no cubes, flames or scrolls, no MVP perks. Gear up to 22★ leaves with the Quanah character when it leaps and follows the destination world’s rules; Libae’s Supercharged Equipment stays in Quanah. The Mapae badge can be moved once to another character on your account. You leave to the same world type you started in.",
       "where": [
         "quanah"
       ],
