@@ -289,6 +289,13 @@ details.cd > summary .meta, details.cd > summary .wherebar{justify-content:flex-
 details.cd .more{align-self:flex-start}
 details.cd{border:0;padding:0;background:none;border-radius:0}
 .cards{align-items:start}
+article.card{display:flex;flex-direction:column}
+details.cd > summary .meta, details.cd > summary .wherebar{flex-wrap:nowrap;overflow:hidden;white-space:nowrap;mask-image:linear-gradient(90deg,#000 88%,transparent)}
+details.cd > summary h3{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+details.cd .short{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;height:calc(1.55em * 3)}
+details.cd[open] > summary .meta, details.cd[open] > summary .wherebar{flex-wrap:wrap;white-space:normal;mask-image:none}
+details.cd[open] > summary h3{white-space:normal}
+details.cd[open] .short{display:block;-webkit-line-clamp:unset;height:auto}
 details.cd > summary::-webkit-details-marker{display:none}
 details.cd .short{margin:0}
 details.cd .more{font-size:12.5px;font-weight:600;color:var(--ice)}
