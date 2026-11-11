@@ -191,6 +191,30 @@ details.later summary{font-size:14px;color:var(--muted)}
 .activebox[open] .ab-toggle::after{content:"Hide ▴"}
 .activebox[open] .activebar{padding-bottom:10px}
 .activebox #active-jump{display:inline-block;padding-bottom:14px}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none;margin-bottom:-16px}
+.tabs button{font:inherit;font-family:var(--f-display);font-weight:600;font-size:15px;background:none;border:0;border-bottom:3px solid transparent;color:var(--muted);padding:10px 12px;cursor:pointer;white-space:nowrap}
+.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+.tn{font-family:var(--f-mono);font-size:11px;font-weight:500;background:var(--accent-soft);color:var(--accent);border-radius:999px;padding:1px 7px;vertical-align:2px}
+.tn:empty{display:none}
+#content{display:block}
+.tabpanel{display:flex;flex-direction:column;gap:32px}
+.tabpanel:not(.on){display:none}
+.metarow{grid-column:2;display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;margin-top:-2px}
+.metarow .hist{margin:0}
+.item .how{font-size:13px}
+.gl.card{display:grid;padding:16px}
+.dl-table .opens-pill{background:var(--ice-soft);color:var(--ice)}
+@media (max-width:560px){
+  .clocks{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+  .clock{padding:8px 10px}
+  .clock .eyebrow{font-size:10.5px;letter-spacing:.04em}
+  .clock .t{font-size:16px}
+  .clock .what{font-size:11.5px}
+  .clock .what br, .clock .what .w2{display:none}
+}
+.cardlink{color:inherit;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px;text-decoration-thickness:2px}
+.cardlink:hover{text-decoration-color:var(--ice);color:var(--ice)}
+.cardlink::after{content:" →";color:var(--muted);font-weight:400}
 [hidden]{display:none!important}
 </style>
 
@@ -199,7 +223,7 @@ details.later summary{font-size:14px;color:var(--muted)}
   <header>
     <span class="eyebrow" id="eyebrow">MapleStory patch planner</span>
     <div class="titlebar"><h1>Patch day, dailies, weeklies, deadlines</h1><img class="emo" src="emotes/sparkle.gif" alt=""></div>
-    <p class="lede">Each patch's notes boiled down to what you need to do and how long you have. Checkboxes are saved in this browser. Daily and weekly boxes start fresh at each reset, and the squares under each task keep your history.</p>
+    <p class="lede">Each patch boiled down to what to do and how long you have. Ticks are saved in this browser.</p>
     <div class="toolbar">
       <span class="ctl"><label for="patch" class="muted">Patch</label>
         <select id="patch" class="patchpick"></select></span>
@@ -218,81 +242,90 @@ details.later summary{font-size:14px;color:var(--muted)}
     <div class="clocks" id="clocks"></div>
   </header>
 
+  <nav class="tabs" id="tabs" role="tablist" aria-label="Sections">
+    <button role="tab" data-tab="today">Today <span class="tn" id="tn-today"></span></button>
+    <button role="tab" data-tab="calendar">Calendar</button>
+    <button role="tab" data-tab="wrapup">Wrap-up <span class="tn" id="tn-wrapup"></span></button>
+    <button role="tab" data-tab="events">Events <span class="tn" id="tn-events"></span></button>
+    <button role="tab" data-tab="help">Help</button>
+  </nav>
+
   <div id="app">
     <p class="loading" id="loading"><img class="emo" src="emotes/dash.gif" alt=""><span id="loading-text">Loading patch…</span></p>
-    <div id="content" hidden style="display:flex;flex-direction:column;gap:40px">
-      <section aria-labelledby="h-active" id="active-sec">
-        <details class="activebox" id="active-details">
-          <summary><span class="ab-title" id="h-active">Active right now</span><span class="ab-sum" id="active-sum"></span><span class="ab-toggle" aria-hidden="true"></span></summary>
-          <div class="activebar" id="activebar"></div>
-          <a href="#h-events" id="active-jump" style="font-size:13px">Details for each event ↓</a>
-        </details>
-      </section>
+    <div id="content" hidden>
+      <div class="tabpanel" data-panel="today">
+        <section id="active-sec" aria-label="Active events">
+          <details class="activebox" id="active-details">
+            <summary><span class="ab-title" id="h-active">Active right now</span><span class="ab-sum" id="active-sum"></span><span class="ab-toggle" aria-hidden="true"></span></summary>
+            <div class="activebar" id="activebar"></div>
+            <a href="#" id="active-jump" style="font-size:13px">See details in Events →</a>
+          </details>
+        </section>
 
-      <div class="window" id="wrap-banner" hidden></div>
+        <div class="window" id="wrap-banner" hidden></div>
 
-      <section aria-labelledby="h-day0" id="day0-sec">
-        <div class="sec-head"><h2 id="h-day0">Day 0: patch day double-dips</h2></div>
-        <div class="window" id="day0-window"></div>
-        <div class="lists" id="day0-lists"></div>
-      </section>
+        <section aria-labelledby="h-day0" id="day0-sec">
+          <h2 id="h-day0">Patch day</h2>
+          <div class="window" id="day0-window"></div>
+          <div class="lists" id="day0-lists"></div>
+        </section>
 
-      <section aria-labelledby="h-open" id="open-sec">
-        <div class="sec-head"><h2 id="h-open">Opening later</h2><span class="muted" style="font-size:13px">Things that start after patch day</span></div>
-        <div class="dl-wrap"><table class="dl-table">
-          <thead><tr><th>Opens in</th><th>What</th><th class="col-date">Window</th></tr></thead>
-          <tbody id="openings"></tbody></table></div>
-      </section>
+        <section aria-labelledby="h-daily">
+          <h2 id="h-daily">Every day</h2>
+          <div class="list" id="list-daily"></div>
+        </section>
 
-      <section aria-labelledby="h-daily">
-        <h2 id="h-daily">Every day</h2>
-        <div class="lists"><div class="list" id="list-daily"></div></div>
-      </section>
+        <section aria-labelledby="h-weekly">
+          <div class="sec-head"><h2 id="h-weekly">Every week</h2><span class="muted" style="font-size:13px" id="week-note"></span></div>
+          <div class="lists"><div class="list" id="list-wed"></div><div class="list" id="list-thu"></div></div>
+        </section>
+      </div>
 
-      <section aria-labelledby="h-weekly">
-        <div class="sec-head"><h2 id="h-weekly">Every week</h2><span class="muted" style="font-size:13px" id="week-note"></span></div>
-        <div class="lists"><div class="list" id="list-wed"></div><div class="list" id="list-thu"></div></div>
-      </section>
+      <div class="tabpanel" data-panel="calendar">
+        <section aria-labelledby="h-dl">
+          <div class="sec-head"><h2 id="h-dl">Calendar</h2>
+            <label style="font-size:13px" class="muted"><input type="checkbox" id="show-past"> show passed</label></div>
+          <div class="dl-wrap"><table class="dl-table">
+            <thead><tr><th>In</th><th>What</th><th class="col-date">When</th></tr></thead>
+            <tbody id="deadlines"></tbody></table></div>
+        </section>
+      </div>
 
-      <section aria-labelledby="h-wrap" id="wrap-sec">
-        <div class="sec-head"><h2 id="h-wrap">Wrap-up: claim before it’s gone</h2><span class="muted" style="font-size:13px" id="wrap-note"></span></div>
-        <div class="lists"><div class="list" id="list-wrap"></div></div>
-      </section>
+      <div class="tabpanel" data-panel="wrapup">
+        <section aria-labelledby="h-wrap" id="wrap-sec">
+          <div class="sec-head"><h2 id="h-wrap">Claim before it’s gone</h2><span class="muted" style="font-size:13px" id="wrap-note"></span></div>
+          <div class="list" id="list-wrap"></div>
+        </section>
+      </div>
 
-      <section aria-labelledby="h-dl">
-        <div class="sec-head"><h2 id="h-dl">Deadlines</h2>
-          <label style="font-size:13px" class="muted"><input type="checkbox" id="show-past"> show passed</label></div>
-        <div class="dl-wrap"><table class="dl-table">
-          <thead><tr><th>Days left</th><th>What</th><th class="col-date">When</th></tr></thead>
-          <tbody id="deadlines"></tbody></table></div>
-      </section>
+      <div class="tabpanel" data-panel="events">
+        <section aria-labelledby="h-events">
+          <div class="sec-head"><h2 id="h-events">Events in plain English</h2><span class="muted" style="font-size:13px" id="events-note"></span></div>
+          <div class="seg" id="status-filters" role="group" aria-label="Event status" style="width:max-content;max-width:100%;flex-wrap:wrap"></div>
+          <div class="filters" id="filters" role="group" aria-label="Filter events by player type"></div>
+          <div class="cards" id="cards"></div>
+        </section>
+      </div>
 
-      <section aria-labelledby="h-events">
-        <div class="sec-head"><h2 id="h-events">Events in plain English</h2><span class="muted" style="font-size:13px" id="events-note"></span></div>
-        <div class="seg" id="status-filters" role="group" aria-label="Event status" style="width:max-content;max-width:100%;flex-wrap:wrap"></div>
-        <div class="filters" id="filters" role="group" aria-label="Filter events by player type"></div>
-        <div class="cards" id="cards"></div>
-      </section>
+      <div class="tabpanel" data-panel="help">
+        <section aria-labelledby="h-gl">
+          <div class="sec-head"><h2 id="h-gl">Patch-note phrases, decoded</h2><img class="emo" src="emotes/confused.gif" alt="" style="width:40px;height:40px"></div>
+          <dl class="gl card">
+            <dt>"after maintenance"</dt><dd>The event starts when the servers come back up on that date, not at midnight.</dd>
+            <dt>"until 11:59 PM UTC"</dt><dd>The last minute you can play or claim. Use the time toggle above to see it in your own clock.</dd>
+            <dt>"can be used until … 2:00 AM UTC"</dt><dd>Items you already claimed vanish after this. It's usually 2 hours after the claim deadline.</dd>
+            <dt>"near your level"</dt><dd>Monsters within 20 levels above or below you.</dd>
+            <dt>"1-person party" / "solo"</dt><dd>Kill the boss on your own. Practice Mode often counts; the patch notes say when it doesn't.</dd>
+            <dt>"shared across the account"</dt><dd>You only need to do it on one character.</dd>
+            <dt>"Tradable within world"</dt><dd>You can move it between your characters on the same server through storage.</dd>
+            <dt>"Karma …"</dt><dd>The item can be traded once more before it locks.</dd>
+            <dt>Heroic vs Interactive</dt><dd>Heroic worlds (formerly Reboot) and Interactive (trading) worlds often get different rewards in the notes.</dd>
+          </dl>
+          <p class="muted" style="font-size:13.5px">Squares under daily and weekly tasks are your history: filled is done, red outline is missed. Click a past square to fix it.</p>
+        </section>
+      </div>
     </div>
   </div>
-
-  <section aria-labelledby="h-gl">
-    <h2 id="h-gl">Patch-note phrases, decoded</h2>
-    <details>
-      <summary><img class="emo" src="emotes/confused.gif" alt="">What the wording actually means</summary>
-      <dl class="gl">
-        <dt>"after maintenance"</dt><dd>The event starts when the servers come back up on that date, not at midnight.</dd>
-        <dt>"until 11:59 PM UTC"</dt><dd>The last minute you can play or claim. Use the time toggle above to see it in your own clock.</dd>
-        <dt>"can be used until … 2:00 AM UTC"</dt><dd>Items you already claimed vanish after this. It's usually 2 hours after the claim deadline.</dd>
-        <dt>"near your level"</dt><dd>Monsters within 20 levels above or below you.</dd>
-        <dt>"1-person party" / "solo"</dt><dd>Kill the boss on your own. Practice Mode often counts; the patch notes say when it doesn't.</dd>
-        <dt>"shared across the account"</dt><dd>You only need to do it on one character.</dd>
-        <dt>"Tradable within world"</dt><dd>You can move it between your characters on the same server through storage.</dd>
-        <dt>"Karma …"</dt><dd>The item can be traded once more before it locks.</dd>
-        <dt>Heroic vs Interactive</dt><dd>Heroic worlds (formerly Reboot) and Interactive (trading) worlds often get different rewards in the notes.</dd>
-      </dl>
-    </details>
-  </section>
 
   <footer id="footer"></footer>
 </div>
@@ -339,7 +372,7 @@ details.later summary{font-size:14px;color:var(--muted)}
     return `<div class="item ${checked?'checked':''}">
       <input type="checkbox" id="${prefix}-${i.id}" data-id="${i.id}" ${checked?'checked':''}>
       <label for="${prefix}-${i.id}"><span class="title">${esc(i.title)}${i.tag?`<span class="tag">${i.tag}</span>`:''}</span>
-      <span class="how">${esc(i.how)}</span>${right?`<span class="freq">${right}</span>`:''}</label>${hist||''}</div>`;
+      <span class="how">${esc(i.how)}</span>${right && !hist?`<span class="freq">${right}</span>`:''}</label>${hist ? `<div class="metarow">${right?`<span class="freq">${right}</span>`:''}${hist}</div>` : ''}</div>`;
   }
   function bindList(rootId, store, keyFn){
     document.querySelectorAll(`#${rootId} input`).forEach(el => el.onchange = () => {
@@ -373,7 +406,7 @@ details.later summary{font-size:14px;color:var(--muted)}
       return `<button class="dot ${cls}${p.k===curKey?' now':''}" data-hk="${hk}" data-k="${p.k}" ${p.state==='future'?'disabled':''}
         title="${p.label}${isDone?' · done':p.state==='past'?' · missed':''}" aria-label="${p.label}: ${isDone?'done':'not done'}" aria-pressed="${isDone}"></button>`;
     }).join('');
-    return `<div class="hist" style="grid-column:2"><span class="lbl">${n}/${pastOrNow.length} ${unit}</span>${dots}</div>`;
+    return `<div class="hist"><span class="lbl">${n}/${pastOrNow.length} ${unit}</span>${dots}</div>`;
   }
   function bindHist(rootId){
     document.querySelectorAll(`#${rootId} .dot:not([disabled])`).forEach(b => b.onclick = () => toggleHist(b.dataset.hk, b.dataset.k, b.getAttribute('aria-pressed') !== 'true'));
@@ -383,12 +416,12 @@ details.later summary{font-size:14px;color:var(--muted)}
   function renderClocks(now){
     const clocks = [
       ['Daily reset', utcMidnight(now,1), 'Log-in rewards, daily caps'],
-      ['Wednesday reset', nextUTCWeekday(now,3), 'Weekly bosses, most weekly missions'],
-      ['Thursday reset', nextUTCWeekday(now,4), 'Coin-shop limits, passes, Thursday weeklies'],
+      ['Wed reset', nextUTCWeekday(now,3), 'Weekly bosses, most weekly missions'],
+      ['Thu reset', nextUTCWeekday(now,4), 'Coin-shop limits, passes, Thursday weeklies'],
     ];
     document.getElementById('clocks').innerHTML = clocks.map(([n,d,w]) => `
       <div class="clock"><span class="eyebrow">${n} in</span><span class="t">${rel(d,now).txt}</span>
-        <span class="what">${fmtDate(d)}, ${fmtTime(d)}<br>${w}</span></div>`).join('');
+        <span class="what">${fmtDate(d)}, ${fmtTime(d)}<br><span class="w2">${w}</span></span></div>`).join('');
   }
 
   function render(){
@@ -414,9 +447,15 @@ details.later summary{font-size:14px;color:var(--muted)}
       const before = (P.day0.beforeReset || []).filter(i => now < firstOf[i.reset]);
       const soonest = before.length ? before.map(i => firstOf[i.reset]).sort((a,b)=>a-b)[0] : null;
       const startDay = start.toLocaleDateString(undefined,{weekday:'long', timeZone:'UTC'});
-      document.getElementById('day0-window').innerHTML = (soonest
+      const liveAt = U(P.liveAt);
+      const preLive = liveAt && now < liveAt;
+      const winLen = liveAt && soonest ? rel(soonest, liveAt).txt : '';
+      document.getElementById('day0-window').innerHTML = (preLive
+        ? `<span class="eyebrow">Maintenance ends in</span><span class="big">${rel(liveAt, now).txt}</span>
+           <p>Expected at <b>${fmtTime(liveAt)}</b>${P.liveAtNote ? ` (${P.liveAtNote.replace(/^Maintenance expected to end /,'')})` : ''}.${soonest ? ` The next reset is at ${fmtTime(soonest)}, so you’ll have about <b>${winLen}</b> to do the “before the reset” list below.` : ''}</p>`
+        : soonest
         ? `<span class="eyebrow">Double-dip window closes in</span><span class="big">${rel(soonest, now).txt}</span>
-           <p>This patch went live on a <b>${startDay}</b> (UTC). The next reset comes at ${fmtDate(soonest)} ${fmtTime(soonest)}, so anything that resets then gets two rounds close together. The first Wednesday week runs until ${fmtDate(firstWed)} ${fmtTime(firstWed)}.</p>`
+           <p>This patch went live on a <b>${startDay}</b> (UTC)${liveAt ? `, around ${fmtTime(liveAt)}` : ''}. The next reset comes at ${fmtDate(soonest)} ${fmtTime(soonest)}, so anything that resets then gets two rounds close together. The first Wednesday week runs until ${fmtDate(firstWed)} ${fmtTime(firstWed)}.</p>`
         : `<span class="eyebrow">Patch week ends in</span><span class="big">${rel(day0End, now).txt}</span>
            <p>The double-dip window has closed. Finish the one-time setup below.</p>`).replace(/^/, '<div class="wtext">') + `</div>${soonest ? '<img class="emo" src="emotes/alert.gif" alt="">' : ''}`;
       const setup = P.day0.setup || [];
@@ -425,23 +464,6 @@ details.later summary{font-size:14px;color:var(--muted)}
         `<div class="list"><div class="list-head"><h3>Set up once</h3><span class="count">${setup.filter(i=>d0[i.id]).length}/${setup.length}</span></div>${setup.map(i => itemHTML('d0', i, !!d0[i.id])).join('')}</div>`;
       bindList('day0-lists', 'd0', () => true);
     }
-
-    // ---- opening later ----
-    const opens = (P.openings || []).map(o => ({...o, s: U(o.starts), e: U(o.ends)})).filter(o => o.e > now).sort((a,b) => a.s - b.s);
-    document.getElementById('open-sec').hidden = !opens.length;
-    const short = (d) => `${fmtDate(d)}, ${fmtTime(d)}`;
-    document.getElementById('openings').innerHTML = opens.map(o => {
-      const live = o.s <= now;
-      const r = live ? rel(o.e, now) : rel(o.s, now);
-      const ms = (live ? o.e : o.s) - now, days = Math.floor(ms / DAY);
-      const big = days >= 1 ? `${days}d` : `${Math.max(1, Math.floor(ms/36e5))}h`;
-      const first = live ? `<span class="pill" style="background:var(--accent-soft);color:var(--accent)">open now</span>`
-                         : `<span class="days ${r.cls}">${big}</span>`;
-      const status = live ? `Open now · closes in ${r.txt}` : `Opens ${short(o.s)}${o.m ? ' (after maintenance)' : ''}`;
-      return `<tr><td>${first}</td>
-        <td><strong>${o.title}</strong><div class="sub">${o.how}</div><div class="sub freq">${status}</div></td>
-        <td class="col-date"><span class="mono">${short(o.s)}<br>→ ${short(o.e)}</span></td></tr>`;
-    }).join('');
 
     // ---- daily ----
     const hist = getHist();
@@ -533,22 +555,41 @@ details.later summary{font-size:14px;color:var(--muted)}
       const first = urgent[0];
       banner.innerHTML = `<div class="wtext"><span class="eyebrow">Claim soon</span>
         <p><b>${urgent.length} thing${urgent.length===1?'':'s'} to claim or use up this week.</b> First up: ${first.title}, ${rel(first.d, now).txt} left.</p>
-        <p><a href="#h-wrap" id="wrap-jump">See the wrap-up list</a></p></div><img class="emo" src="emotes/stress.gif" alt="">`;
-      document.getElementById('wrap-jump').onclick = (e) => { e.preventDefault(); document.getElementById('h-wrap').scrollIntoView({behavior:'smooth'}); };
+        <p><a href="#" id="wrap-jump">Open the Wrap-up tab</a></p></div><img class="emo" src="emotes/stress.gif" alt="">`;
+      document.getElementById('wrap-jump').onclick = (e) => { e.preventDefault(); setTab('wrapup'); };
     }
 
     // ---- deadlines ----
     document.getElementById('show-past').checked = showPast;
-    const rows = P.dates.map(x => ({...x, d:U(x.t)})).filter(x => showPast || x.d > now);
+    const opensRows = (P.openings || []).map(o => ({t:o.starts, d:U(o.starts), e:U(o.ends), title:o.title, sub:o.how, opens:true, m:o.m, card:o.card}));
+    const titleHTML = (x) => x.card ? `<a href="#" class="cardlink" data-card="${x.card}">${x.title}</a>` : x.title;
+    const liveRows = opensRows.filter(o => o.d <= now && o.e > now).sort((a,b) => a.e - b.e);
+    let sweatUsed = false;
+    const rows = [...P.dates.map(x => ({...x, d:U(x.t)})), ...opensRows]
+      .filter(x => showPast || x.d > now).sort((a,b) => a.d - b.d);
     document.getElementById('deadlines').innerHTML = rows.length ? rows.map(x => {
       const ms = x.d - now, past = ms < 0, days = Math.floor(ms / DAY);
       const label = past ? '—' : days >= 1 ? `${days}d` : `${Math.max(1,Math.floor(ms/36e5))}h`;
       const cls = past ? '' : ms < 2*DAY ? 'urgent' : ms < 7*DAY ? 'soon' : '';
-      const kind = x.sunday ? '<span class="pill soon">Sunny Sunday</span> ' : x.deadline ? '<span class="pill urgent">deadline</span> ' : '';
-      return `<tr class="${past?'past':''}"><td><span class="days ${cls}">${label}${cls==='urgent'?'<img class="emo" src="emotes/sweat.gif" alt="">':''}</span></td>
-        <td>${kind}<strong>${x.title}</strong>${x.sub?`<div class="sub">${x.sub}</div>`:''}</td>
+      const kind = x.opens ? '<span class="pill opens-pill">opens</span> ' : x.sunday ? '<span class="pill soon">Sunny Sunday</span> ' : x.deadline ? '<span class="pill urgent">deadline</span> ' : '';
+      if (x.opens) x.sub = `${x.sub} Open until ${fmtDate(x.e)}, ${fmtTime(x.e)}.`;
+      return `<tr class="${past?'past':''}"><td><span class="days ${cls}">${label}${cls==='urgent' && !sweatUsed && (sweatUsed = true) ?'<img class="emo" src="emotes/sweat.gif" alt="">':''}</span></td>
+        <td>${kind}<strong>${titleHTML(x)}</strong>${x.sub?`<div class="sub">${x.sub}</div>`:''}</td>
         <td class="col-date"><span class="mono">${fmtDate(x.d)}, ${fmtYear(x.d)}<br>${fmtTime(x.d)}</span></td></tr>`;
     }).join('') : `<tr><td colspan="3" class="muted"><span class="cheer" style="background:none"><img class="emo" src="emotes/sleepy.gif" alt="">Every date in this patch has passed.</span></td></tr>`;
+    document.getElementById('deadlines').insertAdjacentHTML('afterbegin', liveRows.map(o => {
+      const r = rel(o.e, now);
+      return `<tr><td><span class="pill live">open now</span></td><td><strong>${titleHTML(o)}</strong><div class="sub">${o.sub} Closes in ${r.txt}.</div></td>
+        <td class="col-date"><span class="mono">until ${fmtDate(o.e)}, ${fmtYear(o.e)}<br>${fmtTime(o.e)}</span></td></tr>`;
+    }).join(''));
+
+    // ---- tab badges ----
+    {
+      const dueToday = dailyItems.filter(i => !doneNow('dy:'+i.id, dayKey)).length +
+        P.weekly.filter(i => now <= U(i.until) && !doneNow('wk:'+i.id, periodKey(i.reset))).length;
+      document.getElementById('tn-today').textContent = dueToday || '';
+      document.getElementById('tn-wrapup').textContent = urgent.length || '';
+    }
 
     // ---- cards ----
     const statusOf = (c) => {
@@ -563,6 +604,7 @@ details.later summary{font-size:14px;color:var(--muted)}
       `<button class="seg-btn" data-k="${k}" aria-pressed="${statusFilter===k}">${l}${k!=='all'?` <span class="n">${counts[k]}</span>`:''}</button>`).join('');
     document.querySelectorAll('#status-filters button').forEach(b => b.onclick = () => { statusFilter = b.dataset.k; S.set('mpp.status', statusFilter); render(); });
     document.getElementById('events-note').textContent = `${counts.active} active right now`;
+    document.getElementById('tn-events').textContent = counts.active || '';
     const activeList = P.cards.filter(c => statusOf(c) === 'active')
       .sort((x,y) => (U(x.ends)||Infinity) - (U(y.ends)||Infinity));
     const nextUp = P.cards.filter(c => statusOf(c) === 'upcoming').sort((x,y) => U(x.starts) - U(y.starts));
@@ -575,14 +617,10 @@ details.later summary{font-size:14px;color:var(--muted)}
     if (!ad.dataset.bound){ ad.open = S.get('mpp.activeOpen', false); ad.ontoggle = () => S.set('mpp.activeOpen', ad.open); ad.dataset.bound = '1'; }
     document.getElementById('activebar').innerHTML =
       activeList.map(c => { const e = U(c.ends); const r = e ? rel(e, now) : null;
-        return `<button class="act" data-name="${c.name}"><span class="dotlive"></span><b>${c.name}</b>${e ? `<span class="act-t ${r.cls}">${r.txt} left</span>` : ''}</button>`; }).join('') +
-      nextUp.map(c => `<button class="act later" data-name="${c.name}"><b>${c.name}</b><span class="act-t">opens in ${rel(U(c.starts), now).txt}</span></button>`).join('');
-    document.querySelectorAll('#activebar .act').forEach(b => b.onclick = () => {
-      statusFilter = 'all'; filter = 'any'; render();
-      const card = [...document.querySelectorAll('#cards .card')].find(a => a.querySelector('h3').textContent === b.dataset.name);
-      if (card){ card.scrollIntoView({behavior:'smooth', block:'center'}); card.classList.add('flash'); setTimeout(() => card.classList.remove('flash'), 1600); }
-    });
-    document.getElementById('active-jump').onclick = (e) => { e.preventDefault(); statusFilter = 'active'; S.set('mpp.status','active'); render(); document.getElementById('h-events').scrollIntoView({behavior:'smooth'}); };
+        return `<button class="act" data-card="${c.name}"><span class="dotlive"></span><b>${c.name}</b>${e ? `<span class="act-t ${r.cls}">${r.txt} left</span>` : ''}</button>`; }).join('') +
+      nextUp.map(c => `<button class="act later" data-card="${c.name}"><b>${c.name}</b><span class="act-t">opens in ${rel(U(c.starts), now).txt}</span></button>`).join('');
+
+    document.getElementById('active-jump').onclick = (e) => { e.preventDefault(); statusFilter = 'active'; S.set('mpp.status','active'); setTab('events'); };
 
     const GROUPS = [['all','Everyone'],['main','Lv.260+ mains'],['alt','Alts and new characters'],['cw','Challenger World'],['quanah','Event world'],['paid','Paid']]
       .filter(([g]) => P.cards.some(c => c.g === g));
@@ -610,6 +648,33 @@ details.later summary{font-size:14px;color:var(--muted)}
     }).join('') : `<p class="muted">Nothing here for this filter.</p>`;
   }
 
+  let tab = S.get('mpp.tab', 'today');
+  function showCard(name){
+    statusFilter = 'all'; filter = 'any'; setTab('events', false);
+    const card = [...document.querySelectorAll('#cards .card')].find(a => a.querySelector('h3').textContent === name);
+    if (card){ card.scrollIntoView({behavior:'smooth', block:'center'}); card.classList.add('flash'); setTimeout(() => card.classList.remove('flash'), 1600); }
+  }
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('[data-card]'); if (!a) return;
+    e.preventDefault(); showCard(a.dataset.card);
+  });
+  function setTab(t, scroll = true){
+    tab = t; S.set('mpp.tab', t);
+    document.querySelectorAll('#tabs [role=tab]').forEach(b => { const on = b.dataset.tab === t; b.setAttribute('aria-selected', on); b.tabIndex = on ? 0 : -1; });
+    document.querySelectorAll('.tabpanel').forEach(p => p.classList.toggle('on', p.dataset.panel === t));
+    render();
+    if (scroll) document.getElementById('tabs').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+  document.querySelectorAll('#tabs [role=tab]').forEach(b => b.onclick = () => setTab(b.dataset.tab, false));
+  document.getElementById('tabs').addEventListener('keydown', (e) => {
+    const ids = [...document.querySelectorAll('#tabs [role=tab]')].map(b => b.dataset.tab);
+    const i = ids.indexOf(tab);
+    if (e.key === 'ArrowRight' || e.key === 'ArrowLeft'){
+      const n = ids[(i + (e.key === 'ArrowRight' ? 1 : ids.length - 1)) % ids.length];
+      setTab(n, false); document.querySelector(`#tabs [data-tab="${n}"]`).focus();
+    }
+  });
+
   async function loadPatch(id){
     const meta = INDEX.find(p => p.id === id) || INDEX[0];
     document.getElementById('loading').hidden = false;
@@ -627,7 +692,7 @@ details.later summary{font-size:14px;color:var(--muted)}
     document.getElementById('footer').innerHTML = `Built from the official <a href="${P.notesUrl}" target="_blank" rel="noopener">${P.version} ${P.name} patch notes</a>. Reward tables, skill numbers and balance changes are left out. Check the notes for those.`;
     document.getElementById('loading').hidden = true;
     document.getElementById('content').hidden = false;
-    render();
+    setTab(tab, false);
   }
 
   async function boot(){

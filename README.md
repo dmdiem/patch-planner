@@ -20,7 +20,8 @@ All times are UTC, written as `YYYY-MM-DDTHH:MM:SS` with no `Z`.
 
 | Field | Meaning |
 | --- | --- |
-| `start` | When the patch went live (use 00:00 on maintenance day). |
+| `start` | Patch day (use 00:00 UTC on maintenance day). |
+| `liveAt`, `liveAtNote` | Optional expected end of maintenance (UTC) and a note such as "2:00 PM PST". Day 0 counts down to it. |
 | `mainEnd`, `mainEndLabel` | End of the main event, used for the "weeks left" note. |
 | `day0.beforeReset[]` | Things to do before the first reset after the patch. `reset` is `wed` or `thu`. |
 | `day0.setup[]` | One-time setup tasks. |

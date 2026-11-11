@@ -184,15 +184,21 @@
   ],
   "dates": [
     {
+      "t": "2026-11-11T22:00:00",
+      "title": "Maintenance ends (expected)",
+      "sub": "v.272 goes live. 2:00 PM PST."
+    },
+    {
       "t": "2026-11-12T00:00:00",
       "title": "First Thursday reset",
-      "sub": "Challenger Pass, Bounty Coin Shop and Battlesim roll over. Mayrin, Kai and Genesis Pass open."
+      "sub": "Challenger Pass, Bounty Coin Shop limits and Battlesim power roll over."
     },
     {
       "t": "2026-11-15T00:00:00",
       "sunday": true,
       "title": "Sunny Sunday: EXP",
-      "sub": "3× Treasure Hunter, Combo Kill +300%, Rune EXP, Monster Park +250%, 2× Sol Erda"
+      "sub": "3× Treasure Hunter, Combo Kill +300%, Rune EXP, Monster Park +250%, 2× Sol Erda",
+      "card": "Sunny Sundays"
     },
     {
       "t": "2026-11-18T00:00:00",
@@ -203,43 +209,44 @@
       "t": "2026-11-22T00:00:00",
       "sunday": true,
       "title": "Sunny Sunday: Star Force",
-      "sub": "30% off Star Force, 30% less boom at 21★ and below, 50% off Ability"
+      "sub": "30% off Star Force, 30% less boom at 21★ and below, 50% off Ability",
+      "card": "Sunny Sundays"
     },
     {
       "t": "2026-11-24T23:59:00",
       "deadline": true,
       "title": "Winter Countdown ends",
-      "sub": "Gifts expire Nov 25, 2:00 AM UTC"
+      "sub": "Gifts expire Nov 25, 2:00 AM UTC",
+      "card": "Winter Countdown"
     },
     {
       "t": "2026-11-29T23:59:00",
       "sunday": true,
       "deadline": true,
       "title": "Sunny Sunday + free gift",
-      "sub": "Claim “Special Sunny Sunday Gifts for All” in the Event List that day. 1+1 Star Force up to 12★, cheap Spell Traces and Abilities."
+      "sub": "Claim “Special Sunny Sunday Gifts for All” in the Event List that day. 1+1 Star Force up to 12★, cheap Spell Traces and Abilities.",
+      "card": "Sunny Sundays"
     },
     {
       "t": "2026-12-06T00:00:00",
       "sunday": true,
       "title": "Sunny Sunday: Star Force + Sol Erda",
-      "sub": "30% off Star Force, less boom, 2× Sol Erda"
-    },
-    {
-      "t": "2026-12-09T00:00:00",
-      "title": "Cash Shop Transfer opens",
-      "sub": "Until Dec 16, 2:00 PM UTC"
+      "sub": "30% off Star Force, less boom, 2× Sol Erda",
+      "card": "Sunny Sundays"
     },
     {
       "t": "2026-12-13T00:00:00",
       "sunday": true,
       "title": "Sunny Sunday: EXP",
-      "sub": "Same buffs as Nov 15"
+      "sub": "Same buffs as Nov 15",
+      "card": "Sunny Sundays"
     },
     {
       "t": "2026-12-15T23:59:00",
       "deadline": true,
       "title": "Shadow Supplies + Specter Blast end",
-      "sub": "Last Specter Blast weekly EXP"
+      "sub": "Last Specter Blast weekly EXP",
+      "card": "Shadow Supplies"
     },
     {
       "t": "2026-12-16T02:00:00",
@@ -251,20 +258,23 @@
       "t": "2026-12-16T14:00:00",
       "deadline": true,
       "title": "Cash Shop Transfer closes",
-      "sub": ""
+      "sub": "",
+      "card": "Cash Shop Transfer"
     },
     {
       "t": "2027-02-08T23:59:00",
       "deadline": true,
       "title": "Genesis Pass sale ends",
-      "sub": ""
+      "sub": "",
+      "card": "Genesis Pass"
     },
     {
       "t": "2027-02-09T23:59:00",
       "deadline": true,
       "big": true,
       "title": "Most events end, last day to claim",
-      "sub": "Operation Ultima and its shops, Challenger World, Burning events, Arthur’s Rental, New Recruit, Genesis Pass Plus"
+      "sub": "Operation Ultima and its shops, Challenger World, Burning events, Arthur’s Rental, New Recruit, Genesis Pass Plus",
+      "card": "Operation Ultima"
     },
     {
       "t": "2027-02-10T02:00:00",
@@ -276,19 +286,22 @@
       "t": "2027-02-23T23:59:00",
       "deadline": true,
       "title": "Challenger World final leap window closes",
-      "sub": ""
+      "sub": "",
+      "card": "Challenger World S4"
     },
     {
       "t": "2027-03-09T23:59:00",
       "deadline": true,
       "title": "Quanah Event World ends",
-      "sub": "Characters get moved to the World Leap zone"
+      "sub": "Characters get moved to the World Leap zone",
+      "card": "Event World: Quanah"
     },
     {
       "t": "2027-06-08T23:59:00",
       "deadline": true,
       "title": "Luxe Sauna ends",
-      "sub": "Unused time is lost"
+      "sub": "Unused time is lost",
+      "card": "Luxe Sauna"
     }
   ],
   "cards": [
@@ -411,13 +424,23 @@
     },
     {
       "g": "paid",
-      "name": "Genesis Pass / Pass Plus",
-      "who": "Lv.255+ before final Genesis awakening",
-      "start": "Cash Shop",
+      "name": "Genesis Pass",
+      "who": "Lv.255+ who haven’t finished the final Genesis awakening",
+      "start": "Buy in the Cash Shop, then use it from your Cash inventory",
+      "starts": "2026-11-12T00:00:00",
+      "ends": "2027-02-08T23:59:00",
+      "what": "3× Traces of Darkness from bosses (up to 3,000), parties of up to 6 for Genesis missions from Lotus on, and a stat buff against Trace bosses. Bosses you already killed this week or month are paid out retroactively.",
+      "tip": "Once per account. The pass’s effects last until Feb 9."
+    },
+    {
+      "g": "paid",
+      "name": "Genesis Pass Plus",
+      "who": "Genesis Pass holders past “Power Unbound, Stage 2”",
+      "start": "Event List → Genesis Pass Plus → Participate",
+      "starts": "2026-11-12T00:00:00",
       "ends": "2027-02-09T23:59:00",
-      "what": "3× Traces of Darkness and parties of up to 6 for Genesis missions. Pass Plus adds weekly boss missions that unlock one at a time from Dec 17.",
-      "tip": "The sale ends Feb 8.",
-      "starts": "2026-11-12T00:00:00"
+      "what": "Weekly boss missions after you liberate your Genesis weapon: Black Mage first, then Seren (Dec 17), Kalos (Dec 24), First Adversary (Dec 31), Kaling (Jan 7), Bellona (Jan 14). Rewards are cubes, flames and Adversary Coins.",
+      "tip": "Free track for pass holders. A 30,000 NX Premium ticket adds more Adversary Coins. Practice Mode doesn’t count."
     },
     {
       "g": "all",
@@ -583,21 +606,24 @@
       "starts": "2026-11-12T00:00:00",
       "ends": "2027-02-09T23:59:00",
       "title": "Mayrin and Kai (Challenger World bosses)",
-      "how": "Season boss Mayrin and returning Kai. Challenger World only."
+      "how": "Season boss Mayrin and returning Kai. Challenger World only.",
+      "card": "Challenger World S4"
     },
     {
       "id": "genesis",
       "starts": "2026-11-12T00:00:00",
       "ends": "2027-02-08T23:59:00",
       "title": "Genesis Pass on sale",
-      "how": "Cash Shop. Lv.255+ before final Genesis awakening."
+      "how": "Cash Shop. Lv.255+ before final Genesis awakening.",
+      "card": "Genesis Pass"
     },
     {
       "id": "cst",
       "starts": "2026-12-09T00:00:00",
       "ends": "2026-12-16T14:00:00",
       "title": "Cash Shop Transfer",
-      "how": "Cash Inventory → Cash Transfer button. Moves cash items between characters in the same class group (not the same job)."
+      "how": "Cash Inventory → Cash Transfer button. Moves cash items between characters in the same class group (not the same job).",
+      "card": "Cash Shop Transfer"
     },
     {
       "id": "cwleap",
@@ -605,14 +631,16 @@
       "m": true,
       "ends": "2027-02-09T23:59:00",
       "title": "Challenger World Leap (1st window)",
-      "how": "Move Challenger characters to a regular world. Final window Feb 10–23."
+      "how": "Move Challenger characters to a regular world. Final window Feb 10–23.",
+      "card": "Challenger World S4"
     },
     {
       "id": "gpp-seren",
       "starts": "2026-12-17T00:00:00",
       "ends": "2027-02-09T23:59:00",
       "title": "Genesis Pass Plus: Chosen Seren mission",
-      "how": "Then Kalos Dec 24, First Adversary Dec 31, Kaling Jan 7, Bellona Jan 14."
+      "how": "Then Kalos Dec 24, First Adversary Dec 31, Kaling Jan 7, Bellona Jan 14.",
+      "card": "Genesis Pass Plus"
     },
     {
       "id": "cwleap2",
@@ -620,7 +648,10 @@
       "m": true,
       "ends": "2027-02-23T23:59:00",
       "title": "Challenger World Leap (final window)",
-      "how": "Last chance to move Challenger characters out."
+      "how": "Last chance to move Challenger characters out.",
+      "card": "Challenger World S4"
     }
-  ]
+  ],
+  "liveAt": "2026-11-11T22:00:00",
+  "liveAtNote": "Maintenance expected to end 2:00 PM PST"
 }
