@@ -37,6 +37,14 @@ All times are UTC, written as `YYYY-MM-DDTHH:MM:SS` with no `Z`.
 - Put `"world": "heroic"` or `"world": "interactive"` on any item, date or card that only applies to one server type. It's hidden for the other.
 - Inside any text, write `{H|heroic-only text}` or `{I|interactive-only text}`. The page shows the matching part. Heroic is the default, and "Both" shows each part with a tag.
 
+### Decision helpers
+
+`decide.html` is a separate page that walks through a yes/no decision one question at a time. It reads `decisions[]` from every patch file:
+
+- `id`, `title`, `intro`, `start` (first node), optional `card` and `notes` (patch-notes anchor).
+- `nodes` is a map. A question node has `q`, optional `help`, and `options: [{label, next, note?}]`. A result node has `result` (`do`, `skip` or `maybe`), `title`, `text`, and optional `steps[]` or `points[]`.
+- Put `decide: "<id>"` on a setup item or card to show a "Help me decide →" link. Open a tree directly with `decide.html#<id>`.
+
 ### Other text features
 
 - `{WED}` and `{THU}` in any text become the next event-weeklies or shops & passes reset, in the viewer's chosen clock (for example "Tue 4:00 PM").

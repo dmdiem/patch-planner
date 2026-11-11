@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Patch Decision Helper</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: one question card at a time, the path you took above it, and the whole tree below */
+:root{
+  --bg:#F2F5FA; --surface:#FFFFFF; --ink:#1B2333; --muted:#5A6477; --line:#DCE3EE;
+  --accent:#D9661A; --accent-soft:#FCEBDD; --ice:#2C68CF; --ice-soft:#E3ECFB;
+  --do:#2E8B57; --do-soft:#E1F3E8; --skip:#8A5A44; --skip-soft:#F6EAE3; --maybe:#7A5BD6; --maybe-soft:#EEE8FB;
+  --f-display:"Fredoka", "Trebuchet MS", system-ui, sans-serif;
+  --f-body:"Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E1420; --surface:#161F30; --ink:#E7ECF5; --muted:#9BA6B9; --line:#26324A;
+  --accent:#F39347; --accent-soft:#3A2717; --ice:#77A6F4; --ice-soft:#1A2A47;
+  --do:#5CC48A; --do-soft:#173326; --skip:#E0A88C; --skip-soft:#3A251C; --maybe:#B29BF5; --maybe-soft:#2A2147; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E1420; --surface:#161F30; --ink:#E7ECF5; --muted:#9BA6B9; --line:#26324A;
+  --accent:#F39347; --accent-soft:#3A2717; --ice:#77A6F4; --ice-soft:#1A2A47;
+  --do:#5CC48A; --do-soft:#173326; --skip:#E0A88C; --skip-soft:#3A251C; --maybe:#B29BF5; --maybe-soft:#2A2147; color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55}
+.wrap{max-width:760px;margin:0 auto;padding-block:28px 64px;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));
+  display:flex;flex-direction:column;gap:28px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(26px,5vw,36px);font-weight:700}
+h2{font-size:20px;font-weight:600}
+p{margin:0}
+a{color:var(--ice)}
+.eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:600}
+.muted{color:var(--muted)}
+header{display:flex;flex-direction:column;gap:10px}
+.back{font-size:14px;font-weight:600;text-decoration:none}
+.picker{display:flex;flex-wrap:wrap;gap:8px}
+.picker button{font:inherit;font-size:13.5px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:5px 12px;cursor:pointer}
+.picker button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+/* path */
+.path{display:flex;flex-direction:column;gap:0;border-left:2px solid var(--line);margin-left:8px}
+.step{position:relative;padding:0 0 12px 18px;font-size:14px}
+.step::before{content:"";position:absolute;left:-6px;top:6px;width:10px;height:10px;border-radius:50%;background:var(--ice)}
+.step .q{color:var(--muted)}
+.step .a{font-weight:600}
+.step button{font:inherit;font-size:12.5px;background:none;border:0;color:var(--ice);cursor:pointer;padding:0;margin-left:6px}
+
+/* question card */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:14px}
+.qnum{font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.05em;text-transform:uppercase}
+.card h2{font-size:22px}
+.help{color:var(--muted);font-size:14px}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{font:inherit;text-align:left;display:flex;flex-direction:column;gap:2px;padding:12px 14px;border-radius:12px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
+.opt:hover{border-color:var(--ice)}
+.opt b{font-weight:600}
+.opt span{font-size:13px;color:var(--muted)}
+.opt:focus-visible,.picker button:focus-visible,.step button:focus-visible,.tools button:focus-visible{outline:2px solid var(--ice);outline-offset:2px}
+
+/* result */
+.verdict{display:inline-flex;align-self:flex-start;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:3px 10px}
+.r-do{background:var(--do-soft);color:var(--do)} .r-skip{background:var(--skip-soft);color:var(--skip)} .r-maybe{background:var(--maybe-soft);color:var(--maybe)}
+.card.result.do{border-color:var(--do)} .card.result.skip{border-color:var(--skip)} .card.result.maybe{border-color:var(--maybe)}
+.card ol,.card ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+.tools{display:flex;flex-wrap:wrap;gap:10px}
+.tools button,.tools a{font:inherit;font-size:14px;font-weight:600;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:7px 14px;cursor:pointer;text-decoration:none}
+
+/* whole tree */
+details.tree{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:0 16px}
+details.tree > summary{cursor:pointer;padding:12px 0;font-weight:600}
+.tree ul{list-style:none;margin:0;padding-left:18px;border-left:1.5px solid var(--line)}
+.tree > ul{border-left:0;padding-left:0;padding-bottom:14px}
+.tree li{position:relative;padding:4px 0 4px 6px}
+.tree li li::before{content:"";position:absolute;left:-18px;top:16px;width:14px;border-top:1.5px solid var(--line)}
+.tq{font-weight:600}
+.tq.on{color:var(--ice)}
+.ta{font-size:13.5px;color:var(--muted)}
+.ta.on{color:var(--ink);font-weight:600}
+.tr{display:inline-block;font-size:12px;font-weight:700;border-radius:6px;padding:0 6px;margin-left:4px}
+.tref{font-size:13px;color:var(--muted);font-style:italic}
+footer{font-size:13px;color:var(--muted)}
+[hidden]{display:none!important}
+@media (prefers-reduced-motion:no-preference){.card{animation:in .18s ease-out}@keyframes in{from{opacity:.4;transform:translateY(4px)}to{opacity:1;transform:none}}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a class="back" href="index.html">← Back to the planner</a>
+    <span class="eyebrow" id="eyebrow">Decision helper</span>
+    <h1 id="title">Should I do it?</h1>
+    <p class="muted" id="intro"></p>
+    <div class="picker" id="picker" role="group" aria-label="Pick a decision"></div>
+  </header>
+
+  <section aria-label="Your answers so far"><div class="path" id="path" hidden></div></section>
+  <section id="stage" aria-live="polite"></section>
+
+  <details class="tree" id="tree-box">
+    <summary>See the whole tree</summary>
+    <div id="tree"></div>
+  </details>
+
+  <footer id="footer"></footer>
+</div>
+
+<script>
+(function(){
+  const S = {
+    get(k, d){ try{ const v = localStorage.getItem(k); return v==null ? d : JSON.parse(v); }catch(e){ return d; } },
+    set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+  };
+  // Follow the planner's theme choice when one was saved
+  const th = S.get('mpp.theme', 'auto');
+  if (th === 'light' || th === 'dark') document.documentElement.setAttribute('data-theme', th);
+
+  let trees = [], tree = null, patch = null, path = []; // path: [{node, choice}]
+
+  async function load(){
+    try{
+      const idx = await (await fetch('patches/index.json')).json();
+      idx.sort((a,b) => b.start.localeCompare(a.start));
+      for (const p of idx){
+        const d = await (await fetch(`patches/${p.id}.json`)).json();
+        (d.decisions || []).forEach(t => trees.push({...t, patch:d}));
+      }
+    }catch(e){
+      document.getElementById('stage').innerHTML = '<p class="muted">Couldn’t load the decision data. Reload the page to try again.</p>';
+      return;
+    }
+    if (!trees.length){ document.getElementById('stage').innerHTML = '<p class="muted">No decision helpers yet.</p>'; return; }
+    const want = location.hash.slice(1);
+    pick((trees.find(t => t.id === want) || trees[0]).id, false);
+    window.addEventListener('hashchange', () => { const t = trees.find(x => x.id === location.hash.slice(1)); if (t && t !== tree) pick(t.id, false); });
+  }
+
+  function pick(id, setHash = true){
+    tree = trees.find(t => t.id === id); patch = tree.patch;
+    if (setHash) location.hash = id;
+    const saved = S.get('mpp.decide.' + patch.id + '.' + id, []);
+    path = Array.isArray(saved) ? saved.filter(s => tree.nodes[s.node]) : [];
+    render();
+  }
+  function save(){ S.set('mpp.decide.' + patch.id + '.' + tree.id, path); }
+  function current(){ return path.length ? tree.nodes[path.at(-1).node].options[path.at(-1).choice].next : tree.start; }
+
+  function render(){
+    document.title = tree.title;
+    document.getElementById('title').textContent = tree.title;
+    document.getElementById('eyebrow').textContent = `GMS ${patch.version} · ${patch.name} · Decision helper`;
+    document.getElementById('intro').textContent = tree.intro || '';
+    const picker = document.getElementById('picker');
+    picker.hidden = trees.length < 2;
+    picker.innerHTML = trees.map(t => `<button data-id="${t.id}" aria-pressed="${t===tree}">${t.title}</button>`).join('');
+    picker.querySelectorAll('button').forEach(b => b.onclick = () => pick(b.dataset.id));
+
+    // path
+    const pathEl = document.getElementById('path');
+    pathEl.hidden = !path.length;
+    pathEl.innerHTML = path.map((s, i) => { const n = tree.nodes[s.node];
+      return `<div class="step"><div class="q">${n.q}</div><div class="a">${n.options[s.choice].label}<button data-back="${i}">change</button></div></div>`; }).join('');
+    pathEl.querySelectorAll('[data-back]').forEach(b => b.onclick = () => { path = path.slice(0, +b.dataset.back); save(); render(); });
+
+    // stage
+    const id = current(), n = tree.nodes[id], stage = document.getElementById('stage');
+    if (n.result){
+      const lbl = {do:'Do it', skip:'Skip it', maybe:'Not yet'}[n.result] || n.result;
+      stage.innerHTML = `<div class="card result ${n.result}">
+        <span class="verdict r-${n.result}">${lbl}</span>
+        <h2>${n.title}</h2><p>${n.text}</p>
+        ${n.steps ? `<div><b>What to do</b><ol>${n.steps.map(s=>`<li>${s}</li>`).join('')}</ol></div>` : ''}
+        ${n.points ? `<ul>${n.points.map(s=>`<li>${s}</li>`).join('')}</ul>` : ''}
+        <div class="tools"><button id="restart">Start over</button>
+          ${tree.notes && patch.notesUrl ? `<a href="${patch.notesUrl}#${tree.notes}" target="_blank" rel="noopener">Patch notes ↗</a>` : ''}
+          <a href="index.html">Back to the planner</a></div></div>`;
+      document.getElementById('restart').onclick = () => { path = []; save(); render(); };
+    } else {
+      stage.innerHTML = `<div class="card"><span class="qnum">Question ${path.length + 1}</span>
+        <h2>${n.q}</h2>${n.help ? `<p class="help">${n.help}</p>` : ''}
+        <div class="opts">${n.options.map((o, i) => `<button class="opt" data-i="${i}"><b>${o.label}</b>${o.note ? `<span>${o.note}</span>` : ''}</button>`).join('')}</div>
+        ${path.length ? '<div class="tools"><button id="back1">← Back</button></div>' : ''}</div>`;
+      stage.querySelectorAll('.opt').forEach(b => b.onclick = () => { path.push({node:id, choice:+b.dataset.i}); save(); render(); });
+      const b1 = document.getElementById('back1'); if (b1) b1.onclick = () => { path.pop(); save(); render(); };
+    }
+
+    // whole tree, with the chosen path highlighted
+    const onNodes = new Set([tree.start, ...path.map(s => tree.nodes[s.node].options[s.choice].next)]);
+    const onChoice = new Map(path.map(s => [s.node, s.choice]));
+    const seen = new Set();
+    const qNum = {}; let k = 0;
+    const walk = (nid) => {
+      const nd = tree.nodes[nid];
+      if (nd.result){
+        const lbl = {do:'Do it', skip:'Skip it', maybe:'Not yet'}[nd.result];
+        return `<span class="tr r-${nd.result}">${lbl}</span> <span class="${onNodes.has(nid) && current()===nid ? 'tq on' : ''}">${nd.title}</span>`;
+      }
+      if (seen.has(nid)) return `<span class="tref">↪ continues at Q${qNum[nid]}</span>`;
+      seen.add(nid); qNum[nid] = ++k;
+      return `<span class="tq ${onNodes.has(nid) ? 'on' : ''}">Q${qNum[nid]}. ${nd.q}</span><ul>${nd.options.map((o, i) =>
+        `<li><span class="ta ${onChoice.get(nid) === i ? 'on' : ''}">${o.label} →</span> ${walk(o.next)}</li>`).join('')}</ul>`;
+    };
+    document.getElementById('tree').innerHTML = `<ul><li>${walk(tree.start)}</li></ul>`;
+    document.getElementById('footer').innerHTML = `Based on the official <a href="${patch.notesUrl}" target="_blank" rel="noopener">${patch.version} ${patch.name} patch notes</a>. Your answers are saved in this browser.`;
+  }
+  load();
+})();
+</script>
+</body>
+</html>

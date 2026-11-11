@@ -39,7 +39,22 @@ for (const [ln, arr] of Object.entries(lists)) for (const i of arr || []) {
   if ((ln === 'weekly') && !['wed','thu'].includes(i.reset)) problems.push(`weekly: "${i.title}" needs reset "wed" or "thu".`);
 }
 for (const x of [...(d.dates || []), ...(d.openings || [])]) if (x.card && !names.has(x.card)) problems.push(`Date "${x.title}" links to missing card "${x.card}".`);
-// 4. Dates parse
+// 4. Decision trees: every option leads somewhere, every node is reachable, results have a verdict
+for (const t of d.decisions || []) {
+  const nodes = t.nodes || {};
+  if (!nodes[t.start]) problems.push(`Decision "${t.id}": start "${t.start}" doesn't exist.`);
+  const reach = new Set(), stack = [t.start];
+  while (stack.length) { const id = stack.pop(); if (reach.has(id) || !nodes[id]) continue; reach.add(id); (nodes[id].options || []).forEach(o => stack.push(o.next)); }
+  for (const [id, n] of Object.entries(nodes)) {
+    if (!reach.has(id)) problems.push(`Decision "${t.id}": node "${id}" can't be reached.`);
+    if (n.result) { if (!['do','skip','maybe'].includes(n.result) || !n.title) problems.push(`Decision "${t.id}": result "${id}" needs result do/skip/maybe and a title.`); }
+    else { if (!n.q || !(n.options || []).length) problems.push(`Decision "${t.id}": question "${id}" needs q and options.`);
+      for (const o of n.options || []) if (!nodes[o.next]) problems.push(`Decision "${t.id}": option "${o.label}" points at missing node "${o.next}".`); }
+  }
+  if (t.card && !names.has(t.card)) problems.push(`Decision "${t.id}" links to missing card "${t.card}".`);
+}
+for (const x of [...cards, ...(d.day0?.setup || [])]) if (x.decide && !(d.decisions || []).some(t => t.id === x.decide)) problems.push(`"${x.name || x.title}" links to missing decision "${x.decide}".`);
+// 5. Dates parse
 const bad = (t) => t && isNaN(new Date(t + 'Z'));
 for (const x of [d, ...cards, ...(d.dates||[]), ...(d.openings||[]), ...(d.wrapup||[]), ...(d.daily||[]), ...(d.weekly||[])])
   for (const k of ['start','liveAt','mainEnd','ends','starts','t','by','opens','until']) if (bad(x[k])) problems.push(`Bad date in ${k}: ${x[k]} (${x.title||x.name||x.id})`);
