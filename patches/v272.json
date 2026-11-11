@@ -9,6 +9,38 @@
   "day0": {
     "beforeReset": [
       {
+        "id": "d0-winter",
+        "reset": "day",
+        "title": "Winter Countdown: check in twice",
+        "where": [
+          "main",
+          "cw"
+        ],
+        "card": "Winter Countdown",
+        "how": "Join and check in right after maintenance, then again after the daily reset. These count as two separate days, which is how the 14-day window fits 15 rewards."
+      },
+      {
+        "id": "d0-supply",
+        "reset": "day",
+        "title": "Ultima Supply Report: log in before and after the reset",
+        "where": [
+          "main"
+        ],
+        "card": "Operation Ultima",
+        "how": "Join Operation Ultima and log in once now and once after the daily reset. You get two of this week’s 5 supply days in one evening."
+      },
+      {
+        "id": "d0-dailies",
+        "reset": "day",
+        "title": "Do your symbol dailies on both sides of the reset",
+        "where": [
+          "main",
+          "cw"
+        ],
+        "card": "Etherion Relics",
+        "how": "Arcane River and Grandis dailies reset with the day. Clear them now, then again after the reset."
+      },
+      {
         "id": "d0-bshop",
         "title": "Spend Bounty Coins before the shop reset",
         "how": "Items marked “weekly” in the Bounty Coin Shop (4x EXP Coupons, Bright Cubes, Solid Cubes and more) refresh {THU}, a few hours after maintenance. Kill your weekly bosses solo after joining Operation Ultima, buy the weekly items now, then buy them again after the reset. Other items have event-long limits and don’t refresh.",
@@ -26,7 +58,6 @@
         "id": "legion",
         "title": "Re-spend your Legion Points",
         "how": "The Legion Revamp wiped your Legion stats. Re-allocate them before you boss or train.",
-        "tag": "everyone",
         "where": [
           "main"
         ],

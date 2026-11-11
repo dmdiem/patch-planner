@@ -302,6 +302,10 @@ details.cd .more::after{content:"More ▾"} details.cd[open] .more::after{conten
   .tabs button{padding:10px 6px;font-size:13.5px}
   .tabs .tn{padding:1px 5px;font-size:10.5px}
 }
+.stack{display:flex;flex-direction:column;gap:16px}
+.items2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));column-gap:28px}
+h4.grp{display:flex;align-items:center;justify-content:space-between;margin:14px 0 2px;font-size:13px}
+h4.grp .where{margin:0;font-size:12px}
 [hidden]{display:none!important}
 </style>
 
@@ -375,7 +379,7 @@ details.cd .more::after{content:"More ▾"} details.cd[open] .more::after{conten
         <section aria-labelledby="h-day0" id="day0-sec">
           <h2 id="h-day0">Patch day</h2>
           <div class="window" id="day0-window"></div>
-          <div class="lists" id="day0-lists"></div>
+          <div class="stack" id="day0-lists"></div>
         </section>
 
         <section aria-labelledby="h-daily">
@@ -584,7 +588,8 @@ details.cd .more::after{content:"More ▾"} details.cd[open] .more::after{conten
     // ---- day 0 ----
     const firstWed = nextUTCWeekday(new Date(start.getTime()), 3);
     const firstThu = nextUTCWeekday(new Date(start.getTime()), 4);
-    const firstOf = {wed:firstWed, thu:firstThu};
+    const firstOf = {wed:firstWed, thu:firstThu, day:utcMidnight(start, 1)};
+    const RESETNAME = {day:'daily', thu:'shops & passes', wed:'event weeklies'};
     const sec0 = document.getElementById('day0-sec');
     const day0End = new Date(Math.max(firstWed, firstThu));
     sec0.hidden = now >= day0End;
@@ -596,16 +601,25 @@ details.cd .more::after{content:"More ▾"} details.cd[open] .more::after{conten
       const liveAt = U(P.liveAt);
       const preLive = liveAt && now < liveAt;
       const winLen = liveAt && soonest ? rel(soonest, liveAt).txt : '';
+      const atSoonest = soonest ? [...new Set(before.filter(i => +firstOf[i.reset] === +soonest).map(i => RESETNAME[i.reset]))] : [];
+      const resetsTxt = atSoonest.length > 1 ? `the ${atSoonest.slice(0,-1).join(', ')} and ${atSoonest.at(-1)} resets both` : `the ${atSoonest[0]} reset`;
       document.getElementById('day0-window').innerHTML = (preLive
         ? `<span class="eyebrow">Maintenance ends in</span><span class="big">${rel(liveAt, now).txt}</span>
-           <p>Expected at <b>${fmtTime(liveAt)}</b>${P.liveAtNote && useUTC ? ` (${P.liveAtNote.replace(/^Maintenance expected to end /,'')})` : ''}.${soonest ? ` The next reset is at ${fmtTime(soonest)}, so you’ll have about <b>${winLen}</b> to do the “before the reset” list below.` : ''}</p>`
+           <p>Expected at <b>${fmtTime(liveAt)}</b>${P.liveAtNote && useUTC ? ` (${P.liveAtNote.replace(/^Maintenance expected to end /,'')})` : ''}.${soonest ? ` Then ${resetsTxt} hit at ${fmtTime(soonest)}, so you’ll have about <b>${winLen}</b> to do the “before the reset” list below, and again right after.` : ''}</p>`
         : soonest
         ? `<span class="eyebrow">Double-dip window closes in</span><span class="big">${rel(soonest, now).txt}</span>
-           <p>This patch went live on a <b>${startDay}</b> (UTC)${liveAt ? `, around ${fmtTime(liveAt)}` : ''}. The next reset comes at ${fmtDate(soonest)} ${fmtTime(soonest)}, so anything that resets then gets two rounds close together. Event weeklies (bosses for Shadow Bounties, Ultima missions) get a full first week, until ${fmtDate(firstWed)} ${fmtTime(firstWed)}.</p>`
+           <p>This patch went live on a <b>${startDay}</b> (UTC)${liveAt ? `, around ${fmtTime(liveAt)}` : ''}. Then ${resetsTxt} hit at ${fmtDate(soonest)} ${fmtTime(soonest)}, so anything on the list below gets two rounds close together. Event weeklies (bosses for Shadow Bounties, Ultima missions) get a full first week, until ${fmtDate(firstWed)} ${fmtTime(firstWed)}.</p>`
         : `<span class="eyebrow">Patch week ends in</span><span class="big">${rel(day0End, now).txt}</span>
            <p>The double-dip window has closed. Finish the one-time setup below.</p>`).replace(/^/, '<div class="wtext">') + `</div>${soonest ? '<img class="emo" src="emotes/alert.gif" alt="">' : ''}`;
       const setup = P.day0.setup || [];
       const fold = S.get('mpp.fold', {});
+      const GROUPS0 = [['main','Main world'],['cw','Challenger World'],['quanah','Quanah']];
+      const groupOf = (i) => (GROUPS0.find(([g]) => (i.where || ['main']).includes(g)) || GROUPS0[0])[0];
+      const itemsHTML = (k, items) => {
+        if (k === 'before') return `<div class="items2">${items.map(i => itemHTML('d0', i, !!d0[i.id], `before the ${RESETNAME[i.reset]} reset`)).join('')}</div>`;
+        return GROUPS0.map(([g, label]) => { const its = items.filter(i => groupOf(i) === g); if (!its.length) return '';
+          return `<h4 class="grp"><span class="where w-${g}">${label}</span><span class="count">${its.filter(i=>d0[i.id]).length}/${its.length}</span></h4><div class="items2">${its.map(i => itemHTML('d0', {...i, where:(i.where||[]).filter(w => w !== g)}, !!d0[i.id])).join('')}</div>`; }).join('');
+      };
       const foldList = (k, title, items, defOpen) => {
         const done = items.filter(i=>d0[i.id]).length;
         const open = k in fold ? fold[k] : (done === items.length ? false : defOpen);
@@ -613,7 +627,7 @@ details.cd .more::after{content:"More ▾"} details.cd[open] .more::after{conten
         return `<details class="list fold" data-fold="${k}" ${open?'open':''}>
           <summary class="list-head"><h3>${title}</h3><span class="fold-r"><span class="count">${done}/${items.length}</span><span class="chev" aria-hidden="true"></span></span>
             <span class="fold-next">${next ? 'Next: '+W(next.title) : 'All done'}</span></summary>
-          ${items.map(i => itemHTML('d0', i, !!d0[i.id])).join('')}</details>`;
+          ${itemsHTML(k, items)}</details>`;
       };
       document.getElementById('day0-lists').innerHTML =
         (before.length ? foldList('before', 'Before the next reset', before, true) : '') +
