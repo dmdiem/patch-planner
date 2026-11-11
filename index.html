@@ -163,6 +163,11 @@ details.later summary{font-size:14px;color:var(--muted)}
 #wrap-banner a{color:var(--ice);font-weight:600}
 #wrap-banner .emo{width:64px;height:64px}
 .ctl{display:inline-flex;align-items:center;gap:8px;font-size:13px}
+.seg-btn{font:inherit;font-size:13px;border:0;background:none;color:var(--muted);padding:6px 14px;cursor:pointer}
+.seg-btn[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.seg-btn .n{font-family:var(--f-mono);font-size:11.5px;opacity:.8}
+.pill.live{background:color-mix(in srgb, var(--done) 16%, transparent);color:var(--done)}
+.card.ended{opacity:.6}
 [hidden]{display:none!important}
 </style>
 
@@ -201,6 +206,13 @@ details.later summary{font-size:14px;color:var(--muted)}
         <div class="lists" id="day0-lists"></div>
       </section>
 
+      <section aria-labelledby="h-open" id="open-sec">
+        <div class="sec-head"><h2 id="h-open">Opening later</h2><span class="muted" style="font-size:13px">Things that start after patch day</span></div>
+        <div class="dl-wrap"><table class="dl-table">
+          <thead><tr><th>Opens in</th><th>What</th><th class="col-date">Window</th></tr></thead>
+          <tbody id="openings"></tbody></table></div>
+      </section>
+
       <section aria-labelledby="h-daily">
         <h2 id="h-daily">Every day</h2>
         <div class="lists"><div class="list" id="list-daily"></div></div>
@@ -225,8 +237,9 @@ details.later summary{font-size:14px;color:var(--muted)}
       </section>
 
       <section aria-labelledby="h-events">
-        <div class="sec-head"><h2 id="h-events">Events in plain English</h2></div>
-        <div class="filters" id="filters" role="group" aria-label="Filter events"></div>
+        <div class="sec-head"><h2 id="h-events">Events in plain English</h2><span class="muted" style="font-size:13px" id="events-note"></span></div>
+        <div class="seg" id="status-filters" role="group" aria-label="Event status" style="width:max-content;max-width:100%;flex-wrap:wrap"></div>
+        <div class="filters" id="filters" role="group" aria-label="Filter events by player type"></div>
         <div class="cards" id="cards"></div>
       </section>
     </div>
@@ -262,6 +275,7 @@ details.later summary{font-size:14px;color:var(--muted)}
   let useUTC = S.get('mpp.utc', false);
   let showPast = S.get('mpp.past', false);
   let filter = S.get('mpp.filter', 'any');
+  let statusFilter = S.get('mpp.status', 'active');
   let P = null, INDEX = [];
   // carry over ticks saved by the first single-patch version of this page
   try{ for (const k of ['d0','daily','week']){ const o = localStorage.getItem('v272.'+k);
@@ -381,6 +395,23 @@ details.later summary{font-size:14px;color:var(--muted)}
       bindList('day0-lists', 'd0', () => true);
     }
 
+    // ---- opening later ----
+    const opens = (P.openings || []).map(o => ({...o, s: U(o.starts), e: U(o.ends)})).filter(o => o.e > now).sort((a,b) => a.s - b.s);
+    document.getElementById('open-sec').hidden = !opens.length;
+    const short = (d) => `${fmtDate(d)}, ${fmtTime(d)}`;
+    document.getElementById('openings').innerHTML = opens.map(o => {
+      const live = o.s <= now;
+      const r = live ? rel(o.e, now) : rel(o.s, now);
+      const ms = (live ? o.e : o.s) - now, days = Math.floor(ms / DAY);
+      const big = days >= 1 ? `${days}d` : `${Math.max(1, Math.floor(ms/36e5))}h`;
+      const first = live ? `<span class="pill" style="background:var(--accent-soft);color:var(--accent)">open now</span>`
+                         : `<span class="days ${r.cls}">${big}</span>`;
+      const status = live ? `Open now · closes in ${r.txt}` : `Opens ${short(o.s)}${o.m ? ' (after maintenance)' : ''}`;
+      return `<tr><td>${first}</td>
+        <td><strong>${o.title}</strong><div class="sub">${o.how}</div><div class="sub freq">${status}</div></td>
+        <td class="col-date"><span class="mono">${short(o.s)}<br>→ ${short(o.e)}</span></td></tr>`;
+    }).join('');
+
     // ---- daily ----
     const hist = getHist();
     const isoDay = (d) => d.toISOString().slice(0,10);
@@ -446,8 +477,11 @@ details.later summary{font-size:14px;color:var(--muted)}
     if (wrap.length){
       const left = (i) => { const ms = i.d - now; const days = Math.floor(ms/DAY);
         return days >= 1 ? `${days} day${days===1?'':'s'} left` : `${Math.max(1, Math.floor(ms/36e5))}h left`; };
-      const rowFor = (i) => itemHTML('wr', i, !!wd[i.id], `by ${fmtDate(i.d)}, ${fmtTime(i.d)} · ${left(i)}`)
-        .replace('<div class="item', `<div class="item${!wd[i.id] && i.d - now < 7*DAY ? ' due' : ''}`);
+      const notYet = (i) => i.opens && U(i.opens) > now;
+      const rowFor = (i) => itemHTML('wr', i, !!wd[i.id], notYet(i)
+          ? `opens ${fmtDate(U(i.opens))}, ${fmtTime(U(i.opens))} (in ${rel(U(i.opens), now).txt}) · until ${fmtDate(i.d)}`
+          : `by ${fmtDate(i.d)}, ${fmtTime(i.d)} · ${left(i)}`)
+        .replace('<div class="item', `<div class="item${!wd[i.id] && !notYet(i) && i.d - now < 7*DAY ? ' due' : ''}`);
       const soon = openWrap.filter(i => i.d - now < 14*DAY), later = openWrap.filter(i => i.d - now >= 14*DAY);
       const missed = wrap.filter(i => i.d <= now && !wd[i.id]).length;
       document.getElementById('wrap-note').textContent = `${openWrap.filter(i=>wd[i.id]).length}/${openWrap.length} done${missed ? ` · ${missed} passed unclaimed` : ''}`;
@@ -461,7 +495,7 @@ details.later summary{font-size:14px;color:var(--muted)}
       const det = document.querySelector('#list-wrap details.later');
       if (det){ det.open = S.get('mpp.wrapLaterOpen', det.open); det.ontoggle = () => S.set('mpp.wrapLaterOpen', det.open); }
     }
-    const urgent = openWrap.filter(i => !wd[i.id] && i.d - now < 7*DAY);
+    const urgent = openWrap.filter(i => !wd[i.id] && i.d - now < 7*DAY && !(i.opens && U(i.opens) > now));
     const banner = document.getElementById('wrap-banner');
     banner.hidden = !urgent.length;
     if (urgent.length){
@@ -486,21 +520,43 @@ details.later summary{font-size:14px;color:var(--muted)}
     }).join('') : `<tr><td colspan="3" class="muted"><span class="cheer" style="background:none"><img class="emo" src="emotes/sleepy.gif" alt="">Every date in this patch has passed.</span></td></tr>`;
 
     // ---- cards ----
+    const statusOf = (c) => {
+      const st = U(c.starts) || start, end = U(c.ends);
+      return now < st ? 'upcoming' : end && now > end ? 'ended' : 'active';
+    };
+    const counts = {active:0, upcoming:0, ended:0};
+    P.cards.forEach(c => counts[statusOf(c)]++);
+    const STAT = [['active','Active now'],['upcoming','Opening later'],['ended','Ended'],['all','All']];
+    if (!STAT.some(([k]) => k === statusFilter)) statusFilter = 'active';
+    document.getElementById('status-filters').innerHTML = STAT.map(([k,l]) =>
+      `<button class="seg-btn" data-k="${k}" aria-pressed="${statusFilter===k}">${l}${k!=='all'?` <span class="n">${counts[k]}</span>`:''}</button>`).join('');
+    document.querySelectorAll('#status-filters button').forEach(b => b.onclick = () => { statusFilter = b.dataset.k; S.set('mpp.status', statusFilter); render(); });
+    document.getElementById('events-note').textContent = `${counts.active} active right now`;
+
     const GROUPS = [['all','Everyone'],['main','Lv.260+ mains'],['alt','Alts and new characters'],['cw','Challenger World'],['quanah','Event world'],['paid','Paid']]
       .filter(([g]) => P.cards.some(c => c.g === g));
     if (filter !== 'any' && !GROUPS.some(([g]) => g === filter)) filter = 'any';
-    document.getElementById('filters').innerHTML = [['any','All events'], ...GROUPS].map(([k,l]) =>
+    document.getElementById('filters').innerHTML = [['any','Everyone and everything'], ...GROUPS.filter(([g]) => g !== 'all')].map(([k,l]) =>
       `<button class="chip" data-k="${k}" aria-pressed="${filter===k}">${l}</button>`).join('');
     document.querySelectorAll('#filters .chip').forEach(b => b.onclick = () => { filter = b.dataset.k; S.set('mpp.filter', filter); render(); });
     const gName = Object.fromEntries(GROUPS);
-    document.getElementById('cards').innerHTML = P.cards.filter(c => filter==='any' || c.g===filter).map(c => {
+    const shown = P.cards
+      .filter(c => filter==='any' || c.g===filter || c.g==='all')
+      .filter(c => statusFilter==='all' || statusOf(c)===statusFilter)
+      .sort((x,y) => { const o = {active:0, upcoming:1, ended:2}; return o[statusOf(x)] - o[statusOf(y)] || ((U(x.ends)||Infinity) - (U(y.ends)||Infinity)); });
+    document.getElementById('cards').innerHTML = shown.length ? shown.map(c => {
       const end = U(c.ends), r = end ? rel(end, now) : null;
-      return `<article class="card"><div class="meta"><span class="pill">${gName[c.g]||c.g}</span>${end ? `<span class="pill ${r.cls}">${r.txt==='passed'?'ended':'ends in '+r.txt}</span>`:''}</div>
+      const st = U(c.starts), stt = statusOf(c);
+      const pill = stt === 'upcoming' ? `<span class="pill soon">opens in ${rel(st, now).txt}</span>`
+        : stt === 'ended' ? `<span class="pill">ended</span>`
+        : `<span class="pill live">● active${end ? ` · ends in ${r.txt}` : ''}</span>`;
+      return `<article class="card ${stt}"><div class="meta">${pill}<span class="pill">${gName[c.g]||c.g}</span></div>
         <h3>${c.name}</h3><p>${c.what}</p>
-        <dl><dt>Who</dt><dd>${c.who}</dd><dt>Start</dt><dd>${c.start}</dd>
+        <dl><dt>Who</dt><dd>${c.who}</dd><dt>How</dt><dd>${c.start}</dd>
+        ${st ? `<dt>Opens</dt><dd>${fmtDate(st)}, ${fmtYear(st)} · <span class="mono">${fmtTime(st)}</span></dd>`:''}
         ${end ? `<dt>Ends</dt><dd>${fmtDate(end)}, ${fmtYear(end)} · <span class="mono">${fmtTime(end)}</span></dd>`:''}</dl>
         ${c.tip?`<p class="tip">${c.tip}</p>`:''}</article>`;
-    }).join('');
+    }).join('') : `<p class="muted">Nothing here for this filter.</p>`;
   }
 
   async function loadPatch(id){

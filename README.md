@@ -26,8 +26,9 @@ All times are UTC, written as `YYYY-MM-DDTHH:MM:SS` with no `Z`.
 | `day0.setup[]` | One-time setup tasks. |
 | `daily[]` | Daily tasks. `until` hides the task after that time; `freq` is a short label. |
 | `weekly[]` | Weekly tasks. `reset` is `wed` or `thu`; `total` is an optional cap note. |
-| `wrapup[]` | End-of-patch claims: things to claim, spend or use up. `by` is the deadline. Items due within 7 days also show a banner at the top. |
+| `openings[]` | Things that start after patch day (`starts`, `ends`, optional `m` for "after maintenance"). Shown in "Opening later" with a countdown, then "open now". |
+| `wrapup[]` | End-of-patch claims: things to claim, spend or use up. `by` is the deadline; optional `opens` for claims that aren't available yet. Items due within 7 days also show a banner at the top. |
 | `dates[]` | Deadline table rows. `t` is the time; `deadline` and `sunday` flags pick the badge. |
-| `cards[]` | Event notes. `g` is the group: `all`, `main`, `alt`, `cw`, `quanah` (event world), `paid`. |
+| `cards[]` | Event notes. Optional `starts` shows an "opens in" badge. `g` is the group: `all`, `main`, `alt`, `cw`, `quanah` (event world), `paid`. |
 
 Checklist items need an `id` that is unique within the patch, because ticks are saved under it.

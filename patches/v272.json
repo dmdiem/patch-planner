@@ -416,7 +416,18 @@
       "start": "Cash Shop",
       "ends": "2027-02-09T23:59:00",
       "what": "3× Traces of Darkness and parties of up to 6 for Genesis missions. Pass Plus adds weekly boss missions that unlock one at a time from Dec 17.",
-      "tip": "The sale ends Feb 8."
+      "tip": "The sale ends Feb 8.",
+      "starts": "2026-11-12T00:00:00"
+    },
+    {
+      "g": "all",
+      "name": "Cash Shop Transfer",
+      "who": "Lv.101+",
+      "start": "Cash Inventory → Cash Transfer",
+      "starts": "2026-12-09T00:00:00",
+      "ends": "2026-12-16T14:00:00",
+      "what": "For one week you can move cash items (outfits, etc.) to another character, as long as it’s in the same class group and a different job.",
+      "tip": "Not allowed: Friendship Rings, Promise Rings, Potion Pots, or splitting stacks."
     }
   ],
   "wrapup": [
@@ -448,7 +459,8 @@
       "id": "cst",
       "by": "2026-12-16T14:00:00",
       "title": "Do any Cash Shop transfers",
-      "how": "Cash Inventory → Cash Transfer. Same class group only."
+      "how": "Cash Inventory → Cash Transfer. Same class group only.",
+      "opens": "2026-12-09T00:00:00"
     },
     {
       "id": "ultima-archive",
@@ -530,7 +542,8 @@
       "by": "2027-02-23T23:59:00",
       "title": "World Leap your Challenger characters",
       "tag": "Challenger",
-      "how": "Leap opens Dec 16. The final window is Feb 10–23."
+      "how": "Leap opens Dec 16. The final window is Feb 10–23.",
+      "opens": "2026-12-16T00:00:00"
     },
     {
       "id": "quanah",
@@ -544,6 +557,52 @@
       "by": "2027-06-08T23:59:00",
       "title": "Use up Luxe Sauna time and claim hour rewards",
       "how": "Unused time is lost. Furnishing rewards at 30/100/200/500 cumulative hours."
+    }
+  ],
+  "openings": [
+    {
+      "id": "mayrin",
+      "starts": "2026-11-12T00:00:00",
+      "ends": "2027-02-09T23:59:00",
+      "title": "Mayrin and Kai (Challenger World bosses)",
+      "how": "Season boss Mayrin and returning Kai. Challenger World only."
+    },
+    {
+      "id": "genesis",
+      "starts": "2026-11-12T00:00:00",
+      "ends": "2027-02-08T23:59:00",
+      "title": "Genesis Pass on sale",
+      "how": "Cash Shop. Lv.255+ before final Genesis awakening."
+    },
+    {
+      "id": "cst",
+      "starts": "2026-12-09T00:00:00",
+      "ends": "2026-12-16T14:00:00",
+      "title": "Cash Shop Transfer",
+      "how": "Cash Inventory → Cash Transfer button. Moves cash items between characters in the same class group (not the same job)."
+    },
+    {
+      "id": "cwleap",
+      "starts": "2026-12-16T00:00:00",
+      "m": true,
+      "ends": "2027-02-09T23:59:00",
+      "title": "Challenger World Leap (1st window)",
+      "how": "Move Challenger characters to a regular world. Final window Feb 10–23."
+    },
+    {
+      "id": "gpp-seren",
+      "starts": "2026-12-17T00:00:00",
+      "ends": "2027-02-09T23:59:00",
+      "title": "Genesis Pass Plus: Chosen Seren mission",
+      "how": "Then Kalos Dec 24, First Adversary Dec 31, Kaling Jan 7, Bellona Jan 14."
+    },
+    {
+      "id": "cwleap2",
+      "starts": "2027-02-10T00:00:00",
+      "m": true,
+      "ends": "2027-02-23T23:59:00",
+      "title": "Challenger World Leap (final window)",
+      "how": "Last chance to move Challenger characters out."
     }
   ]
 }
