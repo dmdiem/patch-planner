@@ -32,4 +32,9 @@ All times are UTC, written as `YYYY-MM-DDTHH:MM:SS` with no `Z`.
 | `dates[]` | Deadline table rows. `t` is the time; `deadline` and `sunday` flags pick the badge. |
 | `cards[]` | Event notes. Optional `starts` shows an "opens in" badge. `g` is the group: `all`, `main`, `alt`, `cw`, `quanah` (event world), `paid`. |
 
+### Heroic vs Interactive
+
+- Put `"world": "heroic"` or `"world": "interactive"` on any item, date or card that only applies to one server type. It's hidden for the other.
+- Inside any text, write `{H|heroic-only text}` or `{I|interactive-only text}`. The page shows the matching part. Heroic is the default, and "Both" shows each part with a tag.
+
 Checklist items need an `id` that is unique within the patch, because ticks are saved under it.

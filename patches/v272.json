@@ -166,7 +166,7 @@
     {
       "id": "shop",
       "title": "Bounty Coin Shop purchases",
-      "how": "Purchase limits refresh Thursday. Spend coins before then or lose that week’s limit.",
+      "how": "Purchase limits refresh Thursday. Spend coins before then or lose that week’s limit. {H|Weekly-limited picks: Karma Solid Cube x2 Coupons (6), Extreme Growth Potion x3 (3), Black Circulator x3 (2).}{I|Weekly-limited picks: Karma Bonus Bright Cubes (3 Intermediate, 7 Advanced), plus Incredible Chaos and Ark Innocence scrolls.}",
       "freq": "refreshes Thu",
       "total": "",
       "until": "2027-02-09T23:59:00",
@@ -190,8 +190,8 @@
     },
     {
       "t": "2026-11-12T00:00:00",
-      "title": "First Thursday reset",
-      "sub": "Challenger Pass, Bounty Coin Shop limits and Battlesim power roll over."
+      "title": "First shop & pass reset (Thu)",
+      "sub": "Bounty Coin Shop limits, Challenger Pass and Battlesim power roll over. This is the end of the patch-day double-dip window."
     },
     {
       "t": "2026-11-15T00:00:00",
@@ -202,8 +202,8 @@
     },
     {
       "t": "2026-11-18T00:00:00",
-      "title": "First Wednesday reset",
-      "sub": "End of the patch-day week for bosses and Ultima missions"
+      "title": "First event-weeklies reset (Wed)",
+      "sub": "Ultima Training Report, Etherion Relics, Shadow Bounties boss records and Specter Blast start their second week."
     },
     {
       "t": "2026-11-22T00:00:00",
@@ -401,7 +401,7 @@
       "who": "Lv.200+",
       "start": "Event List → Arthur’s Equipment Rental",
       "ends": "2027-02-09T23:59:00",
-      "what": "Rent 20★ gear for 2 days, up to 3 times per item per week. The first rental costs mesos; repeats cost Maple Points.",
+      "what": "Rent 20★ gear for 2 days, up to 3 times per item per week. Repeat rentals cost Maple Points (2,000–4,000). {H|First rental: 200M–300M mesos.}{I|First rental: 100M–150M mesos, and the gear also comes with Unique bonus potential and bonus stats.}",
       "tip": "Useful for pushing a boss you’re just short on."
     },
     {
@@ -411,7 +411,7 @@
       "start": "Pick Challenger-Heroic or -Interactive",
       "ends": "2027-02-09T23:59:00",
       "what": "A fresh season world. Missions earn points to climb from Bronze to Challenger tier, and the higher tiers give rewards you can claim on your main.",
-      "tip": "Mayrin (season boss) opens Nov 12. World Leap opens Dec 16."
+      "tip": "Mayrin (season boss) opens Nov 12. World Leap opens Dec 16. {H|Legendary emblem or secondary missions pay 1,500 Challenger Coins each.}{I|Legendary emblem or secondary missions pay 1,000 coins each, plus 500 for Unique bonus potential on each.}"
     },
     {
       "g": "quanah",
@@ -420,7 +420,7 @@
       "start": "Mark at creation, then leap via the Event List",
       "ends": "2027-03-09T23:59:00",
       "what": "A roguelite training world with a big buff (+1,000% EXP), its own gear system and the Battlesim dungeon. Dying resets your Inspector Level.",
-      "tip": "Your Use tab must be empty to leap. No Cash Shop and no cubes there."
+      "tip": "Your Use tab must be empty to leap. No Cash Shop and no cubes there. After Quanah you can only leap to the same world type your Challenger character started in."
     },
     {
       "g": "paid",
@@ -519,19 +519,19 @@
       "id": "bounty",
       "by": "2027-02-09T23:59:00",
       "title": "Spend Bounty Coins",
-      "how": "Bounty Coin Shop (Hawk or Event List), in each world you have coins."
+      "how": "Bounty Coin Shop (Hawk or Event List), in each world you have coins. {H|Extra stock: Solid Cube x2 Coupons, Extreme Growth Potions, Black Circulators, Karma Solid Cubes.}{I|Extra stock: Bonus Bright Cubes, Incredible Chaos Scrolls, Ark Innocence Scrolls, pet and accessory scroll selectors.}"
     },
     {
       "id": "credit",
       "by": "2027-02-09T23:59:00",
       "title": "Spend Alliance Credit",
-      "how": "Alliance Credit Shop (Cygnus Supplier or Ultima Report)."
+      "how": "Alliance Credit Shop (Cygnus Supplier or Ultima Report). {H|Extra stock: Black Rebirth Flames (10 credit each, 200 max).}{I|Extra stock: Bonus Mystical Cubes, Special Bonus and Bonus Epic Potential scrolls, Innocence and Pure Clean Slate scrolls, Special Heart scroll selector.}"
     },
     {
       "id": "mesoshop",
       "by": "2027-02-09T23:59:00",
       "title": "Check the Operation Ultima Meso Shop",
-      "how": "Elard in the Forward Operating Base. Last chance for its items."
+      "how": "Elard in the Forward Operating Base. Last chance for its items.{I|Extra stock: Incredible Chaos Scrolls of Goodness and Pet Equipment Stat Transfer Scrolls.}"
     },
     {
       "id": "burning",
@@ -549,7 +549,7 @@
       "id": "cw-tier",
       "by": "2027-02-09T23:59:00",
       "title": "Claim Challenger tier rewards",
-      "how": "Bronze–Platinum only in Challenger World. Emerald and up can be claimed on your main via the Event List."
+      "how": "Bronze–Platinum only in Challenger World. Emerald and up can be claimed on your main via the Event List. {H|Tiers also give Karma Bright Cubes and Sol Erda selectors.}{I|Tiers also give Bonus Bright Cubes and a Unique Bonus Potential scroll.}"
     },
     {
       "id": "cw-coins",
@@ -576,7 +576,8 @@
       "by": "2027-02-10T00:00:00",
       "title": "Sell or buy on the Challenger Meso Market",
       "tag": "Challenger",
-      "how": "Miss Richfield, Interactive Challenger World only. Closes before maintenance on Feb 10."
+      "how": "Miss Richfield in Challenger-Interactive. Closes before maintenance on Feb 10.",
+      "world": "interactive"
     },
     {
       "id": "cw-leap",
