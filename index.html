@@ -145,18 +145,18 @@ footer a{color:var(--ice)}
 .dot:focus-visible{outline:2px solid var(--ice);outline-offset:1px}
 .emo{display:block;object-fit:contain;flex:none}
 .titlebar{display:flex;align-items:center;gap:14px}
-.titlebar .emo{width:72px;height:68px}
+.titlebar .emo{width:64px;height:64px}
 .window{flex-direction:row!important;align-items:center}
 .window .wtext{display:flex;flex-direction:column;gap:10px;min-width:0;flex:1}
-.window .emo{width:96px;height:90px}
+.window .emo{width:72px;height:72px}
 .cheer{display:flex;align-items:center;gap:10px;background:var(--accent-soft);border-radius:10px;padding:6px 10px;font-weight:600;font-size:14px}
-.cheer .emo{width:48px;height:45px}
+.cheer .emo{width:44px;height:44px}
 .days .emo{display:inline-block;width:22px;height:22px;vertical-align:-3px;margin-left:4px}
 summary{display:flex;align-items:center;gap:10px}
-summary .emo{width:40px;height:38px}
+summary .emo{width:36px;height:36px}
 .loading{display:flex;align-items:center;gap:12px}
-.loading .emo{width:56px;height:52px}
-@media (max-width:520px){.window .emo{width:64px;height:60px}.titlebar .emo{width:56px;height:52px}}
+.loading .emo{width:48px;height:48px}
+@media (max-width:520px){.window .emo{width:56px;height:56px}.titlebar .emo{width:52px;height:52px}}
 .item.due .title{color:var(--urgent)}
 details.later{border:0;padding:0;background:none;border-top:1px solid var(--line);border-radius:0}
 details.later summary{font-size:14px;color:var(--muted)}
@@ -366,7 +366,7 @@ details.later summary{font-size:14px;color:var(--muted)}
         ? `<span class="eyebrow">Double-dip window closes in</span><span class="big">${rel(soonest, now).txt}</span>
            <p>This patch went live on a <b>${startDay}</b> (UTC). The next reset comes at ${fmtDate(soonest)} ${fmtTime(soonest)}, so anything that resets then gets two rounds close together. The first Wednesday week runs until ${fmtDate(firstWed)} ${fmtTime(firstWed)}.</p>`
         : `<span class="eyebrow">Patch week ends in</span><span class="big">${rel(day0End, now).txt}</span>
-           <p>The double-dip window has closed. Finish the one-time setup below.</p>`).replace(/^/, '<div class="wtext">') + `</div>${soonest ? '<img class="emo" src="emotes/help.gif" alt="">' : ''}`;
+           <p>The double-dip window has closed. Finish the one-time setup below.</p>`).replace(/^/, '<div class="wtext">') + `</div>${soonest ? '<img class="emo" src="emotes/alert.gif" alt="">' : ''}`;
       const setup = P.day0.setup || [];
       document.getElementById('day0-lists').innerHTML =
         (before.length ? `<div class="list"><div class="list-head"><h3>Before the next reset</h3><span class="count">${before.filter(i=>d0[i.id]).length}/${before.length}</span></div>${before.map(i => itemHTML('d0', i, !!d0[i.id])).join('')}</div>` : '') +
@@ -392,7 +392,7 @@ details.later summary{font-size:14px;color:var(--muted)}
       .replace(`data-id="${i.id}"`, `data-id="${i.id}" data-hk="${hk}" data-k="${k}"`);
     document.getElementById('list-daily').innerHTML =
       `<div class="list-head"><h3>Today</h3><span class="count">${dailyItems.filter(i=>doneNow('dy:'+i.id, dayKey)).length}/${dailyItems.length}</span></div>
-       ${dailyItems.length && dailyItems.every(i=>doneNow('dy:'+i.id, dayKey)) ? '<div class="cheer"><img class="emo" src="emotes/ok.gif" alt="">All done for today</div>' : ''}
+       ${dailyItems.length && dailyItems.every(i=>doneNow('dy:'+i.id, dayKey)) ? '<div class="cheer"><img class="emo" src="emotes/thumbsup.gif" alt="">All done for today</div>' : ''}
        <p class="muted" style="font-size:13px">Squares show the last 14 days. Click one to fix a day you forgot to tick.</p>` +
       dailyItems.map(i => rowWithHist('dy', i, 'dy:'+i.id, dayKey, leftTxt(i), histStrip('dy:'+i.id, dayPeriods(), dayKey, 'days'))).join('');
     bindHist('list-daily');
@@ -421,7 +421,7 @@ details.later summary{font-size:14px;color:var(--muted)}
       box.hidden = !items.length;
       const pk = periodKey(r);
       box.innerHTML = `<div class="list-head"><h3>${label}</h3><span class="count">${live.filter(i=>doneNow('wk:'+i.id, pk)).length}/${live.length}</span></div>
-        ${live.length && live.every(i=>doneNow('wk:'+i.id, pk)) ? '<div class="cheer"><img class="emo" src="emotes/party.gif" alt="">Week cleared</div>' : ''}` +
+        ${live.length && live.every(i=>doneNow('wk:'+i.id, pk)) ? '<div class="cheer"><img class="emo" src="emotes/ten.gif" alt="">Week cleared</div>' : ''}` +
         items.map(i => {
           const ended = now > U(i.until);
           const row = rowWithHist('w'+r, i, 'wk:'+i.id, pk, ended ? 'ended · history kept' : wkTxt(i), histStrip('wk:'+i.id, weekPeriods(r, U(i.until)), pk, 'weeks'));
@@ -447,7 +447,7 @@ details.later summary{font-size:14px;color:var(--muted)}
       document.getElementById('list-wrap').innerHTML =
         (soon.length ? `<div class="list-head"><h3>Due in the next 2 weeks</h3><span class="count">${soon.filter(i=>wd[i.id]).length}/${soon.length}</span></div>${soon.map(rowFor).join('')}` : '') +
         (later.length ? `<details class="later" ${soon.length ? '' : 'open'}><summary>Later (${later.length})</summary>${later.map(rowFor).join('')}</details>` : '') +
-        (!openWrap.length ? '<div class="cheer"><img class="emo" src="emotes/relax.gif" alt="">Nothing left to claim for this patch.</div>' : '');
+        (!openWrap.length ? '<div class="cheer"><img class="emo" src="emotes/sleepy.gif" alt="">Nothing left to claim for this patch.</div>' : '');
       document.querySelectorAll('#list-wrap input').forEach(el => el.onchange = () => {
         const o = S.get(key('wrap'), {}); o[el.dataset.id] = el.checked; S.set(key('wrap'), o); render();
       });
@@ -461,7 +461,7 @@ details.later summary{font-size:14px;color:var(--muted)}
       const first = urgent[0];
       banner.innerHTML = `<div class="wtext"><span class="eyebrow">Claim soon</span>
         <p><b>${urgent.length} thing${urgent.length===1?'':'s'} to claim or use up this week.</b> First up: ${first.title}, ${rel(first.d, now).txt} left.</p>
-        <p><a href="#h-wrap" id="wrap-jump">See the wrap-up list</a></p></div><img class="emo" src="emotes/sweat.gif" alt="">`;
+        <p><a href="#h-wrap" id="wrap-jump">See the wrap-up list</a></p></div><img class="emo" src="emotes/stress.gif" alt="">`;
       document.getElementById('wrap-jump').onclick = (e) => { e.preventDefault(); document.getElementById('h-wrap').scrollIntoView({behavior:'smooth'}); };
     }
 
@@ -476,7 +476,7 @@ details.later summary{font-size:14px;color:var(--muted)}
       return `<tr class="${past?'past':''}"><td><span class="days ${cls}">${label}${cls==='urgent'?'<img class="emo" src="emotes/sweat.gif" alt="">':''}</span></td>
         <td>${kind}<strong>${x.title}</strong>${x.sub?`<div class="sub">${x.sub}</div>`:''}</td>
         <td class="col-date"><span class="mono">${fmtDate(x.d)}, ${fmtYear(x.d)}<br>${fmtTime(x.d)}</span></td></tr>`;
-    }).join('') : `<tr><td colspan="3" class="muted"><span class="cheer" style="background:none"><img class="emo" src="emotes/relax.gif" alt="">Every date in this patch has passed.</span></td></tr>`;
+    }).join('') : `<tr><td colspan="3" class="muted"><span class="cheer" style="background:none"><img class="emo" src="emotes/sleepy.gif" alt="">Every date in this patch has passed.</span></td></tr>`;
 
     // ---- cards ----
     const GROUPS = [['all','Everyone'],['main','Lv.260+ mains'],['alt','Alts and new characters'],['cw','Challenger World'],['quanah','Event world'],['paid','Paid']]
