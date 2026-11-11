@@ -179,6 +179,18 @@ details.later summary{font-size:14px;color:var(--muted)}
 .dotlive{width:8px;height:8px;border-radius:50%;background:var(--done);flex:none}
 .card.flash{outline:2px solid var(--done);outline-offset:2px}
 #active-jump{color:var(--ice)}
+.activebox{padding:0 16px}
+.activebox summary{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;padding:12px 0;font-weight:400}
+.ab-title{font-family:var(--f-display);font-weight:600;font-size:18px}
+.ab-sum{font-size:13.5px;color:var(--muted)}
+.ab-sum b{color:var(--ink);font-weight:600}
+.activebox summary{position:relative;padding-right:64px}
+.activebox summary::-webkit-details-marker{display:none}
+.ab-toggle{position:absolute;right:0;top:14px;font-size:13px;font-weight:600;color:var(--ice)}
+.ab-toggle::after{content:"Show ▾"}
+.activebox[open] .ab-toggle::after{content:"Hide ▴"}
+.activebox[open] .activebar{padding-bottom:10px}
+.activebox #active-jump{display:inline-block;padding-bottom:14px}
 [hidden]{display:none!important}
 </style>
 
@@ -210,8 +222,11 @@ details.later summary{font-size:14px;color:var(--muted)}
     <p class="loading" id="loading"><img class="emo" src="emotes/dash.gif" alt=""><span id="loading-text">Loading patch…</span></p>
     <div id="content" hidden style="display:flex;flex-direction:column;gap:40px">
       <section aria-labelledby="h-active" id="active-sec">
-        <div class="sec-head"><h2 id="h-active">Active right now</h2><a href="#h-events" id="active-jump" class="muted" style="font-size:13px">Details for each event ↓</a></div>
-        <div class="activebar" id="activebar"></div>
+        <details class="activebox" id="active-details">
+          <summary><span class="ab-title" id="h-active">Active right now</span><span class="ab-sum" id="active-sum"></span><span class="ab-toggle" aria-hidden="true"></span></summary>
+          <div class="activebar" id="activebar"></div>
+          <a href="#h-events" id="active-jump" style="font-size:13px">Details for each event ↓</a>
+        </details>
       </section>
 
       <div class="window" id="wrap-banner" hidden></div>
@@ -552,6 +567,12 @@ details.later summary{font-size:14px;color:var(--muted)}
       .sort((x,y) => (U(x.ends)||Infinity) - (U(y.ends)||Infinity));
     const nextUp = P.cards.filter(c => statusOf(c) === 'upcoming').sort((x,y) => U(x.starts) - U(y.starts));
     document.getElementById('active-sec').hidden = !activeList.length && !nextUp.length;
+    const soonestEnd = activeList.find(c => U(c.ends));
+    document.getElementById('active-sum').innerHTML =
+      `<b>${activeList.length}</b> active` + (nextUp.length ? ` · <b>${nextUp.length}</b> opening later` : '') +
+      (soonestEnd ? ` · next to end: ${soonestEnd.name}, <span class="mono">${rel(U(soonestEnd.ends), now).txt}</span>` : '');
+    const ad = document.getElementById('active-details');
+    if (!ad.dataset.bound){ ad.open = S.get('mpp.activeOpen', false); ad.ontoggle = () => S.set('mpp.activeOpen', ad.open); ad.dataset.bound = '1'; }
     document.getElementById('activebar').innerHTML =
       activeList.map(c => { const e = U(c.ends); const r = e ? rel(e, now) : null;
         return `<button class="act" data-name="${c.name}"><span class="dotlive"></span><b>${c.name}</b>${e ? `<span class="act-t ${r.cls}">${r.txt} left</span>` : ''}</button>`; }).join('') +
