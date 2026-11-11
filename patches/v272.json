@@ -156,7 +156,7 @@
           "quanah"
         ],
         "card": "Event World: Quanah",
-        "how": "When creating a Challenger World character, tick <b>Quanah World Leap</b>. It can’t be added later. That character gets Hyper Burning MAX to Lv.260, then leaps to Quanah after 6th job. It can’t use Beyond Burning, Item Burning or most events. Quanah ends Mar 9, so start early if you want one."
+        "how": "When creating a Challenger World character, tick <b>Quanah World Leap</b>. It can’t be added later. That character gets Hyper Burning MAX to Lv.260, then leaps to Quanah after 6th job. It can’t use Beyond Burning, Item Burning or most events. Quanah ends Mar 9, so start early if you want one. Community tip: it’s fine to wait a day or two if you’re unsure of the class, because it’s your only Quanah character."
       },
       {
         "id": "quanah-prep",
@@ -165,7 +165,27 @@
           "quanah"
         ],
         "card": "Event World: Quanah",
-        "how": "Learn story-quest skills like Hero’s Echo first, because they can’t be learned in Quanah. Claim all Hyper Burning rewards and empty your Use tab. Gachapon items, Wonderberries and Star Stamps can’t come with you. Community tip (not in the notes): get an Android first."
+        "how": "Learn story-quest skills like Hero’s Echo first, because they can’t be learned in Quanah. Claim all Hyper Burning rewards and empty your Use tab. Gachapon items, Wonderberries and Star Stamps can’t come with you, and there are no cubes, flames, rental gear or Genesis Pass in Quanah."
+      },
+      {
+        "id": "quanah-gear",
+        "title": "Gear up before you leap",
+        "where": [
+          "quanah"
+        ],
+        "card": "Event World: Quanah",
+        "source": "quanahfiles",
+        "how": "Make drop gear, not meso gear. Potential your emblem and secondary weapon first, since cubes don’t work in Quanah. Get boss accessories (Zakum, Chaos Horntail, Pink Bean), totems, a Gollux ring and pendant, an Android (there’s no way to get one in Quanah) and familiar badges. Max V Matrix and Arcane Symbols if you can, and move every upgrade material into storage."
+      },
+      {
+        "id": "quanah-start",
+        "title": "Your first days in Quanah",
+        "where": [
+          "quanah"
+        ],
+        "card": "Event World: Quanah",
+        "source": "quanahfiles",
+        "how": "Do the tutorial, then farm the field maps until you’re wearing hologram pitched items and armor with good hologram lines. Hologram pitched items expire about 3 days after you get them, so keep swapping in new drops. Do the quest board quests, run Battlesim, and keep armor with prismatic sockets. Bosses need silver or gold entry passes from quests or the dungeon, and drop Mapae fragments."
       },
       {
         "id": "ibp-pick",
@@ -667,7 +687,8 @@
         "HealingTreeInfirmary",
         "QuanahMesoShop",
         "QuanahMaplePointShop"
-      ]
+      ],
+      "source": "quanahfiles"
     },
     {
       "g": "paid",
@@ -1400,5 +1421,11 @@
       "title": "Sunny Sunday",
       "kind": "event"
     }
-  ]
+  ],
+  "sources": {
+    "quanahfiles": {
+      "title": "The Quanah Files (PierecedMoon)",
+      "url": "https://docs.google.com/document/d/1X2P51gaWxZ_Ltxr466CEH26pK9OouXyDT5rOdbYxOhE/edit"
+    }
+  }
 }

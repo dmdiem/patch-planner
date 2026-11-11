@@ -37,6 +37,10 @@ All times are UTC, written as `YYYY-MM-DDTHH:MM:SS` with no `Z`.
 - Put `"world": "heroic"` or `"world": "interactive"` on any item, date or card that only applies to one server type. It's hidden for the other.
 - Inside any text, write `{H|heroic-only text}` or `{I|interactive-only text}`. The page shows the matching part. Heroic is the default, and "Both" shows each part with a tag.
 
+### Community sources
+
+Official notes come first. Tips from community guides go in items or cards with `source: "<key>"`, where `sources.<key>` is `{title, url}`. The page shows them with a "Community tip" chip so they're never mistaken for patch-note facts. If a guide contradicts the notes, follow the notes.
+
 ### Other text features
 
 - `{WED}` and `{THU}` in any text become the next event-weeklies or shops & passes reset, in the viewer's chosen clock (for example "Tue 4:00 PM").

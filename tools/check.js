@@ -39,7 +39,9 @@ for (const [ln, arr] of Object.entries(lists)) for (const i of arr || []) {
   if ((ln === 'weekly') && !['wed','thu'].includes(i.reset)) problems.push(`weekly: "${i.title}" needs reset "wed" or "thu".`);
 }
 for (const x of [...(d.dates || []), ...(d.openings || [])]) if (x.card && !names.has(x.card)) problems.push(`Date "${x.title}" links to missing card "${x.card}".`);
-// 4. Dates parse
+// 4. Community sources exist
+for (const x of [...cards, ...Object.values(lists).flat().filter(Boolean)]) if (x.source && !(d.sources || {})[x.source]) problems.push(`"${x.name || x.title}" uses unknown source "${x.source}".`);
+// 5. Dates parse
 const bad = (t) => t && isNaN(new Date(t + 'Z'));
 for (const x of [d, ...cards, ...(d.dates||[]), ...(d.openings||[]), ...(d.wrapup||[]), ...(d.daily||[]), ...(d.weekly||[])])
   for (const k of ['start','liveAt','mainEnd','ends','starts','t','by','opens','until']) if (bad(x[k])) problems.push(`Bad date in ${k}: ${x[k]} (${x.title||x.name||x.id})`);

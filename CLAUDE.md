@@ -17,6 +17,7 @@ The owner sends a MapleStory (GMS) patch-notes link. The job is to turn the **wh
    - **Where it's played.** Main world, Challenger World or Quanah/event world. Set `where` on everything.
    - **Things to claim or spend before they vanish.** Shops, coins, rewards and expiring items go in `wrapup`.
    - **Maintenance end time,** if the owner gives one, goes in `liveAt`.
+   - **Community guides** the owner shares go in `sources` and on items with `source`. Check each tip against the notes first: drop anything the notes contradict, and say what you dropped.
 5. **Link everything.** Tasks, wrap-up items, dates and openings get `card`. Cards get `notes`.
 6. **Run the check.** Fix every PROBLEM before publishing:
    ```bash
