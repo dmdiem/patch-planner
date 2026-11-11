@@ -1,0 +1,495 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Patch Planner</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: one column planner — "next up" strip, then checklists, then a dated timeline, then plain-English event cards */
+:root{
+  --bg:#F2F5FA; --surface:#FFFFFF; --ink:#1B2333; --muted:#5A6477; --line:#DCE3EE;
+  --accent:#D9661A; --accent-soft:#FCEBDD; --ice:#2C68CF; --ice-soft:#E3ECFB;
+  --urgent:#C93838; --urgent-soft:#FBE4E4; --done:#2E8B57;
+  --f-display:"Fredoka", "Trebuchet MS", system-ui, sans-serif;
+  --f-body:"Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E1420; --surface:#161F30; --ink:#E7ECF5; --muted:#9BA6B9; --line:#26324A;
+  --accent:#F39347; --accent-soft:#3A2717; --ice:#77A6F4; --ice-soft:#1A2A47;
+  --urgent:#F07B7B; --urgent-soft:#3B1D22; --done:#5CC48A; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E1420; --surface:#161F30; --ink:#E7ECF5; --muted:#9BA6B9; --line:#26324A;
+  --accent:#F39347; --accent-soft:#3A2717; --ice:#77A6F4; --ice-soft:#1A2A47;
+  --urgent:#F07B7B; --urgent-soft:#3B1D22; --done:#5CC48A; color-scheme:dark}
+
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55}
+.wrap{max-width:960px;margin:0 auto;padding-block:28px 64px;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));
+  display:flex;flex-direction:column;gap:40px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(28px,5vw,40px);font-weight:700}
+h2{font-size:24px;font-weight:600}
+h3{font-size:17px;font-weight:600}
+p{margin:0}
+.muted{color:var(--muted)}
+.mono{font-family:var(--f-mono);font-size:.86em;font-variant-numeric:tabular-nums}
+.eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:600}
+section{display:flex;flex-direction:column;gap:14px}
+.sec-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px}
+
+/* header */
+header{display:flex;flex-direction:column;gap:12px}
+.lede{max-width:65ch;color:var(--muted)}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--surface)}
+.seg button{font:inherit;font-size:13px;border:0;background:none;color:var(--muted);padding:6px 14px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--ice);outline-offset:2px}
+
+/* reset clocks */
+.clocks{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.clock{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:2px}
+.clock .t{font-family:var(--f-mono);font-size:20px;font-variant-numeric:tabular-nums}
+.clock .what{font-size:13px;color:var(--muted)}
+
+/* next up */
+.next{display:flex;flex-direction:column;gap:8px}
+.ev{display:grid;grid-template-columns:92px 1fr;gap:14px;align-items:start;padding:12px 14px;background:var(--surface);border:1px solid var(--line);border-radius:12px}
+.ev .when{display:flex;flex-direction:column;gap:2px}
+.ev .day{font-family:var(--f-display);font-weight:600;font-size:16px}
+.pill{display:inline-block;font-size:11.5px;font-weight:600;padding:2px 8px;border-radius:999px;background:var(--ice-soft);color:var(--ice);white-space:nowrap;width:max-content}
+.pill.urgent{background:var(--urgent-soft);color:var(--urgent)}
+.pill.soon{background:var(--accent-soft);color:var(--accent)}
+.ev .body{min-width:0;display:flex;flex-direction:column;gap:3px}
+.ev .body strong{font-weight:600}
+
+/* checklists */
+.lists{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:16px;align-items:start}
+.list{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.list-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+.count{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.item{display:grid;grid-template-columns:22px 1fr;gap:10px;align-items:start;padding:8px 0;border-top:1px solid var(--line)}
+.item input{width:18px;height:18px;margin-top:2px;accent-color:var(--accent);cursor:pointer}
+.item label{cursor:pointer;display:flex;flex-direction:column;gap:2px;min-width:0}
+.item .how{font-size:13px;color:var(--muted)}
+.item .how b{color:var(--ink);font-weight:600}
+.item.checked .title{text-decoration:line-through;color:var(--muted)}
+.tag{font-size:11px;font-weight:600;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:0 6px;margin-left:6px;white-space:nowrap}
+
+/* timeline */
+.tl{display:flex;flex-direction:column;border-left:2px solid var(--line);margin-left:6px}
+.tl-row{position:relative;padding:0 0 18px 20px;display:flex;flex-direction:column;gap:3px}
+.tl-row::before{content:"";position:absolute;left:-7px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--surface);border:2px solid var(--ice)}
+.tl-row.past{opacity:.5}
+.tl-row.past::before{border-color:var(--line)}
+.tl-row.big::before{background:var(--accent);border-color:var(--accent)}
+.tl-date{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.tl-date .d{font-family:var(--f-display);font-weight:600}
+.tl-row ul{margin:2px 0 0;padding-left:18px;display:flex;flex-direction:column;gap:2px}
+
+/* event cards */
+.filters{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:inherit;font-size:13px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:5px 12px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.card .meta{display:flex;flex-wrap:wrap;gap:6px}
+.card dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:13.5px}
+.card dt{color:var(--muted);font-weight:500}
+.card dd{margin:0;min-width:0}
+.card .tip{font-size:13px;background:var(--ice-soft);border-radius:8px;padding:8px 10px}
+
+/* glossary */
+details{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:0 16px}
+summary{cursor:pointer;padding:12px 0;font-weight:600}
+.gl{display:grid;grid-template-columns:minmax(140px,220px) 1fr;gap:8px 16px;padding-bottom:16px;font-size:14px}
+.gl dt{font-weight:600}
+.gl dd{margin:0;color:var(--muted);min-width:0}
+footer{font-size:13px;color:var(--muted)}
+footer a{color:var(--ice)}
+
+@media (max-width:520px){
+  .ev{grid-template-columns:1fr;gap:6px}
+  .ev .when{flex-direction:row;gap:8px;align-items:center;flex-wrap:wrap}
+  .gl{grid-template-columns:1fr;gap:2px 0}
+  .gl dd{margin-bottom:8px}
+}
+@media (prefers-reduced-motion:no-preference){.item input{transition:transform .1s}.item input:active{transform:scale(.9)}}
+
+.window{background:var(--accent-soft);border:1px solid var(--accent);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.window .big{font-family:var(--f-mono);font-size:22px;font-variant-numeric:tabular-nums}
+.phase{display:flex;flex-direction:column;gap:6px}
+.phase h3{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.freq{font-family:var(--f-mono);font-size:12px;color:var(--accent);overflow-wrap:anywhere}
+.dl-table{width:100%;border-collapse:collapse;font-size:14px}
+.dl-wrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:14px}
+.dl-table th{text-align:left;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;padding:10px 14px;border-bottom:1px solid var(--line)}
+.dl-table td{padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+.dl-table tr:last-child td{border-bottom:0}
+.dl-table tr.past td{opacity:.45}
+.days{font-family:var(--f-display);font-weight:600;font-size:20px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.days.urgent{color:var(--urgent)} .days.soon{color:var(--accent)}
+.dl-table .sub{font-size:13px;color:var(--muted)}
+@media (max-width:560px){.dl-table .col-date{display:none}}
+.patchpick{font:inherit;font-size:14px;padding:6px 10px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+.loading{padding:40px 0;color:var(--muted)}
+.hist{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-top:4px}
+.hist .lbl{font-size:12px;color:var(--muted);margin-right:4px;font-variant-numeric:tabular-nums}
+.dot{width:14px;height:14px;border-radius:4px;border:1.5px solid var(--line);background:transparent;padding:0;cursor:pointer}
+.dot.done{background:var(--accent);border-color:var(--accent)}
+.dot.miss{border-color:var(--urgent);opacity:.55}
+.dot.now{border-color:var(--ice);border-width:2px}
+.dot.future{opacity:.35;cursor:default}
+.dot:focus-visible{outline:2px solid var(--ice);outline-offset:1px}
+.emo{display:block;object-fit:contain;flex:none}
+.titlebar{display:flex;align-items:center;gap:14px}
+.titlebar .emo{width:72px;height:68px}
+.window{flex-direction:row!important;align-items:center}
+.window .wtext{display:flex;flex-direction:column;gap:10px;min-width:0;flex:1}
+.window .emo{width:96px;height:90px}
+.cheer{display:flex;align-items:center;gap:10px;background:var(--accent-soft);border-radius:10px;padding:6px 10px;font-weight:600;font-size:14px}
+.cheer .emo{width:48px;height:45px}
+.days .emo{display:inline-block;width:22px;height:22px;vertical-align:-3px;margin-left:4px}
+summary{display:flex;align-items:center;gap:10px}
+summary .emo{width:40px;height:38px}
+.loading{display:flex;align-items:center;gap:12px}
+.loading .emo{width:56px;height:52px}
+@media (max-width:520px){.window .emo{width:64px;height:60px}.titlebar .emo{width:56px;height:52px}}
+[hidden]{display:none!important}
+</style>
+
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow" id="eyebrow">MapleStory patch planner</span>
+    <div class="titlebar"><h1>Patch day, dailies, weeklies, deadlines</h1><img class="emo" src="emotes/sparkle.gif" alt=""></div>
+    <p class="lede">Each patch's notes boiled down to what you need to do and how long you have. Checkboxes are saved in this browser. Daily and weekly boxes start fresh at each reset, and the squares under each task keep your history.</p>
+    <div class="toolbar">
+      <label for="patch" class="muted" style="font-size:13px">Patch</label>
+      <select id="patch" class="patchpick"></select>
+      <span class="muted" style="font-size:13px">Times in</span>
+      <div class="seg" role="group" aria-label="Time zone">
+        <button id="tz-local" aria-pressed="true">My time</button>
+        <button id="tz-utc" aria-pressed="false">UTC (game time)</button>
+      </div>
+    </div>
+    <div class="clocks" id="clocks"></div>
+  </header>
+
+  <div id="app">
+    <p class="loading" id="loading"><img class="emo" src="emotes/dash.gif" alt=""><span id="loading-text">Loading patch…</span></p>
+    <div id="content" hidden style="display:flex;flex-direction:column;gap:40px">
+      <section aria-labelledby="h-day0" id="day0-sec">
+        <div class="sec-head"><h2 id="h-day0">Day 0: patch day double-dips</h2></div>
+        <div class="window" id="day0-window"></div>
+        <div class="lists" id="day0-lists"></div>
+      </section>
+
+      <section aria-labelledby="h-daily">
+        <h2 id="h-daily">Every day</h2>
+        <div class="lists"><div class="list" id="list-daily"></div></div>
+      </section>
+
+      <section aria-labelledby="h-weekly">
+        <div class="sec-head"><h2 id="h-weekly">Every week</h2><span class="muted" style="font-size:13px" id="week-note"></span></div>
+        <div class="lists"><div class="list" id="list-wed"></div><div class="list" id="list-thu"></div></div>
+      </section>
+
+      <section aria-labelledby="h-dl">
+        <div class="sec-head"><h2 id="h-dl">Deadlines</h2>
+          <label style="font-size:13px" class="muted"><input type="checkbox" id="show-past"> show passed</label></div>
+        <div class="dl-wrap"><table class="dl-table">
+          <thead><tr><th>Days left</th><th>What</th><th class="col-date">When</th></tr></thead>
+          <tbody id="deadlines"></tbody></table></div>
+      </section>
+
+      <section aria-labelledby="h-events">
+        <div class="sec-head"><h2 id="h-events">Events in plain English</h2></div>
+        <div class="filters" id="filters" role="group" aria-label="Filter events"></div>
+        <div class="cards" id="cards"></div>
+      </section>
+    </div>
+  </div>
+
+  <section aria-labelledby="h-gl">
+    <h2 id="h-gl">Patch-note phrases, decoded</h2>
+    <details>
+      <summary><img class="emo" src="emotes/confused.gif" alt="">What the wording actually means</summary>
+      <dl class="gl">
+        <dt>"after maintenance"</dt><dd>The event starts when the servers come back up on that date, not at midnight.</dd>
+        <dt>"until 11:59 PM UTC"</dt><dd>The last minute you can play or claim. Use the time toggle above to see it in your own clock.</dd>
+        <dt>"can be used until … 2:00 AM UTC"</dt><dd>Items you already claimed vanish after this. It's usually 2 hours after the claim deadline.</dd>
+        <dt>"near your level"</dt><dd>Monsters within 20 levels above or below you.</dd>
+        <dt>"1-person party" / "solo"</dt><dd>Kill the boss on your own. Practice Mode often counts; the patch notes say when it doesn't.</dd>
+        <dt>"shared across the account"</dt><dd>You only need to do it on one character.</dd>
+        <dt>"Tradable within world"</dt><dd>You can move it between your characters on the same server through storage.</dd>
+        <dt>"Karma …"</dt><dd>The item can be traded once more before it locks.</dd>
+        <dt>Heroic vs Interactive</dt><dd>Heroic worlds (formerly Reboot) and Interactive (trading) worlds often get different rewards in the notes.</dd>
+      </dl>
+    </details>
+  </section>
+
+  <footer id="footer"></footer>
+</div>
+
+<script>
+(function(){
+  const S = {
+    get(k, d){ try{ const v = localStorage.getItem(k); return v==null ? d : JSON.parse(v); }catch(e){ return d; } },
+    set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+  };
+  let useUTC = S.get('mpp.utc', false);
+  let showPast = S.get('mpp.past', false);
+  let filter = S.get('mpp.filter', 'any');
+  let P = null, INDEX = [];
+  // carry over ticks saved by the first single-patch version of this page
+  try{ for (const k of ['d0','daily','week']){ const o = localStorage.getItem('v272.'+k);
+    if (o && !localStorage.getItem('mpp.v272.'+k)) localStorage.setItem('mpp.v272.'+k, o); } }catch(e){}
+  const DAY = 864e5, WEEK_MS = 7*DAY;
+  const DOW = {wed:3, thu:4};
+  const U = (s) => s ? new Date(s + 'Z') : null;
+  const tz = () => useUTC ? 'UTC' : undefined;
+  const fmtDate = (d) => d.toLocaleDateString(undefined, {weekday:'short', month:'short', day:'numeric', timeZone: tz()});
+  const fmtYear = (d) => d.toLocaleDateString(undefined, {year:'numeric', timeZone: tz()});
+  const fmtTime = (d) => d.toLocaleTimeString(undefined, {hour:'numeric', minute:'2-digit', timeZone: tz()}) + (useUTC ? ' UTC' : '');
+  function rel(d, now){
+    const ms = d - now;
+    if (ms < 0) return {txt:'passed', cls:''};
+    const days = Math.floor(ms/DAY), hrs = Math.floor((ms%DAY)/36e5), mins = Math.floor((ms%36e5)/6e4);
+    const txt = days >= 1 ? `${days}d ${hrs}h` : hrs >= 1 ? `${hrs}h ${mins}m` : `${mins}m`;
+    return {txt, cls: ms < 2*DAY ? 'urgent' : ms < 7*DAY ? 'soon' : ''};
+  }
+  const utcMidnight = (now, add=0) => new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()+add));
+  function nextUTCWeekday(now, dow){
+    const d = utcMidnight(now); let add = (dow - d.getUTCDay() + 7) % 7; if (add === 0) add = 7;
+    d.setUTCDate(d.getUTCDate() + add); return d;
+  }
+  const lastUTCWeekday = (now, dow) => new Date(nextUTCWeekday(now, dow) - WEEK_MS);
+  const weeksLeft = (now, end, dow) => now > end ? 0 : Math.ceil((end - lastUTCWeekday(now, dow)) / WEEK_MS);
+  const key = (k) => `mpp.${P.id}.${k}`;
+  const esc = (s) => String(s ?? '');
+
+  function itemHTML(prefix, i, checked, right, hist){
+    return `<div class="item ${checked?'checked':''}">
+      <input type="checkbox" id="${prefix}-${i.id}" data-id="${i.id}" ${checked?'checked':''}>
+      <label for="${prefix}-${i.id}"><span class="title">${esc(i.title)}${i.tag?`<span class="tag">${i.tag}</span>`:''}</span>
+      <span class="how">${esc(i.how)}</span>${right?`<span class="freq">${right}</span>`:''}</label>${hist||''}</div>`;
+  }
+  function bindList(rootId, store, keyFn){
+    document.querySelectorAll(`#${rootId} input`).forEach(el => el.onchange = () => {
+      const o = S.get(key(store), {}); o[el.dataset.id] = el.checked ? keyFn(el.dataset.id) : null; S.set(key(store), o); render();
+    });
+  }
+  // History: { "dy:login": ["2026-11-11", ...], "wk:training": ["2026-11-11", ...] }
+  function getHist(){
+    let h = S.get(key('hist'), null);
+    if (!h){ // migrate from the older "only this period" format
+      h = {};
+      const d = S.get(key('daily'), {}), w = S.get(key('week'), {});
+      for (const [id,v] of Object.entries(d)) if (typeof v === 'string') h['dy:'+id] = [v];
+      for (const [id,v] of Object.entries(w)) if (typeof v === 'string') h['wk:'+id] = [v];
+      S.set(key('hist'), h);
+    }
+    return h;
+  }
+  function toggleHist(hk, period, on){
+    const h = getHist(); const arr = new Set(h[hk] || []);
+    on ? arr.add(period) : arr.delete(period);
+    h[hk] = [...arr].sort(); S.set(key('hist'), h); render();
+  }
+  function histStrip(hk, periods, curKey, unit){
+    const h = getHist(); const done = new Set(h[hk] || []);
+    const pastOrNow = periods.filter(p => p.state !== 'future');
+    const n = pastOrNow.filter(p => done.has(p.k)).length;
+    const dots = periods.map(p => {
+      const isDone = done.has(p.k);
+      const cls = isDone ? 'done' : p.state === 'past' ? 'miss' : p.state;
+      return `<button class="dot ${cls}${p.k===curKey?' now':''}" data-hk="${hk}" data-k="${p.k}" ${p.state==='future'?'disabled':''}
+        title="${p.label}${isDone?' · done':p.state==='past'?' · missed':''}" aria-label="${p.label}: ${isDone?'done':'not done'}" aria-pressed="${isDone}"></button>`;
+    }).join('');
+    return `<div class="hist" style="grid-column:2"><span class="lbl">${n}/${pastOrNow.length} ${unit}</span>${dots}</div>`;
+  }
+  function bindHist(rootId){
+    document.querySelectorAll(`#${rootId} .dot:not([disabled])`).forEach(b => b.onclick = () => toggleHist(b.dataset.hk, b.dataset.k, b.getAttribute('aria-pressed') !== 'true'));
+    document.querySelectorAll(`#${rootId} input[data-hk]`).forEach(el => el.onchange = () => toggleHist(el.dataset.hk, el.dataset.k, el.checked));
+  }
+
+  function renderClocks(now){
+    const clocks = [
+      ['Daily reset', utcMidnight(now,1), 'Log-in rewards, daily caps'],
+      ['Wednesday reset', nextUTCWeekday(now,3), 'Weekly bosses, most weekly missions'],
+      ['Thursday reset', nextUTCWeekday(now,4), 'Coin-shop limits, passes, Thursday weeklies'],
+    ];
+    document.getElementById('clocks').innerHTML = clocks.map(([n,d,w]) => `
+      <div class="clock"><span class="eyebrow">${n} in</span><span class="t">${rel(d,now).txt}</span>
+        <span class="what">${fmtDate(d)}, ${fmtTime(d)}<br>${w}</span></div>`).join('');
+  }
+
+  function render(){
+    const now = new Date();
+    renderClocks(now);
+    document.getElementById('tz-local').setAttribute('aria-pressed', !useUTC);
+    document.getElementById('tz-utc').setAttribute('aria-pressed', useUTC);
+    if (!P) return;
+
+    const start = U(P.start), mainEnd = U(P.mainEnd);
+    const dayKey = utcMidnight(now).toISOString().slice(0,10);
+    const periodKey = (r) => lastUTCWeekday(now, DOW[r]).toISOString().slice(0,10);
+
+    // ---- day 0 ----
+    const firstWed = nextUTCWeekday(new Date(start.getTime()), 3);
+    const firstThu = nextUTCWeekday(new Date(start.getTime()), 4);
+    const firstOf = {wed:firstWed, thu:firstThu};
+    const sec0 = document.getElementById('day0-sec');
+    const day0End = new Date(Math.max(firstWed, firstThu));
+    sec0.hidden = now >= day0End;
+    if (!sec0.hidden){
+      const d0 = S.get(key('d0'), {});
+      const before = (P.day0.beforeReset || []).filter(i => now < firstOf[i.reset]);
+      const soonest = before.length ? before.map(i => firstOf[i.reset]).sort((a,b)=>a-b)[0] : null;
+      const startDay = start.toLocaleDateString(undefined,{weekday:'long', timeZone:'UTC'});
+      document.getElementById('day0-window').innerHTML = (soonest
+        ? `<span class="eyebrow">Double-dip window closes in</span><span class="big">${rel(soonest, now).txt}</span>
+           <p>This patch went live on a <b>${startDay}</b> (UTC). The next reset comes at ${fmtDate(soonest)} ${fmtTime(soonest)}, so anything that resets then gets two rounds close together. The first Wednesday week runs until ${fmtDate(firstWed)} ${fmtTime(firstWed)}.</p>`
+        : `<span class="eyebrow">Patch week ends in</span><span class="big">${rel(day0End, now).txt}</span>
+           <p>The double-dip window has closed. Finish the one-time setup below.</p>`).replace(/^/, '<div class="wtext">') + `</div>${soonest ? '<img class="emo" src="emotes/help.gif" alt="">' : ''}`;
+      const setup = P.day0.setup || [];
+      document.getElementById('day0-lists').innerHTML =
+        (before.length ? `<div class="list"><div class="list-head"><h3>Before the next reset</h3><span class="count">${before.filter(i=>d0[i.id]).length}/${before.length}</span></div>${before.map(i => itemHTML('d0', i, !!d0[i.id])).join('')}</div>` : '') +
+        `<div class="list"><div class="list-head"><h3>Set up once</h3><span class="count">${setup.filter(i=>d0[i.id]).length}/${setup.length}</span></div>${setup.map(i => itemHTML('d0', i, !!d0[i.id])).join('')}</div>`;
+      bindList('day0-lists', 'd0', () => true);
+    }
+
+    // ---- daily ----
+    const hist = getHist();
+    const isoDay = (d) => d.toISOString().slice(0,10);
+    const shortLbl = (d) => d.toLocaleDateString(undefined,{month:'short', day:'numeric', timeZone:'UTC'});
+    const dailyItems = P.daily.filter(i => !i.until || now <= U(i.until));
+    const leftTxt = (i) => i.until ? `${i.freq} · ${Math.max(0, Math.ceil((U(i.until) - now)/DAY))} days left` : i.freq;
+    const startDay = utcMidnight(start);
+    const dayPeriods = () => { // last 14 days within the patch, oldest first
+      const out = []; const today = utcMidnight(now);
+      for (let k = 13; k >= 0; k--){ const d = new Date(today - k*DAY); if (d < startDay) continue;
+        out.push({k: isoDay(d), label: shortLbl(d), state: k === 0 ? 'now' : 'past'}); }
+      return out;
+    };
+    const doneNow = (hk, k) => (hist[hk] || []).includes(k);
+    const rowWithHist = (prefix, i, hk, k, right, strip) => itemHTML(prefix, i, doneNow(hk,k), right, strip)
+      .replace(`data-id="${i.id}"`, `data-id="${i.id}" data-hk="${hk}" data-k="${k}"`);
+    document.getElementById('list-daily').innerHTML =
+      `<div class="list-head"><h3>Today</h3><span class="count">${dailyItems.filter(i=>doneNow('dy:'+i.id, dayKey)).length}/${dailyItems.length}</span></div>
+       ${dailyItems.length && dailyItems.every(i=>doneNow('dy:'+i.id, dayKey)) ? '<div class="cheer"><img class="emo" src="emotes/ok.gif" alt="">All done for today</div>' : ''}
+       <p class="muted" style="font-size:13px">Squares show the last 14 days. Click one to fix a day you forgot to tick.</p>` +
+      dailyItems.map(i => rowWithHist('dy', i, 'dy:'+i.id, dayKey, leftTxt(i), histStrip('dy:'+i.id, dayPeriods(), dayKey, 'days'))).join('');
+    bindHist('list-daily');
+
+    // ---- weekly ----
+    const wkTxt = (i) => { const n = weeksLeft(now, U(i.until), DOW[i.reset]);
+      return `${i.freq} · ${n} week${n===1?'':'s'} left${i.total?' · '+i.total:''}`; };
+    const totalWeeks = Math.ceil((mainEnd - lastUTCWeekday(start, 3)) / WEEK_MS);
+    document.getElementById('week-note').textContent = `${P.mainEndLabel}: ${weeksLeft(now, mainEnd, 3)} of ${totalWeeks} weeks left`;
+    const weekPeriods = (r, until) => { // every reset week of this task, from patch day to its end
+      const out = []; const cur = periodKey(r);
+      // first period is the one that contains the patch start
+      let p = new Date(nextUTCWeekday(new Date(start.getTime()+1), DOW[r]) - WEEK_MS);
+      while (p <= until){
+        const k = isoDay(p);
+        const label = 'Week of ' + shortLbl(p < start ? start : p);
+        out.push({k, label, state: k === cur ? 'now' : p > now ? 'future' : 'past'});
+        p = new Date(p.getTime() + WEEK_MS);
+      }
+      return out;
+    };
+    for (const [r, el, label] of [['wed','list-wed','Resets Wednesday'],['thu','list-thu','Resets Thursday']]){
+      const items = P.weekly.filter(i => i.reset === r);
+      const live = items.filter(i => now <= U(i.until));
+      const box = document.getElementById(el);
+      box.hidden = !items.length;
+      const pk = periodKey(r);
+      box.innerHTML = `<div class="list-head"><h3>${label}</h3><span class="count">${live.filter(i=>doneNow('wk:'+i.id, pk)).length}/${live.length}</span></div>
+        ${live.length && live.every(i=>doneNow('wk:'+i.id, pk)) ? '<div class="cheer"><img class="emo" src="emotes/party.gif" alt="">Week cleared</div>' : ''}` +
+        items.map(i => {
+          const ended = now > U(i.until);
+          const row = rowWithHist('w'+r, i, 'wk:'+i.id, pk, ended ? 'ended · history kept' : wkTxt(i), histStrip('wk:'+i.id, weekPeriods(r, U(i.until)), pk, 'weeks'));
+          return ended ? row.replace('<input type="checkbox"', '<input type="checkbox" disabled') : row;
+        }).join('');
+      bindHist(el);
+    }
+
+    // ---- deadlines ----
+    document.getElementById('show-past').checked = showPast;
+    const rows = P.dates.map(x => ({...x, d:U(x.t)})).filter(x => showPast || x.d > now);
+    document.getElementById('deadlines').innerHTML = rows.length ? rows.map(x => {
+      const ms = x.d - now, past = ms < 0, days = Math.floor(ms / DAY);
+      const label = past ? '—' : days >= 1 ? `${days}d` : `${Math.max(1,Math.floor(ms/36e5))}h`;
+      const cls = past ? '' : ms < 2*DAY ? 'urgent' : ms < 7*DAY ? 'soon' : '';
+      const kind = x.sunday ? '<span class="pill soon">Sunny Sunday</span> ' : x.deadline ? '<span class="pill urgent">deadline</span> ' : '';
+      return `<tr class="${past?'past':''}"><td><span class="days ${cls}">${label}${cls==='urgent'?'<img class="emo" src="emotes/sweat.gif" alt="">':''}</span></td>
+        <td>${kind}<strong>${x.title}</strong>${x.sub?`<div class="sub">${x.sub}</div>`:''}</td>
+        <td class="col-date"><span class="mono">${fmtDate(x.d)}, ${fmtYear(x.d)}<br>${fmtTime(x.d)}</span></td></tr>`;
+    }).join('') : `<tr><td colspan="3" class="muted"><span class="cheer" style="background:none"><img class="emo" src="emotes/relax.gif" alt="">Every date in this patch has passed.</span></td></tr>`;
+
+    // ---- cards ----
+    const GROUPS = [['all','Everyone'],['main','Lv.260+ mains'],['alt','Alts and new characters'],['cw','Challenger World'],['quanah','Event world'],['paid','Paid']]
+      .filter(([g]) => P.cards.some(c => c.g === g));
+    if (filter !== 'any' && !GROUPS.some(([g]) => g === filter)) filter = 'any';
+    document.getElementById('filters').innerHTML = [['any','All events'], ...GROUPS].map(([k,l]) =>
+      `<button class="chip" data-k="${k}" aria-pressed="${filter===k}">${l}</button>`).join('');
+    document.querySelectorAll('#filters .chip').forEach(b => b.onclick = () => { filter = b.dataset.k; S.set('mpp.filter', filter); render(); });
+    const gName = Object.fromEntries(GROUPS);
+    document.getElementById('cards').innerHTML = P.cards.filter(c => filter==='any' || c.g===filter).map(c => {
+      const end = U(c.ends), r = end ? rel(end, now) : null;
+      return `<article class="card"><div class="meta"><span class="pill">${gName[c.g]||c.g}</span>${end ? `<span class="pill ${r.cls}">${r.txt==='passed'?'ended':'ends in '+r.txt}</span>`:''}</div>
+        <h3>${c.name}</h3><p>${c.what}</p>
+        <dl><dt>Who</dt><dd>${c.who}</dd><dt>Start</dt><dd>${c.start}</dd>
+        ${end ? `<dt>Ends</dt><dd>${fmtDate(end)}, ${fmtYear(end)} · <span class="mono">${fmtTime(end)}</span></dd>`:''}</dl>
+        ${c.tip?`<p class="tip">${c.tip}</p>`:''}</article>`;
+    }).join('');
+  }
+
+  async function loadPatch(id){
+    const meta = INDEX.find(p => p.id === id) || INDEX[0];
+    document.getElementById('loading').hidden = false;
+    document.getElementById('content').hidden = true;
+    try{
+      const res = await fetch(`patches/${meta.id}.json`);
+      if (!res.ok) throw new Error(res.status);
+      P = await res.json();
+    }catch(e){
+      document.getElementById('loading-text').textContent = `Couldn’t load the ${meta.version} data file. Reload the page to try again.`;
+      return;
+    }
+    document.getElementById('patch').value = P.id;
+    document.getElementById('eyebrow').textContent = `GMS ${P.version} · ${P.name} · ${U(P.start).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric',timeZone:'UTC'})}`;
+    document.getElementById('footer').innerHTML = `Built from the official <a href="${P.notesUrl}" target="_blank" rel="noopener">${P.version} ${P.name} patch notes</a>. Reward tables, skill numbers and balance changes are left out. Check the notes for those.`;
+    document.getElementById('loading').hidden = true;
+    document.getElementById('content').hidden = false;
+    render();
+  }
+
+  async function boot(){
+    render();
+    try{
+      const res = await fetch('patches/index.json');
+      INDEX = (await res.json()).sort((a,b) => b.start.localeCompare(a.start));
+    }catch(e){
+      document.getElementById('loading-text').textContent = 'Couldn’t load the patch list. Reload the page to try again.';
+      return;
+    }
+    const sel = document.getElementById('patch');
+    sel.innerHTML = INDEX.map(p => `<option value="${p.id}">${p.version} · ${p.name}</option>`).join('');
+    sel.onchange = () => { location.hash = sel.value; };
+    const fromHash = () => { const h = location.hash.slice(1); return INDEX.some(p => p.id === h) ? h : INDEX[0].id; };
+    window.addEventListener('hashchange', () => loadPatch(fromHash()));
+    loadPatch(fromHash());
+  }
+
+  document.getElementById('tz-local').onclick = () => { useUTC = false; S.set('mpp.utc', false); render(); };
+  document.getElementById('tz-utc').onclick = () => { useUTC = true; S.set('mpp.utc', true); render(); };
+  document.getElementById('show-past').onchange = (e) => { showPast = e.target.checked; S.set('mpp.past', showPast); render(); };
+  boot();
+  setInterval(render, 60000);
+})();
+</script>

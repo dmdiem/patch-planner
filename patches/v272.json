@@ -1,0 +1,422 @@
+{
+  "id": "v272",
+  "version": "v.272",
+  "name": "Maplayer One",
+  "start": "2026-11-11T00:00:00",
+  "notesUrl": "https://www.nexon.com/maplestory/news/update/47132/v-272-maplayer-one-patch-notes",
+  "mainEnd": "2027-02-09T23:59:00",
+  "mainEndLabel": "Operation Ultima",
+  "day0": {
+    "beforeReset": [
+      {
+        "id": "d0-cpass",
+        "title": "Challenger Pass: do this week’s missions now",
+        "how": "Its week resets Thursday, so patch day is a mini-week of its own. Log in plus kills gets points now, and again from Nov 12. Up to 500 points per mini-week.",
+        "tag": "Challenger World",
+        "reset": "thu"
+      },
+      {
+        "id": "d0-bshop",
+        "title": "Spend Bounty Coins before Thursday",
+        "how": "Bounty Coin Shop limits refresh Thursday 00:00 UTC. Coins you earn from tonight’s solo bosses can be spent up to the limit now, and the limits open again a few hours later.",
+        "tag": "if bossing",
+        "reset": "thu"
+      },
+      {
+        "id": "d0-battlesim",
+        "title": "Burn Battlesim power",
+        "how": "Projected Weekly Power (150) refills Thursday, so anything left over at the reset is wasted.",
+        "tag": "Quanah",
+        "reset": "thu"
+      }
+    ],
+    "setup": [
+      {
+        "id": "legion",
+        "title": "Re-spend your Legion Points",
+        "how": "The Legion Revamp wiped your Legion stats. Re-allocate them before you boss or train.",
+        "tag": "everyone"
+      },
+      {
+        "id": "ultima",
+        "title": "Join Operation Ultima",
+        "how": "<b>Event List → Operation Ultima → Participate</b>, then do the lightbulb quest <b>Hard-Fought Intel</b>. This unlocks Shadow Bounties. Lv.101+.",
+        "tag": "Lv.101+"
+      },
+      {
+        "id": "bossafter",
+        "title": "Do weekly bosses after joining, solo",
+        "how": "Shadow Bounties only pay for solo boss kills. If you still have bosses left this week, kill them after joining Ultima so they count.",
+        "tag": "Lv.101+"
+      },
+      {
+        "id": "winter",
+        "title": "Join Winter Countdown",
+        "how": "<b>Event List → Winter Countdown → Participate</b>. The window is short (until Nov 24), so start on day 0.",
+        "tag": "Lv.101+"
+      },
+      {
+        "id": "cores",
+        "title": "Decide your Etherion Relic cores",
+        "how": "Your first Relic completion lets you pick a core. Picks can’t be undone.",
+        "tag": "Lv.101+"
+      },
+      {
+        "id": "hexa",
+        "title": "Grab free HEXA + Erda Link reset scrolls",
+        "how": "From <b>Maple Administrator</b>. Once per character, Lv.260+. They expire Dec 16, so you only need them if you plan to re-spec.",
+        "tag": "Lv.260+"
+      },
+      {
+        "id": "beyond",
+        "title": "Pick a Beyond Burning character",
+        "how": "One Lv.260–278 character per account (permanent): +1 extra level per level up to 280. Pick it before you level it, because levels you already passed don’t pay.",
+        "tag": "Lv.260–278"
+      },
+      {
+        "id": "hbm",
+        "title": "Set up Hyper Burning MAX alt",
+        "how": "New character, or an existing Lv.200–258 one. Gives +4 extra levels per level up to 260. Same rule: set it up before you level.",
+        "tag": "alts"
+      },
+      {
+        "id": "cw",
+        "title": "Challenger World: choose Heroic or Interactive",
+        "how": "Your first Challenger character locks this choice for the season, even if you delete it.",
+        "tag": "Challenger World"
+      }
+    ]
+  },
+  "daily": [
+    {
+      "id": "login",
+      "title": "Log in on one character",
+      "how": "Gives the Ultima Supply Report (3 × 3× EXP coupons). It only counts 5 days per Wed–Tue week, so you can skip 2 days a week.",
+      "freq": "5 of 7 days",
+      "until": "2027-02-09T23:59:00"
+    },
+    {
+      "id": "winter",
+      "title": "Winter Countdown check-in",
+      "how": "One check-in per day. Missed days can’t be made up.",
+      "freq": "daily",
+      "until": "2026-11-24T23:59:00"
+    },
+    {
+      "id": "supplies",
+      "title": "Use Shadow Supplies charges",
+      "how": "Each character gets 10 charges a day and stores at most 50. Hunt near your level: 500 kills spawns an EXP box.",
+      "freq": "≤ 5 days apart",
+      "until": "2026-12-15T23:59:00"
+    },
+    {
+      "id": "symbols",
+      "title": "Symbol dailies (Arcane / Grandis)",
+      "how": "Etherion Relics and Training cards add EXP and extra symbols. The extra symbols count once per character per region each day.",
+      "freq": "daily",
+      "until": null
+    }
+  ],
+  "weekly": [
+    {
+      "id": "training",
+      "title": "Ultima Training Report",
+      "how": "10,000 kills near your level. Click <b>Complete</b> at each 2,000. Shared across the account.",
+      "freq": "5 claims/wk",
+      "total": "60 max over 13 weeks",
+      "until": "2027-02-09T23:59:00",
+      "reset": "wed"
+    },
+    {
+      "id": "relic",
+      "title": "Etherion Relics energy",
+      "how": "10,000 kills <b>solo</b> (no party), then <b>Collect</b>. Unused weekly completions stack, so you can catch up later.",
+      "freq": "1/wk",
+      "total": "12 max over 13 weeks",
+      "until": "2027-02-09T23:59:00",
+      "reset": "wed"
+    },
+    {
+      "id": "bounty",
+      "title": "Shadow Bounties (solo bosses)",
+      "how": "Weekly caps per world: 3,000 Basic, 2,000 Intermediate, 100 Advanced coins. Only the best boss each week pays the full amount.",
+      "freq": "weekly cap",
+      "total": "",
+      "until": "2027-02-09T23:59:00",
+      "reset": "wed"
+    },
+    {
+      "id": "specter",
+      "title": "Specter Blast clear",
+      "how": "Lv.260+. One EXP payout per account per week. <b>Event List → Specter Blast</b>.",
+      "freq": "1/wk",
+      "total": "5 clears total",
+      "until": "2026-12-15T23:59:00",
+      "reset": "wed"
+    },
+    {
+      "id": "sauna",
+      "title": "Luxe Sauna (optional)",
+      "how": "Up to 48h of charge per week.",
+      "freq": "48h/wk",
+      "total": "",
+      "until": "2027-06-08T23:59:00",
+      "reset": "wed"
+    },
+    {
+      "id": "shop",
+      "title": "Bounty Coin Shop purchases",
+      "how": "Purchase limits refresh Thursday. Spend coins before then or lose that week’s limit.",
+      "freq": "refreshes Thu",
+      "total": "",
+      "until": "2027-02-09T23:59:00",
+      "reset": "thu"
+    },
+    {
+      "id": "cpass",
+      "title": "Challenger Pass missions",
+      "how": "Challenger World only. Max 500 points a week, and Lv.30 needs 3,000, so plan on 6 full weeks.",
+      "freq": "500 pts/wk",
+      "total": "6 weeks to max",
+      "until": "2027-02-09T23:59:00",
+      "reset": "thu"
+    }
+  ],
+  "dates": [
+    {
+      "t": "2026-11-12T00:00:00",
+      "title": "First Thursday reset",
+      "sub": "Challenger Pass, Bounty Coin Shop and Battlesim roll over. Mayrin, Kai and Genesis Pass open."
+    },
+    {
+      "t": "2026-11-15T00:00:00",
+      "sunday": true,
+      "title": "Sunny Sunday: EXP",
+      "sub": "3× Treasure Hunter, Combo Kill +300%, Rune EXP, Monster Park +250%, 2× Sol Erda"
+    },
+    {
+      "t": "2026-11-18T00:00:00",
+      "title": "First Wednesday reset",
+      "sub": "End of the patch-day week for bosses and Ultima missions"
+    },
+    {
+      "t": "2026-11-22T00:00:00",
+      "sunday": true,
+      "title": "Sunny Sunday: Star Force",
+      "sub": "30% off Star Force, 30% less boom at 21★ and below, 50% off Ability"
+    },
+    {
+      "t": "2026-11-24T23:59:00",
+      "deadline": true,
+      "title": "Winter Countdown ends",
+      "sub": "Gifts expire Nov 25, 2:00 AM UTC"
+    },
+    {
+      "t": "2026-11-29T23:59:00",
+      "sunday": true,
+      "deadline": true,
+      "title": "Sunny Sunday + free gift",
+      "sub": "Claim “Special Sunny Sunday Gifts for All” in the Event List that day. 1+1 Star Force up to 12★, cheap Spell Traces and Abilities."
+    },
+    {
+      "t": "2026-12-06T00:00:00",
+      "sunday": true,
+      "title": "Sunny Sunday: Star Force + Sol Erda",
+      "sub": "30% off Star Force, less boom, 2× Sol Erda"
+    },
+    {
+      "t": "2026-12-09T00:00:00",
+      "title": "Cash Shop Transfer opens",
+      "sub": "Until Dec 16, 2:00 PM UTC"
+    },
+    {
+      "t": "2026-12-13T00:00:00",
+      "sunday": true,
+      "title": "Sunny Sunday: EXP",
+      "sub": "Same buffs as Nov 15"
+    },
+    {
+      "t": "2026-12-15T23:59:00",
+      "deadline": true,
+      "title": "Shadow Supplies + Specter Blast end",
+      "sub": "Last Specter Blast weekly EXP"
+    },
+    {
+      "t": "2026-12-16T02:00:00",
+      "deadline": true,
+      "title": "Free HEXA / Erda Link reset scrolls expire",
+      "sub": "Challenger World Leap opens after maintenance"
+    },
+    {
+      "t": "2026-12-16T14:00:00",
+      "deadline": true,
+      "title": "Cash Shop Transfer closes",
+      "sub": ""
+    },
+    {
+      "t": "2027-02-08T23:59:00",
+      "deadline": true,
+      "title": "Genesis Pass sale ends",
+      "sub": ""
+    },
+    {
+      "t": "2027-02-09T23:59:00",
+      "deadline": true,
+      "big": true,
+      "title": "Most events end, last day to claim",
+      "sub": "Operation Ultima and its shops, Challenger World, Burning events, Arthur’s Rental, New Recruit, Genesis Pass Plus"
+    },
+    {
+      "t": "2027-02-10T02:00:00",
+      "deadline": true,
+      "title": "Claimed event items expire",
+      "sub": "Genesis Pass Plus items last until Feb 17"
+    },
+    {
+      "t": "2027-02-23T23:59:00",
+      "deadline": true,
+      "title": "Challenger World final leap window closes",
+      "sub": ""
+    },
+    {
+      "t": "2027-03-09T23:59:00",
+      "deadline": true,
+      "title": "Quanah Event World ends",
+      "sub": "Characters get moved to the World Leap zone"
+    },
+    {
+      "t": "2027-06-08T23:59:00",
+      "deadline": true,
+      "title": "Luxe Sauna ends",
+      "sub": "Unused time is lost"
+    }
+  ],
+  "cards": [
+    {
+      "g": "all",
+      "name": "Operation Ultima",
+      "who": "Lv.101+",
+      "start": "Event List → Operation Ultima → Participate",
+      "ends": "2027-02-09T23:59:00",
+      "what": "The main event this patch. It bundles a story chapter, two weekly kill missions, a solo-boss coin shop, and EXP boxes. Most of the progress is shared across your account.",
+      "tip": "Do the weekly 10,000-kill missions on any one character."
+    },
+    {
+      "g": "all",
+      "name": "Etherion Relics",
+      "who": "Lv.101+",
+      "start": "Event List → Etherion Relics",
+      "ends": "2027-02-09T23:59:00",
+      "what": "Each week you do 10,000 solo kills to unlock a bonus: more daily-quest EXP, Monster Park EXP, Sol Erda, Epic Dungeon EXP. Bosses drop Etherion, which you use to upgrade those bonuses.",
+      "tip": "You choose the cores yourself, and a choice can’t be undone."
+    },
+    {
+      "g": "all",
+      "name": "Shadow Bounties",
+      "who": "Lv.101+",
+      "start": "Starts after the Hard-Fought Intel quest",
+      "ends": "2027-02-09T23:59:00",
+      "what": "Solo your weekly bosses (Lotus and up) for Bounty Coins, then spend them in the Bounty Coin Shop (Hawk, or Event List).",
+      "tip": "Coins only work in the world where you earned them."
+    },
+    {
+      "g": "all",
+      "name": "Shadow Supplies",
+      "who": "Lv.101+",
+      "start": "Turns on by itself in hunting maps",
+      "ends": "2026-12-15T23:59:00",
+      "what": "Kill 500 monsters near your level and an EXP box spawns. Break it for a big EXP chunk (one level at most).",
+      "tip": "Charges stop stacking at 50, so log in at least every 5 days."
+    },
+    {
+      "g": "main",
+      "name": "Specter Blast",
+      "who": "Lv.260+ (after \"A Divine Power\")",
+      "start": "Event List → Specter Blast",
+      "ends": "2026-12-15T23:59:00",
+      "what": "A 2-player minigame where you play as Gaon or Keira. Clear it once a week for EXP based on your level.",
+      "tip": "Leaving a Quick Start game early carries a penalty."
+    },
+    {
+      "g": "all",
+      "name": "Sunny Sundays",
+      "who": "Lv.101+",
+      "start": "Just log in that Sunday (UTC)",
+      "ends": "2026-12-13T23:59:00",
+      "what": "Five Sundays of buffs: Nov 15 and Dec 13 for EXP, Nov 22 and Dec 6 for Star Force, Nov 29 for everything plus a free gift.",
+      "tip": "Save Star Force attempts for Nov 22, Nov 29 and Dec 6."
+    },
+    {
+      "g": "main",
+      "name": "Beyond Burning",
+      "who": "Lv.260–278",
+      "start": "Event List → Beyond Burning",
+      "ends": "2027-02-09T23:59:00",
+      "what": "+1 extra level per level up to 280, plus milestone rewards. One character per account, permanent.",
+      "tip": "Levels you already passed don’t pay out, so set it up before you level."
+    },
+    {
+      "g": "main",
+      "name": "Luxe Sauna",
+      "who": "Lv.101+",
+      "start": "Event List → Luxe Sauna",
+      "ends": "2027-06-08T23:59:00",
+      "what": "An AFK EXP room. Time costs 3,000 Maple Points an hour or comes from event coupons. Timer only runs while you’re inside.",
+      "tip": "Charge cap is 48h per week (resets Wednesday)."
+    },
+    {
+      "g": "alt",
+      "name": "Lethe (new job)",
+      "who": "New characters",
+      "start": "Character creation",
+      "ends": null,
+      "what": "A Magician that summons demon vassals that chase enemies on their own. INT main stat.",
+      "tip": "New Recruit Support gives extra rewards to Lethe characters."
+    },
+    {
+      "g": "alt",
+      "name": "Hyper Burning MAX + Hyper Blink",
+      "who": "New characters, or Lv.200–258",
+      "start": "\"Set as Hyper Burning MAX\"",
+      "ends": "2027-02-09T23:59:00",
+      "what": "+4 extra levels per level up to 260. Brand-new characters also get +5,000% EXP from 200 to 259.",
+      "tip": "Level rewards are once per account."
+    },
+    {
+      "g": "alt",
+      "name": "Arthur’s Equipment Rental",
+      "who": "Lv.200+",
+      "start": "Event List → Arthur’s Equipment Rental",
+      "ends": "2027-02-09T23:59:00",
+      "what": "Rent 20★ gear for 2 days, up to 3 times per item per week. The first rental costs mesos; repeats cost Maple Points.",
+      "tip": "Useful for pushing a boss you’re just short on."
+    },
+    {
+      "g": "cw",
+      "name": "Challenger World S4",
+      "who": "New characters (up to 5)",
+      "start": "Pick Challenger-Heroic or -Interactive",
+      "ends": "2027-02-09T23:59:00",
+      "what": "A fresh season world. Missions earn points to climb from Bronze to Challenger tier, and the higher tiers give rewards you can claim on your main.",
+      "tip": "Mayrin (season boss) opens Nov 12. World Leap opens Dec 16."
+    },
+    {
+      "g": "quanah",
+      "name": "Event World: Quanah",
+      "who": "Challenger character marked for Quanah, Lv.260 + 6th job",
+      "start": "Mark at creation, then leap via the Event List",
+      "ends": "2027-03-09T23:59:00",
+      "what": "A roguelite training world with a big buff (+1,000% EXP), its own gear system and the Battlesim dungeon. Dying resets your Inspector Level.",
+      "tip": "Your Use tab must be empty to leap. No Cash Shop and no cubes there."
+    },
+    {
+      "g": "paid",
+      "name": "Genesis Pass / Pass Plus",
+      "who": "Lv.255+ before final Genesis awakening",
+      "start": "Cash Shop",
+      "ends": "2027-02-09T23:59:00",
+      "what": "3× Traces of Darkness and parties of up to 6 for Genesis missions. Pass Plus adds weekly boss missions that unlock one at a time from Dec 17.",
+      "tip": "The sale ends Feb 8."
+    }
+  ]
+}
