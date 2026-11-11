@@ -284,24 +284,7 @@ details.settings .toolbar{padding-bottom:12px}
 .rowmeta .where,.rowmeta .pill{margin:0}
 /* compact cards */
 article.card{padding:0}
-details.cd > summary{list-style:none;cursor:pointer;display:flex;flex-direction:column;align-items:stretch;text-align:left;gap:6px;padding:14px 16px;position:relative;font-weight:400}
-details.cd > summary .meta, details.cd > summary .wherebar{justify-content:flex-start}
-details.cd .more{align-self:flex-start}
-details.cd{border:0;padding:0;background:none;border-radius:0}
 .cards{align-items:start}
-article.card{display:flex;flex-direction:column}
-details.cd > summary .meta, details.cd > summary .wherebar{flex-wrap:nowrap;overflow:hidden;white-space:nowrap;mask-image:linear-gradient(90deg,#000 88%,transparent)}
-details.cd > summary h3{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-details.cd .short{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;height:calc(1.55em * 3)}
-details.cd[open] > summary .meta, details.cd[open] > summary .wherebar{flex-wrap:wrap;white-space:normal;mask-image:none}
-details.cd[open] > summary h3{white-space:normal}
-details.cd[open] .short{display:block;-webkit-line-clamp:unset;height:auto}
-details.cd > summary::-webkit-details-marker{display:none}
-details.cd .short{margin:0}
-details.cd .more{font-size:12.5px;font-weight:600;color:var(--ice)}
-details.cd .more::after{content:"More ▾"} details.cd[open] .more::after{content:"Less ▴"}
-.cd-body{display:flex;flex-direction:column;gap:8px;padding:0 16px 14px}
-.cd-body > p{margin:0}
 /* phones */
 @media (max-width:560px){
   .clock .what{display:none}
@@ -320,6 +303,37 @@ h4.grp .where{margin:0;font-size:12px}
 .pagecard:hover{border-color:var(--ice)}
 .pagecard b{font-family:var(--f-display);font-weight:600;color:var(--ice)}
 .pagecard span{font-size:13.5px;color:var(--muted)}
+/* event cards as buttons + details sheet */
+.cardbtn{font:inherit;color:inherit;text-align:left;background:none;border:0;padding:14px 16px;width:100%;display:flex;flex-direction:column;gap:6px;cursor:pointer;border-radius:14px}
+.cardbtn:hover{background:color-mix(in srgb,var(--ice) 5%,transparent)}
+.cardbtn:focus-visible{outline:2px solid var(--ice);outline-offset:-2px}
+.cardbtn .meta,.cardbtn .wherebar{flex-wrap:nowrap;overflow:hidden;white-space:nowrap;mask-image:linear-gradient(90deg,#000 88%,transparent)}
+.cardbtn h3{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:0}
+.cardbtn .short{margin:0;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;height:calc(1.55em * 3)}
+.cardbtn .wherebar{min-height:20px}
+.cardbtn .more{font-size:12.5px;font-weight:600;color:var(--ice)}
+.cardbtn .more::after{content:" →"}
+.sheet{position:fixed;inset:0;z-index:50;background:rgba(10,14,24,.45);display:flex;align-items:center;justify-content:center;
+  padding:max(16px, env(safe-area-inset-top,0px)) max(16px, env(safe-area-inset-right,0px)) max(16px, env(safe-area-inset-bottom,0px)) max(16px, env(safe-area-inset-left,0px))}
+.sheet-panel{position:relative;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:18px;width:min(560px,100%);max-height:min(86vh,760px);overflow:auto;box-shadow:0 20px 50px rgba(0,0,0,.25)}
+.sheet-body{padding:20px 20px 22px;display:flex;flex-direction:column;gap:12px}
+.sheet-body h2{font-size:22px;padding-right:36px}
+.sheet-body p{margin:0}
+.sheet-body dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:14px}
+.sheet-body dt{color:var(--muted);font-weight:500}
+.sheet-body dd{margin:0;min-width:0}
+.sheet-body .tip{font-size:13.5px;background:var(--ice-soft);border-radius:8px;padding:10px 12px}
+.sheet-body .meta,.sheet-body .wherebar{display:flex;flex-wrap:wrap;gap:6px}
+.sheet-body .wherebar .where{margin:0}
+.sheet-links{display:flex;flex-direction:column;gap:6px}
+.sheet-close{position:sticky;top:10px;float:right;margin:10px 10px -40px 0;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--ink);font-size:15px;cursor:pointer;z-index:1}
+.sheet-close:focus-visible{outline:2px solid var(--ice);outline-offset:2px}
+body.noscroll{overflow:hidden}
+@media (max-width:560px){
+  .sheet{align-items:flex-end;padding:0}
+  .sheet-panel{width:100%;max-height:88vh;border-radius:18px 18px 0 0;padding-bottom:env(safe-area-inset-bottom,0px)}
+}
+@media (prefers-reduced-motion:no-preference){.sheet-panel{animation:sheetin .16s ease-out}@keyframes sheetin{from{transform:translateY(10px);opacity:.6}to{transform:none;opacity:1}}}
 [hidden]{display:none!important}
 </style>
 
@@ -464,6 +478,12 @@ h4.grp .where{margin:0;font-size:12px}
   </div>
 
   <footer id="footer"></footer>
+  <div class="sheet" id="sheet" hidden>
+    <div class="sheet-panel" role="dialog" aria-modal="true" aria-labelledby="sheet-title">
+      <button class="sheet-close" id="sheet-close" aria-label="Close">✕</button>
+      <div class="sheet-body" id="sheet-body"></div>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -836,6 +856,7 @@ h4.grp .where{margin:0;font-size:12px}
       .filter(c => filter==='any' || c.g===filter || c.g==='all')
       .filter(c => statusFilter==='all' || statusOf(c)===statusFilter)
       .sort((x,y) => { const o = {active:0, upcoming:1, ended:2}; return o[statusOf(x)] - o[statusOf(y)] || ((U(x.ends)||Infinity) - (U(y.ends)||Infinity)); });
+    cardHTMLByName = {};
     document.getElementById('cards').innerHTML = shown.length ? shown.map(c => {
       const end = U(c.ends), r = end ? rel(end, now) : null;
       const st = U(c.starts), stt = statusOf(c);
@@ -843,26 +864,39 @@ h4.grp .where{margin:0;font-size:12px}
         : stt === 'ended' ? `<span class="pill">ended</span>`
         : `<span class="pill live">● active${end ? ` · ends in ${r.txt}` : ''}</span>`;
       const full = W(c.what); const m = full.match(/^.*?[.!?](\s|$)/); const short = m ? m[0].trim() : full;
-      const rest = full.slice(short.length).trim();
-      return `<article class="card ${stt}" data-name="${c.name}"><details class="cd" ${openCards.has(c.name)?'open':''}>
-        <summary><div class="meta">${pill}<span class="pill">${gName[c.g]||c.g}</span></div>
-        <h3>${c.name}</h3><div class="wherebar">${whereChips(c)}</div><p class="short">${short}</p><span class="more" aria-hidden="true"></span></summary>
-        <div class="cd-body">${rest ? `<p>${rest}</p>` : ''}
+      const page = c.page && (P.pages||[]).find(x=>x.id===c.page);
+      cardHTMLByName[c.name] = `<div class="meta">${pill}<span class="pill">${gName[c.g]||c.g}</span></div>
+        <h2 id="sheet-title">${c.name}</h2><div class="wherebar">${whereChips(c)}</div><p>${full}</p>
         <dl><dt>Who</dt><dd>${W(c.who)}</dd><dt>How</dt><dd>${W(c.how)}</dd>
         ${st ? `<dt>Opens</dt><dd>${fmtDate(st)}, ${fmtYear(st)} · <span class="mono">${fmtTime(st)}</span></dd>`:''}
         ${end ? `<dt>Ends</dt><dd>${fmtDate(end)}, ${fmtYear(end)} · <span class="mono">${fmtTime(end)}</span></dd>`:''}</dl>
         ${c.tip?`<p class="tip">${W(c.tip)}</p>`:''}
-        ${c.page && (P.pages||[]).find(x=>x.id===c.page) ? `<a class="nlink" href="${P.pages.find(x=>x.id===c.page).href}">Compare: ${P.pages.find(x=>x.id===c.page).title} →</a>` : ''}
+        <div class="sheet-links">
+        ${page ? `<a class="nlink" href="${page.href}">Compare: ${page.title} →</a>` : ''}
         ${c.notes && P.notesUrl ? `<a class="nlink" href="${P.notesUrl}#${c.notes}" target="_blank" rel="noopener">Read it in the patch notes ↗</a>` : ''}
-        ${c.source && P.sources ? [].concat(c.source).map(k => P.sources[k]).filter(x => x && x.url).map(x => `<a class="nlink" href="${x.url}" target="_blank" rel="noopener">Community guide: ${x.title} ↗</a>`).join('') : ''}</div></details></article>`;
+        ${c.source && P.sources ? [].concat(c.source).map(k => P.sources[k]).filter(x => x && x.url).map(x => `<a class="nlink" href="${x.url}" target="_blank" rel="noopener">Community guide: ${x.title} ↗</a>`).join('') : ''}</div>`;
+      return `<article class="card ${stt}" data-name="${c.name}"><button class="cardbtn" data-open="${c.name}" aria-haspopup="dialog">
+        <div class="meta">${pill}<span class="pill">${gName[c.g]||c.g}</span></div>
+        <h3>${c.name}</h3><div class="wherebar">${whereChips(c)}</div><p class="short">${short}</p><span class="more">Details</span></button></article>`;
     }).join('') : `<p class="muted">Nothing here for this filter.</p>`;
-    document.querySelectorAll('#cards details.cd').forEach(d => d.ontoggle = () => {
-      const n = d.closest('.card').dataset.name; d.open ? openCards.add(n) : openCards.delete(n);
-    });
+    document.querySelectorAll('#cards [data-open]').forEach(b => b.onclick = () => openSheet(b.dataset.open, b));
+    if (sheetFor && cardHTMLByName[sheetFor]) document.getElementById('sheet-body').innerHTML = cardHTMLByName[sheetFor];
   }
 
   let tab = S.get('mpp.tab', 'today');
-  const openCards = new Set();
+  let cardHTMLByName = {}, sheetFor = null, sheetReturn = null;
+  function openSheet(name, from){
+    if (!cardHTMLByName[name]) return;
+    sheetFor = name; sheetReturn = from || null;
+    document.getElementById('sheet-body').innerHTML = cardHTMLByName[name];
+    const sh = document.getElementById('sheet'); sh.hidden = false; document.body.classList.add('noscroll');
+    setTimeout(() => document.getElementById('sheet-close').focus(), 0);
+  }
+  function closeSheet(){
+    const sh = document.getElementById('sheet'); if (sh.hidden) return;
+    sh.hidden = true; sheetFor = null; document.body.classList.remove('noscroll');
+    if (sheetReturn && document.contains(sheetReturn)) sheetReturn.focus();
+  }
   // ---------- search ----------
   function searchIndex(){
     if (!P) return [];
@@ -914,16 +948,27 @@ h4.grp .where{margin:0;font-size:12px}
   document.getElementById('q').addEventListener('focus', runSearch);
   document.getElementById('q').addEventListener('keydown', (e) => {
     if (e.key === 'Escape'){ e.target.value = ''; runSearch(); }
-    if (e.key === 'Enter'){ const b = document.querySelector('#results .hit'); if (b) b.click(); }
+    if (e.key === 'Enter'){ e.preventDefault(); const b = document.querySelector('#results .hit'); if (b) b.click(); }
   });
   document.addEventListener('click', (e) => { if (!e.target.closest('.search')) document.getElementById('results').hidden = true; });
 
   function showCard(name){
     statusFilter = 'all'; filter = 'any'; setTab('events', false);
-    openCards.add(name); render();
+    render();
     const card = [...document.querySelectorAll('#cards .card')].find(a => a.dataset.name === name);
-    if (card){ card.scrollIntoView({behavior:'smooth', block:'center'}); card.classList.add('flash'); setTimeout(() => card.classList.remove('flash'), 1600); }
+    if (card){ card.scrollIntoView({block:'center'}); }
+    openSheet(name, card ? card.querySelector('.cardbtn') : null);
   }
+  document.getElementById('sheet-close').onclick = closeSheet;
+  document.getElementById('sheet').addEventListener('click', (e) => { if (e.target.id === 'sheet') closeSheet(); });
+  document.addEventListener('keydown', (e) => {
+    const sh = document.getElementById('sheet'); if (sh.hidden) return;
+    if (e.key === 'Escape') closeSheet();
+    if (e.key === 'Tab'){ const f = [...sh.querySelectorAll('button, a[href]')]; if (!f.length) return;
+      const first = f[0], last = f[f.length-1];
+      if (e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); } }
+  });
   document.addEventListener('click', (e) => {
     const a = e.target.closest('[data-card]'); if (!a) return;
     e.preventDefault(); showCard(a.dataset.card);
