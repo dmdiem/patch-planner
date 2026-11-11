@@ -523,7 +523,7 @@ h4.grp .where{margin:0;font-size:12px}
     return `<div class="item ${checked?'checked':''}" data-item="${prefix}-${i.id}">
       <input type="checkbox" id="${prefix}-${i.id}" data-id="${i.id}" ${checked?'checked':''}>
       <label for="${prefix}-${i.id}"><span class="title">${esc(i.title)}${whereChips(i)}${i.tag?`<span class="tag">${i.tag}</span>`:''}</span>
-      <span class="how">${esc(i.how)}</span></label>${(right || hist || i.card || i.notes || i.decide) ? `<div class="metarow">${right?`<span class="freq">${right}</span>`:''}${i.card?`<a href="#" class="evlink" data-card="${i.card}">${i.card} →</a>`:''}${i.decide?`<a class="evlink" href="decide.html#${i.decide}">Help me decide →</a>`:''}${!i.card && i.notes && P && P.notesUrl ?`<a class="evlink" href="${P.notesUrl}#${i.notes}" target="_blank" rel="noopener">Patch notes ↗</a>`:''}${hist||''}</div>` : ''}</div>`;
+      <span class="how">${esc(i.how)}</span></label>${(right || hist || i.card || i.notes) ? `<div class="metarow">${right?`<span class="freq">${right}</span>`:''}${i.card?`<a href="#" class="evlink" data-card="${i.card}">${i.card} →</a>`:''}${!i.card && i.notes && P && P.notesUrl ?`<a class="evlink" href="${P.notesUrl}#${i.notes}" target="_blank" rel="noopener">Patch notes ↗</a>`:''}${hist||''}</div>` : ''}</div>`;
   }
   function bindList(rootId, store, keyFn){
     document.querySelectorAll(`#${rootId} input`).forEach(el => el.onchange = () => {
@@ -830,7 +830,6 @@ h4.grp .where{margin:0;font-size:12px}
         ${st ? `<dt>Opens</dt><dd>${fmtDate(st)}, ${fmtYear(st)} · <span class="mono">${fmtTime(st)}</span></dd>`:''}
         ${end ? `<dt>Ends</dt><dd>${fmtDate(end)}, ${fmtYear(end)} · <span class="mono">${fmtTime(end)}</span></dd>`:''}</dl>
         ${c.tip?`<p class="tip">${W(c.tip)}</p>`:''}
-        ${c.decide ? `<a class="nlink" href="decide.html#${c.decide}">Not sure? Help me decide →</a>` : ''}
         ${c.notes && P.notesUrl ? `<a class="nlink" href="${P.notesUrl}#${c.notes}" target="_blank" rel="noopener">Read it in the patch notes ↗</a>` : ''}</div></details></article>`;
     }).join('') : `<p class="muted">Nothing here for this filter.</p>`;
     document.querySelectorAll('#cards details.cd').forEach(d => d.ontoggle = () => {
