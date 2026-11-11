@@ -256,6 +256,43 @@ details.fold[open] > summary{padding-bottom:8px}
 }
 .nlink{font-size:13px;font-weight:600;color:var(--ice);text-decoration:none;margin-top:auto;align-self:flex-start}
 .nlink:hover{text-decoration:underline}
+/* settings */
+details.settings{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:0 14px}
+details.settings > summary{list-style:none;cursor:pointer;display:flex;align-items:baseline;gap:6px 12px;flex-wrap:wrap;padding:10px 0;position:relative;padding-right:56px}
+details.settings > summary::-webkit-details-marker{display:none}
+.set-t{font-weight:600;font-size:14px}
+.set-sum{font-size:13px;color:var(--muted)}
+.set-chev{position:absolute;right:0;top:11px;font-size:12.5px;font-weight:600;color:var(--ice)}
+.set-chev::after{content:"Show ▾"} details.settings[open] .set-chev::after{content:"Hide ▴"}
+details.settings[open] .set-sum{display:none}
+details.settings .toolbar{padding-bottom:12px}
+.playset{display:inline-flex;flex-wrap:wrap;gap:6px}
+.playset .where{font:inherit;font-size:12.5px;font-weight:600;margin:0;padding:4px 10px;cursor:pointer;border-radius:999px}
+.playset .where[aria-pressed="false"]{background:none;color:var(--muted);border:1px dashed var(--line);text-decoration:line-through;opacity:.8}
+/* calendar */
+.rowtitle{display:block}
+.rowmeta{display:flex;flex-wrap:wrap;gap:4px;margin:3px 0 2px}
+.rowmeta .where,.rowmeta .pill{margin:0}
+/* compact cards */
+article.card{padding:0}
+details.cd > summary{list-style:none;cursor:pointer;display:flex;flex-direction:column;align-items:stretch;text-align:left;gap:6px;padding:14px 16px;position:relative;font-weight:400}
+details.cd > summary .meta, details.cd > summary .wherebar{justify-content:flex-start}
+details.cd .more{align-self:flex-start}
+details.cd{border:0;padding:0;background:none;border-radius:0}
+.cards{align-items:start}
+details.cd > summary::-webkit-details-marker{display:none}
+details.cd .short{margin:0}
+details.cd .more{font-size:12.5px;font-weight:600;color:var(--ice)}
+details.cd .more::after{content:"More ▾"} details.cd[open] .more::after{content:"Less ▴"}
+.cd-body{display:flex;flex-direction:column;gap:8px;padding:0 16px 14px}
+.cd-body > p{margin:0}
+/* phones */
+@media (max-width:560px){
+  .clock .what{display:none}
+  .clock{padding:7px 9px;gap:0}
+  .tabs button{padding:10px 6px;font-size:13.5px}
+  .tabs .tn{padding:1px 5px;font-size:10.5px}
+}
 [hidden]{display:none!important}
 </style>
 
@@ -265,6 +302,8 @@ details.fold[open] > summary{padding-bottom:8px}
     <span class="eyebrow" id="eyebrow">MapleStory patch planner</span>
     <div class="titlebar"><h1>Patch day, dailies, weeklies, deadlines</h1><img class="emo" src="emotes/sparkle.gif" alt=""></div>
     <p class="lede">Each patch boiled down to what to do and how long you have. Ticks are saved in this browser.</p>
+    <details class="settings" id="settings">
+    <summary><span class="set-t">⚙ Settings</span><span class="set-sum" id="settings-sum"></span><span class="set-chev" aria-hidden="true"></span></summary>
     <div class="toolbar">
       <span class="ctl"><label for="patch" class="muted">Patch</label>
         <select id="patch" class="patchpick"></select></span>
@@ -285,7 +324,14 @@ details.fold[open] > summary{padding-bottom:8px}
           <button id="th-light" aria-pressed="false">Light</button>
           <button id="th-dark" aria-pressed="false">Dark</button>
         </span></span>
+      <span class="ctl"><span class="muted">I play in</span>
+        <span class="playset" role="group" aria-label="Where you play">
+          <button class="where w-main" data-play="main" aria-pressed="true">Main world</button>
+          <button class="where w-cw" data-play="cw" aria-pressed="true">Challenger World</button>
+          <button class="where w-quanah" data-play="quanah" aria-pressed="true">Quanah</button>
+        </span></span>
     </div>
+    </details>
     <div class="clocks" id="clocks"></div>
   </header>
 
@@ -435,12 +481,19 @@ details.fold[open] > summary{padding-bottom:8px}
     if (world === 'both') return ` <span class="wtag ${w}">${k === 'H' ? 'Heroic' : 'Interactive'}</span> ${t.trim()}`;
     return world === w ? t : '';
   }).replace(/\s+([.,])/g, '$1');
+  let play = S.get('mpp.play', ['main','cw','quanah']);
   const okWorld = (i) => !i || !i.world || world === 'both' || i.world === world;
+  const okPlay = (i, cards) => {
+    const w = i.where || (i.card && cards ? (cards.find(c => c.name === i.card) || {}).where : null);
+    return !w || w.some(x => play.includes(x));
+  };
   function filterWorld(raw){
     if (!raw) return raw;
-    const f = (a) => (a || []).filter(okWorld);
+    const cards = (raw.cards || []).filter(okWorld).filter(c => okPlay(c));
+    const allCards = raw.cards || [];
+    const f = (a) => (a || []).filter(okWorld).filter(i => okPlay(i, allCards));
     return {...raw, day0:{beforeReset:f(raw.day0?.beforeReset), setup:f(raw.day0?.setup)},
-      daily:f(raw.daily), weekly:f(raw.weekly), dates:f(raw.dates), openings:f(raw.openings), wrapup:f(raw.wrapup), cards:f(raw.cards)};
+      daily:f(raw.daily), weekly:f(raw.weekly), dates:f(raw.dates), openings:f(raw.openings), wrapup:f(raw.wrapup), cards};
   }
   const esc = (s) => W(s);
 
@@ -474,17 +527,18 @@ details.fold[open] > summary{padding-bottom:8px}
     on ? arr.add(period) : arr.delete(period);
     h[hk] = [...arr].sort(); S.set(key('hist'), h); render();
   }
-  function histStrip(hk, periods, curKey, unit){
+  function histStrip(hk, periods, curKey, unit, max = 8){
     const h = getHist(); const done = new Set(h[hk] || []);
     const pastOrNow = periods.filter(p => p.state !== 'future');
     const n = pastOrNow.filter(p => done.has(p.k)).length;
-    const dots = periods.map(p => {
+    const dots = pastOrNow.slice(-max).map(p => {
       const isDone = done.has(p.k);
       const cls = isDone ? 'done' : p.state === 'past' ? 'miss' : p.state;
       return `<button class="dot ${cls}${p.k===curKey?' now':''}" data-hk="${hk}" data-k="${p.k}" ${p.state==='future'?'disabled':''}
         title="${p.label}${isDone?' · done':p.state==='past'?' · missed':''}" aria-label="${p.label}: ${isDone?'done':'not done'}" aria-pressed="${isDone}"></button>`;
     }).join('');
-    return `<div class="hist"><span class="lbl">${n}/${pastOrNow.length} ${unit}</span>${dots}</div>`;
+    const more = pastOrNow.length > max ? `<span class="lbl" title="Older ${unit} are still counted">+${pastOrNow.length - max}</span>` : '';
+    return `<div class="hist"><span class="lbl">${n}/${pastOrNow.length} ${unit}</span>${more}${dots}</div>`;
   }
   function bindHist(rootId){
     document.querySelectorAll(`#${rootId} .dot:not([disabled])`).forEach(b => b.onclick = () => toggleHist(b.dataset.hk, b.dataset.k, b.getAttribute('aria-pressed') !== 'true'));
@@ -510,6 +564,9 @@ details.fold[open] > summary{padding-bottom:8px}
     if (!RAW) return;
     P = filterWorld(RAW);
     for (const k of ['heroic','interactive','both']) document.getElementById('w-'+k).setAttribute('aria-pressed', world === k);
+    document.querySelectorAll('[data-play]').forEach(b => b.setAttribute('aria-pressed', play.includes(b.dataset.play)));
+    document.getElementById('settings-sum').textContent = [RAW.version, {heroic:'Heroic',interactive:'Interactive',both:'Both servers'}[world],
+      useUTC ? 'UTC' : 'My time', play.map(x => ({main:'Main world',cw:'Challenger',quanah:'Quanah'})[x]).join(' + ')].join(' · ');
 
     const start = U(P.start), mainEnd = U(P.mainEnd);
     const dayKey = utcMidnight(now).toISOString().slice(0,10);
@@ -567,7 +624,7 @@ details.fold[open] > summary{padding-bottom:8px}
     const startDay = utcMidnight(start);
     const dayPeriods = () => { // last 14 days within the patch, oldest first
       const out = []; const today = utcMidnight(now);
-      for (let k = 13; k >= 0; k--){ const d = new Date(today - k*DAY); if (d < startDay) continue;
+      for (let k = 9; k >= 0; k--){ const d = new Date(today - k*DAY); if (d < startDay) continue;
         out.push({k: isoDay(d), label: shortLbl(d), state: k === 0 ? 'now' : 'past'}); }
       return out;
     };
@@ -577,7 +634,7 @@ details.fold[open] > summary{padding-bottom:8px}
     document.getElementById('list-daily').innerHTML =
       `<div class="list-head"><h3>Today</h3><span class="count">${dailyItems.filter(i=>doneNow('dy:'+i.id, dayKey)).length}/${dailyItems.length}</span></div>
        ${dailyItems.length && dailyItems.every(i=>doneNow('dy:'+i.id, dayKey)) ? '<div class="cheer"><img class="emo" src="emotes/thumbsup.gif" alt="">All done for today</div>' : ''}
-       <p class="muted" style="font-size:13px">Squares show the last 14 days. Click one to fix a day you forgot to tick.</p>` +
+       <p class="muted" style="font-size:13px">Squares show the last 10 days. Click one to fix a day you forgot to tick.</p>` +
       dailyItems.map(i => rowWithHist('dy', i, 'dy:'+i.id, dayKey, leftTxt(i), histStrip('dy:'+i.id, dayPeriods(), dayKey, 'days'))).join('');
     bindHist('list-daily');
 
@@ -665,15 +722,15 @@ details.fold[open] > summary{padding-bottom:8px}
       const ms = x.d - now, past = ms < 0, days = Math.floor(ms / DAY);
       const label = past ? '—' : days >= 1 ? `${days}d` : `${Math.max(1,Math.floor(ms/36e5))}h`;
       const cls = past ? '' : ms < 2*DAY ? 'urgent' : ms < 7*DAY ? 'soon' : '';
-      const kind = x.opens ? '<span class="pill opens-pill">opens</span> ' : x.sunday ? '<span class="pill soon">Sunny Sunday</span> ' : x.deadline ? '<span class="pill urgent">deadline</span> ' : '';
+      const kind = x.opens ? '<span class="pill opens-pill">opens</span>' : x.sunday ? '<span class="pill soon">Sunny Sunday</span>' : x.deadline ? '<span class="pill urgent">deadline</span>' : '';
       if (x.opens) x.sub = `${x.sub} Open until ${fmtDate(x.e)}, ${fmtTime(x.e)}.`;
       return `<tr class="${past?'past':''}"><td><span class="days ${cls}">${label}${cls==='urgent' && !sweatUsed && (sweatUsed = true) ?'<img class="emo" src="emotes/sweat.gif" alt="">':''}</span></td>
-        <td>${kind}<strong>${titleHTML(x)}</strong>${whereChips(cardWhere(x))}${x.sub?`<div class="sub">${W(x.sub)}</div>`:''}</td>
+        <td><strong class="rowtitle">${titleHTML(x)}</strong><div class="rowmeta">${kind}${whereChips(cardWhere(x))}</div>${x.sub?`<div class="sub">${W(x.sub)}</div>`:''}</td>
         <td class="col-date"><span class="mono">${fmtDate(x.d)}, ${fmtYear(x.d)}<br>${fmtTime(x.d)}</span></td></tr>`;
     }).join('') : `<tr><td colspan="3" class="muted"><span class="cheer" style="background:none"><img class="emo" src="emotes/sleepy.gif" alt="">Every date in this patch has passed.</span></td></tr>`;
     document.getElementById('deadlines').insertAdjacentHTML('afterbegin', liveRows.map(o => {
       const r = rel(o.e, now);
-      return `<tr><td><span class="pill live">open now</span></td><td><strong>${titleHTML(o)}</strong>${whereChips(cardWhere(o))}<div class="sub">${W(o.sub)} Closes in ${r.txt}.</div></td>
+      return `<tr><td><span class="pill live">open now</span></td><td><strong class="rowtitle">${titleHTML(o)}</strong><div class="rowmeta">${whereChips(cardWhere(o))}</div><div class="sub">${W(o.sub)} Closes in ${r.txt}.</div></td>
         <td class="col-date"><span class="mono">until ${fmtDate(o.e)}, ${fmtYear(o.e)}<br>${fmtTime(o.e)}</span></td></tr>`;
     }).join(''));
 
@@ -733,17 +790,25 @@ details.fold[open] > summary{padding-bottom:8px}
       const pill = stt === 'upcoming' ? `<span class="pill soon">opens in ${rel(st, now).txt}</span>`
         : stt === 'ended' ? `<span class="pill">ended</span>`
         : `<span class="pill live">● active${end ? ` · ends in ${r.txt}` : ''}</span>`;
-      return `<article class="card ${stt}"><div class="meta">${pill}<span class="pill">${gName[c.g]||c.g}</span></div>
-        <h3>${c.name}</h3><div class="wherebar">${whereChips(c)}</div><p>${W(c.what)}</p>
+      const full = W(c.what); const m = full.match(/^.*?[.!?](\s|$)/); const short = m ? m[0].trim() : full;
+      const rest = full.slice(short.length).trim();
+      return `<article class="card ${stt}" data-name="${c.name}"><details class="cd" ${openCards.has(c.name)?'open':''}>
+        <summary><div class="meta">${pill}<span class="pill">${gName[c.g]||c.g}</span></div>
+        <h3>${c.name}</h3><div class="wherebar">${whereChips(c)}</div><p class="short">${short}</p><span class="more" aria-hidden="true"></span></summary>
+        <div class="cd-body">${rest ? `<p>${rest}</p>` : ''}
         <dl><dt>Who</dt><dd>${W(c.who)}</dd><dt>How</dt><dd>${W(c.how)}</dd>
         ${st ? `<dt>Opens</dt><dd>${fmtDate(st)}, ${fmtYear(st)} · <span class="mono">${fmtTime(st)}</span></dd>`:''}
         ${end ? `<dt>Ends</dt><dd>${fmtDate(end)}, ${fmtYear(end)} · <span class="mono">${fmtTime(end)}</span></dd>`:''}</dl>
         ${c.tip?`<p class="tip">${W(c.tip)}</p>`:''}
-        ${c.notes && P.notesUrl ? `<a class="nlink" href="${P.notesUrl}#${c.notes}" target="_blank" rel="noopener">Read it in the patch notes ↗</a>` : ''}</article>`;
+        ${c.notes && P.notesUrl ? `<a class="nlink" href="${P.notesUrl}#${c.notes}" target="_blank" rel="noopener">Read it in the patch notes ↗</a>` : ''}</div></details></article>`;
     }).join('') : `<p class="muted">Nothing here for this filter.</p>`;
+    document.querySelectorAll('#cards details.cd').forEach(d => d.ontoggle = () => {
+      const n = d.closest('.card').dataset.name; d.open ? openCards.add(n) : openCards.delete(n);
+    });
   }
 
   let tab = S.get('mpp.tab', 'today');
+  const openCards = new Set();
   // ---------- search ----------
   function searchIndex(){
     if (!P) return [];
@@ -801,7 +866,8 @@ details.fold[open] > summary{padding-bottom:8px}
 
   function showCard(name){
     statusFilter = 'all'; filter = 'any'; setTab('events', false);
-    const card = [...document.querySelectorAll('#cards .card')].find(a => a.querySelector('h3').textContent === name);
+    openCards.add(name); render();
+    const card = [...document.querySelectorAll('#cards .card')].find(a => a.dataset.name === name);
     if (card){ card.scrollIntoView({behavior:'smooth', block:'center'}); card.classList.add('flash'); setTimeout(() => card.classList.remove('flash'), 1600); }
   }
   document.addEventListener('click', (e) => {
@@ -874,6 +940,15 @@ details.fold[open] > summary{padding-bottom:8px}
   for (const k of ['auto','light','dark']) document.getElementById('th-'+k).onclick = () => { S.set('mpp.theme', k); applyTheme(k); };
   applyTheme(S.get('mpp.theme', 'auto'));
 
+  document.querySelectorAll('[data-play]').forEach(b => b.onclick = () => {
+    const k = b.dataset.play; const has = play.includes(k);
+    if (has && play.length === 1) return; // keep at least one
+    play = has ? play.filter(x => x !== k) : [...play, k];
+    S.set('mpp.play', play); render();
+  });
+  { const st = document.getElementById('settings');
+    st.open = S.get('mpp.settingsOpen', window.innerWidth > 640);
+    st.ontoggle = () => S.set('mpp.settingsOpen', st.open); }
   for (const k of ['heroic','interactive','both']) document.getElementById('w-'+k).onclick = () => { world = k; S.set('mpp.world', k); render(); };
   document.getElementById('tz-local').onclick = () => { useUTC = false; S.set('mpp.utc', false); render(); };
   document.getElementById('tz-utc').onclick = () => { useUTC = true; S.set('mpp.utc', true); render(); };
