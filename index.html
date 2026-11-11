@@ -268,7 +268,16 @@ details.settings[open] .set-sum{display:none}
 details.settings .toolbar{padding-bottom:12px}
 .playset{display:inline-flex;flex-wrap:wrap;gap:6px}
 .playset .where{font:inherit;font-size:12.5px;font-weight:600;margin:0;padding:4px 10px;cursor:pointer;border-radius:999px}
-.playset .where[aria-pressed="false"]{background:none;color:var(--muted);border:1px dashed var(--line);text-decoration:line-through;opacity:.8}
+.playset .where{display:inline-flex;align-items:center;gap:6px;border:1.5px solid transparent}
+.playset .where::before{content:"";width:14px;height:14px;border-radius:50%;flex:none;box-sizing:border-box;border:1.5px solid currentColor;display:inline-grid;place-items:center;font-size:10px;line-height:1}
+.playset .where[aria-pressed="true"]{border-color:currentColor}
+.playset .where[aria-pressed="true"]::before{content:"✓";background:currentColor;color:var(--surface);border-color:currentColor;font-weight:700}
+.playset .where.w-main[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.playset .where.w-main[aria-pressed="true"]::before{color:var(--ink);background:var(--bg)}
+.playset .where[aria-pressed="false"]{background:none;color:var(--muted);border:1.5px solid var(--line);font-weight:500}
+.playhint{font-size:12px;color:var(--muted)}
+.ctl.play{flex-basis:100%;flex-wrap:wrap;row-gap:6px}
+.ctl.play > .muted{white-space:nowrap}
 /* calendar */
 .rowtitle{display:block}
 .rowmeta{display:flex;flex-wrap:wrap;gap:4px;margin:3px 0 2px}
@@ -324,7 +333,7 @@ details.cd .more::after{content:"More ▾"} details.cd[open] .more::after{conten
           <button id="th-light" aria-pressed="false">Light</button>
           <button id="th-dark" aria-pressed="false">Dark</button>
         </span></span>
-      <span class="ctl"><span class="muted">I play in</span>
+      <span class="ctl play"><span class="muted">I play in <span class="playhint">· tap to show or hide</span></span>
         <span class="playset" role="group" aria-label="Where you play">
           <button class="where w-main" data-play="main" aria-pressed="true">Main world</button>
           <button class="where w-cw" data-play="cw" aria-pressed="true">Challenger World</button>
