@@ -157,6 +157,11 @@ summary .emo{width:40px;height:38px}
 .loading{display:flex;align-items:center;gap:12px}
 .loading .emo{width:56px;height:52px}
 @media (max-width:520px){.window .emo{width:64px;height:60px}.titlebar .emo{width:56px;height:52px}}
+.item.due .title{color:var(--urgent)}
+details.later{border:0;padding:0;background:none;border-top:1px solid var(--line);border-radius:0}
+details.later summary{font-size:14px;color:var(--muted)}
+#wrap-banner a{color:var(--ice);font-weight:600}
+#wrap-banner .emo{width:64px;height:64px}
 [hidden]{display:none!important}
 </style>
 
@@ -181,6 +186,8 @@ summary .emo{width:40px;height:38px}
   <div id="app">
     <p class="loading" id="loading"><img class="emo" src="emotes/dash.gif" alt=""><span id="loading-text">Loading patch…</span></p>
     <div id="content" hidden style="display:flex;flex-direction:column;gap:40px">
+      <div class="window" id="wrap-banner" hidden></div>
+
       <section aria-labelledby="h-day0" id="day0-sec">
         <div class="sec-head"><h2 id="h-day0">Day 0: patch day double-dips</h2></div>
         <div class="window" id="day0-window"></div>
@@ -195,6 +202,11 @@ summary .emo{width:40px;height:38px}
       <section aria-labelledby="h-weekly">
         <div class="sec-head"><h2 id="h-weekly">Every week</h2><span class="muted" style="font-size:13px" id="week-note"></span></div>
         <div class="lists"><div class="list" id="list-wed"></div><div class="list" id="list-thu"></div></div>
+      </section>
+
+      <section aria-labelledby="h-wrap" id="wrap-sec">
+        <div class="sec-head"><h2 id="h-wrap">Wrap-up: claim before it’s gone</h2><span class="muted" style="font-size:13px" id="wrap-note"></span></div>
+        <div class="lists"><div class="list" id="list-wrap"></div></div>
       </section>
 
       <section aria-labelledby="h-dl">
@@ -416,6 +428,41 @@ summary .emo{width:40px;height:38px}
           return ended ? row.replace('<input type="checkbox"', '<input type="checkbox" disabled') : row;
         }).join('');
       bindHist(el);
+    }
+
+    // ---- wrap-up ----
+    const wrap = (P.wrapup || []).map(i => ({...i, d: U(i.by)})).sort((a,b) => a.d - b.d);
+    const wd = S.get(key('wrap'), {});
+    const openWrap = wrap.filter(i => i.d > now);
+    const wsec = document.getElementById('wrap-sec');
+    wsec.hidden = !wrap.length;
+    if (wrap.length){
+      const left = (i) => { const ms = i.d - now; const days = Math.floor(ms/DAY);
+        return days >= 1 ? `${days} day${days===1?'':'s'} left` : `${Math.max(1, Math.floor(ms/36e5))}h left`; };
+      const rowFor = (i) => itemHTML('wr', i, !!wd[i.id], `by ${fmtDate(i.d)}, ${fmtTime(i.d)} · ${left(i)}`)
+        .replace('<div class="item', `<div class="item${!wd[i.id] && i.d - now < 7*DAY ? ' due' : ''}`);
+      const soon = openWrap.filter(i => i.d - now < 14*DAY), later = openWrap.filter(i => i.d - now >= 14*DAY);
+      const missed = wrap.filter(i => i.d <= now && !wd[i.id]).length;
+      document.getElementById('wrap-note').textContent = `${openWrap.filter(i=>wd[i.id]).length}/${openWrap.length} done${missed ? ` · ${missed} passed unclaimed` : ''}`;
+      document.getElementById('list-wrap').innerHTML =
+        (soon.length ? `<div class="list-head"><h3>Due in the next 2 weeks</h3><span class="count">${soon.filter(i=>wd[i.id]).length}/${soon.length}</span></div>${soon.map(rowFor).join('')}` : '') +
+        (later.length ? `<details class="later" ${soon.length ? '' : 'open'}><summary>Later (${later.length})</summary>${later.map(rowFor).join('')}</details>` : '') +
+        (!openWrap.length ? '<div class="cheer"><img class="emo" src="emotes/relax.gif" alt="">Nothing left to claim for this patch.</div>' : '');
+      document.querySelectorAll('#list-wrap input').forEach(el => el.onchange = () => {
+        const o = S.get(key('wrap'), {}); o[el.dataset.id] = el.checked; S.set(key('wrap'), o); render();
+      });
+      const det = document.querySelector('#list-wrap details.later');
+      if (det){ det.open = S.get('mpp.wrapLaterOpen', det.open); det.ontoggle = () => S.set('mpp.wrapLaterOpen', det.open); }
+    }
+    const urgent = openWrap.filter(i => !wd[i.id] && i.d - now < 7*DAY);
+    const banner = document.getElementById('wrap-banner');
+    banner.hidden = !urgent.length;
+    if (urgent.length){
+      const first = urgent[0];
+      banner.innerHTML = `<div class="wtext"><span class="eyebrow">Claim soon</span>
+        <p><b>${urgent.length} thing${urgent.length===1?'':'s'} to claim or use up this week.</b> First up: ${first.title}, ${rel(first.d, now).txt} left.</p>
+        <p><a href="#h-wrap" id="wrap-jump">See the wrap-up list</a></p></div><img class="emo" src="emotes/sweat.gif" alt="">`;
+      document.getElementById('wrap-jump').onclick = (e) => { e.preventDefault(); document.getElementById('h-wrap').scrollIntoView({behavior:'smooth'}); };
     }
 
     // ---- deadlines ----

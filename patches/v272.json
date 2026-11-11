@@ -418,5 +418,132 @@
       "what": "3× Traces of Darkness and parties of up to 6 for Genesis missions. Pass Plus adds weekly boss missions that unlock one at a time from Dec 17.",
       "tip": "The sale ends Feb 8."
     }
+  ],
+  "wrapup": [
+    {
+      "id": "winter-claim",
+      "by": "2026-11-24T23:59:00",
+      "title": "Claim Winter Gifts",
+      "how": "Event List → Winter Countdown. Then use them, because they vanish Nov 25, 2:00 AM UTC."
+    },
+    {
+      "id": "sunny-gift",
+      "by": "2026-11-29T23:59:00",
+      "title": "Claim the Sunny Sunday free gift",
+      "how": "Event List → Special Sunny Sunday Gifts for All. Only on Nov 29."
+    },
+    {
+      "id": "specter-cum",
+      "by": "2026-12-15T23:59:00",
+      "title": "Claim Specter Blast cumulative rewards",
+      "how": "Event List on the left of the screen. Once per account."
+    },
+    {
+      "id": "hexa-use",
+      "by": "2026-12-16T02:00:00",
+      "title": "Use (or skip) the HEXA / Erda Link reset scrolls",
+      "how": "They expire Dec 16, 2:00 AM UTC."
+    },
+    {
+      "id": "cst",
+      "by": "2026-12-16T14:00:00",
+      "title": "Do any Cash Shop transfers",
+      "how": "Cash Inventory → Cash Transfer. Same class group only."
+    },
+    {
+      "id": "ultima-archive",
+      "by": "2027-02-09T23:59:00",
+      "title": "Claim Ultima Archive and Supply Report rewards",
+      "how": "Event List → Ultima Report. Claim Records Viewed rewards (bottom-right) and Supply Report level rewards."
+    },
+    {
+      "id": "etherion",
+      "by": "2027-02-09T23:59:00",
+      "title": "Spend all Etherion on Relic cores",
+      "how": "Etherion can’t be used after the event. Also claim the reward for reaching combined core level 30."
+    },
+    {
+      "id": "bounty",
+      "by": "2027-02-09T23:59:00",
+      "title": "Spend Bounty Coins",
+      "how": "Bounty Coin Shop (Hawk or Event List), in each world you have coins."
+    },
+    {
+      "id": "credit",
+      "by": "2027-02-09T23:59:00",
+      "title": "Spend Alliance Credit",
+      "how": "Alliance Credit Shop (Cygnus Supplier or Ultima Report)."
+    },
+    {
+      "id": "mesoshop",
+      "by": "2027-02-09T23:59:00",
+      "title": "Check the Operation Ultima Meso Shop",
+      "how": "Elard in the Forward Operating Base. Last chance for its items."
+    },
+    {
+      "id": "burning",
+      "by": "2027-02-09T23:59:00",
+      "title": "Claim Hyper Burning MAX and Beyond Burning rewards",
+      "how": "Each event’s UI. Leaped characters can still claim in their new world."
+    },
+    {
+      "id": "recruit",
+      "by": "2027-02-09T23:59:00",
+      "title": "Claim New Recruit Support rewards",
+      "how": "Event List → New Recruit Missions."
+    },
+    {
+      "id": "cw-tier",
+      "by": "2027-02-09T23:59:00",
+      "title": "Claim Challenger tier rewards",
+      "how": "Bronze–Platinum only in Challenger World. Emerald and up can be claimed on your main via the Event List."
+    },
+    {
+      "id": "cw-coins",
+      "by": "2027-02-09T23:59:00",
+      "title": "Spend Challenger Coins and claim Challenger Pass levels",
+      "tag": "Challenger",
+      "how": "Challenger World Shop and the Challenger Pass UI."
+    },
+    {
+      "id": "genesis",
+      "by": "2027-02-09T23:59:00",
+      "title": "Claim Genesis Pass Plus rewards and spend Adversary Coins",
+      "tag": "Genesis Pass",
+      "how": "Event List → Genesis Pass Plus. Items from it last until Feb 17, 2:00 AM UTC."
+    },
+    {
+      "id": "use-items",
+      "by": "2027-02-10T02:00:00",
+      "title": "Use claimed event items",
+      "how": "EXP coupons, cubes, flames, Sol Erda, VIP buffs and selector coupons from this patch expire Feb 10, 2:00 AM UTC."
+    },
+    {
+      "id": "meso-market",
+      "by": "2027-02-10T00:00:00",
+      "title": "Sell or buy on the Challenger Meso Market",
+      "tag": "Challenger",
+      "how": "Miss Richfield, Interactive Challenger World only. Closes before maintenance on Feb 10."
+    },
+    {
+      "id": "cw-leap",
+      "by": "2027-02-23T23:59:00",
+      "title": "World Leap your Challenger characters",
+      "tag": "Challenger",
+      "how": "Leap opens Dec 16. The final window is Feb 10–23."
+    },
+    {
+      "id": "quanah",
+      "by": "2027-03-09T23:59:00",
+      "title": "Finish Quanah and use its Maple Point items",
+      "tag": "Quanah",
+      "how": "MP shop closes Mar 8 and its items stop working Mar 9. Characters get moved to the leap zone automatically."
+    },
+    {
+      "id": "sauna",
+      "by": "2027-06-08T23:59:00",
+      "title": "Use up Luxe Sauna time and claim hour rewards",
+      "how": "Unused time is lost. Furnishing rewards at 30/100/200/500 cumulative hours."
+    }
   ]
 }
