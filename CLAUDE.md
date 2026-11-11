@@ -27,6 +27,7 @@ The owner sends a MapleStory (GMS) patch-notes link. The job is to turn the **wh
 
 ## Writing style
 Don't guess how long something takes. The notes rarely give hours, so describe what's involved (levels to reach, weekly caps, resets on death, deadlines) and let the reader judge. Label anything that comes from outside the notes, like a community tip or a creator's estimate.
+Say only what the notes say. Don't carry a rule from one section to another (Quanah's same-world-type leap rule says nothing about Challenger World), don't turn "leaves with the character" into "goes to your main", and don't write "only", "can't" or "always" unless the notes do. When something is your inference, say so.
 Plain English. Say what to do and where to click (`Event List → X`). Keep tips to one or two sentences. Use `{WED}`/`{THU}` instead of naming reset weekdays, because the page shows them in the viewer's clock.
 
 See README.md for every field.
