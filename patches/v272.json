@@ -11,31 +11,34 @@
       {
         "id": "d0-cpass",
         "title": "Challenger Pass: do this week’s missions now",
-        "how": "Its week resets Thursday, so patch day is a mini-week of its own. Log in plus kills gets points now, and again from Nov 12. Up to 500 points per mini-week.",
+        "how": "Its week resets at the shops & passes reset ({THU}), so patch day is a mini-week of its own. Log in plus kills gets points now, and again from Nov 12. Up to 500 points per mini-week.",
         "reset": "thu",
         "where": [
           "cw"
-        ]
+        ],
+        "card": "Challenger World S4"
       },
       {
         "id": "d0-bshop",
-        "title": "Spend Bounty Coins before Thursday",
-        "how": "Bounty Coin Shop limits refresh Thursday 00:00 UTC. Coins you earn from tonight’s solo bosses can be spent up to the limit now, and the limits open again a few hours later.",
+        "title": "Spend Bounty Coins before the shop reset",
+        "how": "Bounty Coin Shop limits refresh {THU}. Coins you earn from tonight’s solo bosses can be spent up to the limit now, and the limits open again a few hours later.",
         "tag": "if bossing",
         "reset": "thu",
         "where": [
           "main",
           "cw"
-        ]
+        ],
+        "card": "Shadow Bounties"
       },
       {
         "id": "d0-battlesim",
         "title": "Burn Battlesim power",
-        "how": "Projected Weekly Power (150) refills Thursday, so anything left over at the reset is wasted.",
+        "how": "Projected Weekly Power (150) refills {THU}, so anything left over at the reset is wasted.",
         "reset": "thu",
         "where": [
           "quanah"
-        ]
+        ],
+        "card": "Event World: Quanah"
       }
     ],
     "setup": [
@@ -56,7 +59,8 @@
         "where": [
           "main",
           "cw"
-        ]
+        ],
+        "card": "Operation Ultima"
       },
       {
         "id": "bossafter",
@@ -66,7 +70,8 @@
         "where": [
           "main",
           "cw"
-        ]
+        ],
+        "card": "Shadow Bounties"
       },
       {
         "id": "winter",
@@ -76,7 +81,8 @@
         "where": [
           "main",
           "cw"
-        ]
+        ],
+        "card": "Winter Countdown"
       },
       {
         "id": "cores",
@@ -85,7 +91,8 @@
         "tag": "Lv.101+",
         "where": [
           "main"
-        ]
+        ],
+        "card": "Etherion Relics"
       },
       {
         "id": "hexa",
@@ -104,7 +111,8 @@
         "where": [
           "main",
           "cw"
-        ]
+        ],
+        "card": "Beyond Burning"
       },
       {
         "id": "hbm",
@@ -115,7 +123,8 @@
           "main",
           "cw",
           "quanah"
-        ]
+        ],
+        "card": "Hyper Burning MAX + Hyper Blink"
       },
       {
         "id": "cw",
@@ -123,7 +132,8 @@
         "how": "Your first Challenger character locks this choice for the season, even if you delete it.",
         "where": [
           "cw"
-        ]
+        ],
+        "card": "Challenger World S4"
       }
     ]
   },
@@ -131,12 +141,13 @@
     {
       "id": "login",
       "title": "Log in on one character",
-      "how": "Gives the Ultima Supply Report (3 × 3× EXP coupons). It only counts 5 days per Wed–Tue week, so you can skip 2 days a week.",
+      "how": "Gives the Ultima Supply Report (3 × 3× EXP coupons). It only counts 5 days per event week (resets {WED}), so you can skip 2 days a week.",
       "freq": "5 of 7 days",
       "until": "2027-02-09T23:59:00",
       "where": [
         "main"
-      ]
+      ],
+      "card": "Operation Ultima"
     },
     {
       "id": "winter",
@@ -147,7 +158,8 @@
       "where": [
         "main",
         "cw"
-      ]
+      ],
+      "card": "Winter Countdown"
     },
     {
       "id": "supplies",
@@ -158,7 +170,8 @@
       "where": [
         "main",
         "cw"
-      ]
+      ],
+      "card": "Shadow Supplies"
     },
     {
       "id": "symbols",
@@ -169,7 +182,8 @@
       "where": [
         "main",
         "cw"
-      ]
+      ],
+      "card": "Etherion Relics"
     }
   ],
   "weekly": [
@@ -183,7 +197,8 @@
       "reset": "wed",
       "where": [
         "main"
-      ]
+      ],
+      "card": "Operation Ultima"
     },
     {
       "id": "relic",
@@ -195,7 +210,8 @@
       "reset": "wed",
       "where": [
         "main"
-      ]
+      ],
+      "card": "Etherion Relics"
     },
     {
       "id": "bounty",
@@ -208,7 +224,8 @@
       "where": [
         "main",
         "cw"
-      ]
+      ],
+      "card": "Shadow Bounties"
     },
     {
       "id": "specter",
@@ -220,7 +237,8 @@
       "reset": "wed",
       "where": [
         "main"
-      ]
+      ],
+      "card": "Specter Blast"
     },
     {
       "id": "sauna",
@@ -234,20 +252,22 @@
         "main",
         "cw",
         "quanah"
-      ]
+      ],
+      "card": "Luxe Sauna"
     },
     {
       "id": "shop",
       "title": "Bounty Coin Shop purchases",
-      "how": "Purchase limits refresh Thursday. Spend coins before then or lose that week’s limit. {H|Weekly-limited picks: Karma Solid Cube x2 Coupons (6), Extreme Growth Potion x3 (3), Black Circulator x3 (2).}{I|Weekly-limited picks: Karma Bonus Bright Cubes (3 Intermediate, 7 Advanced), plus Incredible Chaos and Ark Innocence scrolls.}",
-      "freq": "refreshes Thu",
+      "how": "Purchase limits refresh {THU}. Spend coins before then or lose that week’s limit. {H|Weekly-limited picks: Karma Solid Cube x2 Coupons (6), Extreme Growth Potion x3 (3), Black Circulator x3 (2).}{I|Weekly-limited picks: Karma Bonus Bright Cubes (3 Intermediate, 7 Advanced), plus Incredible Chaos and Ark Innocence scrolls.}",
+      "freq": "refreshes weekly",
       "total": "",
       "until": "2027-02-09T23:59:00",
       "reset": "thu",
       "where": [
         "main",
         "cw"
-      ]
+      ],
+      "card": "Shadow Bounties"
     },
     {
       "id": "cpass",
@@ -259,7 +279,8 @@
       "reset": "thu",
       "where": [
         "cw"
-      ]
+      ],
+      "card": "Challenger World S4"
     }
   ],
   "dates": [
@@ -270,7 +291,7 @@
     },
     {
       "t": "2026-11-12T00:00:00",
-      "title": "First shop & pass reset (Thu)",
+      "title": "First shops & passes reset",
       "sub": "Bounty Coin Shop limits, Challenger Pass and Battlesim power roll over. This is the end of the patch-day double-dip window."
     },
     {
@@ -282,7 +303,7 @@
     },
     {
       "t": "2026-11-18T00:00:00",
-      "title": "First event-weeklies reset (Wed)",
+      "title": "First event-weeklies reset",
       "sub": "Ultima Training Report, Etherion Relics, Shadow Bounties boss records and Specter Blast start their second week."
     },
     {
@@ -481,7 +502,7 @@
       "start": "Event List → Luxe Sauna",
       "ends": "2027-06-08T23:59:00",
       "what": "An AFK EXP room. Time costs 3,000 Maple Points an hour or comes from event coupons. Timer only runs while you’re inside.",
-      "tip": "Charge cap is 48h per week (resets Wednesday).",
+      "tip": "Charge cap is 48h per week (resets {WED}).",
       "where": [
         "main",
         "cw",
@@ -627,7 +648,8 @@
       "where": [
         "main",
         "cw"
-      ]
+      ],
+      "card": "Winter Countdown"
     },
     {
       "id": "sunny-gift",
@@ -636,7 +658,8 @@
       "how": "Event List → Special Sunny Sunday Gifts for All. Only on Nov 29.",
       "where": [
         "main"
-      ]
+      ],
+      "card": "Sunny Sundays"
     },
     {
       "id": "specter-cum",
@@ -645,7 +668,8 @@
       "how": "Event List on the left of the screen. Once per account.",
       "where": [
         "main"
-      ]
+      ],
+      "card": "Specter Blast"
     },
     {
       "id": "hexa-use",
@@ -664,7 +688,8 @@
       "opens": "2026-12-09T00:00:00",
       "where": [
         "main"
-      ]
+      ],
+      "card": "Cash Shop Transfer"
     },
     {
       "id": "ultima-archive",
@@ -673,7 +698,8 @@
       "how": "Event List → Ultima Report. Claim Records Viewed rewards (bottom-right) and Supply Report level rewards.",
       "where": [
         "main"
-      ]
+      ],
+      "card": "Operation Ultima"
     },
     {
       "id": "etherion",
@@ -682,7 +708,8 @@
       "how": "Etherion can’t be used after the event. Also claim the reward for reaching combined core level 30.",
       "where": [
         "main"
-      ]
+      ],
+      "card": "Etherion Relics"
     },
     {
       "id": "bounty",
@@ -692,7 +719,8 @@
       "where": [
         "main",
         "cw"
-      ]
+      ],
+      "card": "Shadow Bounties"
     },
     {
       "id": "credit",
@@ -701,7 +729,8 @@
       "how": "Alliance Credit Shop (Cygnus Supplier or Ultima Report). {H|Extra stock: Black Rebirth Flames (10 credit each, 200 max).}{I|Extra stock: Bonus Mystical Cubes, Special Bonus and Bonus Epic Potential scrolls, Innocence and Pure Clean Slate scrolls, Special Heart scroll selector.}",
       "where": [
         "main"
-      ]
+      ],
+      "card": "Operation Ultima"
     },
     {
       "id": "mesoshop",
@@ -710,7 +739,8 @@
       "how": "Elard in the Forward Operating Base. Last chance for its items.{I|Extra stock: Incredible Chaos Scrolls of Goodness and Pet Equipment Stat Transfer Scrolls.}",
       "where": [
         "main"
-      ]
+      ],
+      "card": "Operation Ultima"
     },
     {
       "id": "burning",
@@ -720,7 +750,8 @@
       "where": [
         "main",
         "cw"
-      ]
+      ],
+      "card": "Hyper Burning MAX + Hyper Blink"
     },
     {
       "id": "recruit",
@@ -730,7 +761,8 @@
       "where": [
         "main",
         "cw"
-      ]
+      ],
+      "card": "New Recruit Support"
     },
     {
       "id": "cw-tier",
@@ -740,7 +772,8 @@
       "where": [
         "cw",
         "main"
-      ]
+      ],
+      "card": "Challenger World S4"
     },
     {
       "id": "cw-coins",
@@ -749,7 +782,8 @@
       "how": "Challenger World Shop and the Challenger Pass UI.",
       "where": [
         "cw"
-      ]
+      ],
+      "card": "Challenger World S4"
     },
     {
       "id": "genesis",
@@ -759,7 +793,8 @@
       "how": "Event List → Genesis Pass Plus. Items from it last until Feb 17, 2:00 AM UTC.",
       "where": [
         "main"
-      ]
+      ],
+      "card": "Genesis Pass Plus"
     },
     {
       "id": "use-items",
@@ -779,7 +814,8 @@
       "world": "interactive",
       "where": [
         "cw"
-      ]
+      ],
+      "card": "Challenger World S4"
     },
     {
       "id": "cw-leap",
@@ -789,7 +825,8 @@
       "opens": "2026-12-16T00:00:00",
       "where": [
         "cw"
-      ]
+      ],
+      "card": "Challenger World S4"
     },
     {
       "id": "quanah",
@@ -798,7 +835,8 @@
       "how": "MP shop closes Mar 8 and its items stop working Mar 9. Characters get moved to the leap zone automatically.",
       "where": [
         "quanah"
-      ]
+      ],
+      "card": "Event World: Quanah"
     },
     {
       "id": "sauna",
@@ -808,7 +846,8 @@
       "where": [
         "main",
         "quanah"
-      ]
+      ],
+      "card": "Luxe Sauna"
     }
   ],
   "openings": [

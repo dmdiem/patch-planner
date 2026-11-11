@@ -191,7 +191,8 @@ details.later summary{font-size:14px;color:var(--muted)}
 .activebox[open] .ab-toggle::after{content:"Hide ▴"}
 .activebox[open] .activebar{padding-bottom:10px}
 .activebox #active-jump{display:inline-block;padding-bottom:14px}
-.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none;margin-bottom:-16px}
+.tabbar{display:flex;flex-wrap:wrap;align-items:flex-end;gap:8px 16px;border-bottom:1px solid var(--line);margin-bottom:-16px}
+.tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;min-width:0;flex:1 1 auto;margin-bottom:-1px}
 .tabs button{font:inherit;font-family:var(--f-display);font-weight:600;font-size:15px;background:none;border:0;border-bottom:3px solid transparent;color:var(--muted);padding:10px 12px;cursor:pointer;white-space:nowrap}
 .tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
 .tn{font-family:var(--f-mono);font-size:11px;font-weight:500;background:var(--accent-soft);color:var(--accent);border-radius:999px;padding:1px 7px;vertical-align:2px}
@@ -233,6 +234,26 @@ details.fold[open] > summary{padding-bottom:8px}
 .w-quanah{background:color-mix(in srgb, #0EA5A4 16%, transparent);color:color-mix(in srgb, #0EA5A4 70%, var(--ink))}
 .wherebar{display:flex;flex-wrap:wrap;gap:4px;margin-top:-4px}
 .wherebar .where{margin-left:0}
+.evlink{font-size:12.5px;font-weight:600;color:var(--ice);text-decoration:none;white-space:nowrap}
+.evlink:hover{text-decoration:underline}
+.item.flash, tr.flash{outline:2px solid var(--done);outline-offset:2px;border-radius:8px}
+.search{position:relative;flex:0 1 260px;min-width:160px;align-self:center;margin-bottom:6px}
+.search input{width:100%;box-sizing:border-box;font:inherit;font-size:14px;padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+.results{position:absolute;right:0;top:calc(100% + 6px);width:min(440px, calc(100vw - 32px));max-height:min(60vh, 460px);overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.18);z-index:20;padding:4px}
+.hit{display:grid;grid-template-columns:76px 1fr;gap:2px 10px;width:100%;text-align:left;font:inherit;background:none;border:0;color:var(--ink);padding:8px 10px;border-radius:8px;cursor:pointer}
+.hit:hover,.hit:focus-visible{background:var(--bg)}
+.hit-kind{font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--accent);padding-top:3px}
+.hit-main{display:flex;flex-direction:column;min-width:0}
+.hit-main b{font-weight:600}
+.hit-ev{font-size:12.5px;color:var(--muted)}
+.hit-where{grid-column:2}
+.hit-where .where{margin:0 4px 0 0}
+@media (max-width:640px){
+  .tabbar{flex-direction:column-reverse;align-items:stretch;gap:8px}
+  .search{flex:0 0 auto;margin:0;align-self:stretch;min-width:0}
+  .tabs{flex:0 0 auto;width:100%;max-width:100%}
+  .results{left:0;right:auto;width:100%}
+}
 [hidden]{display:none!important}
 </style>
 
@@ -266,6 +287,7 @@ details.fold[open] > summary{padding-bottom:8px}
     <div class="clocks" id="clocks"></div>
   </header>
 
+  <div class="tabbar">
   <nav class="tabs" id="tabs" role="tablist" aria-label="Sections">
     <button role="tab" data-tab="today">Today <span class="tn" id="tn-today"></span></button>
     <button role="tab" data-tab="calendar">Calendar</button>
@@ -273,6 +295,11 @@ details.fold[open] > summary{padding-bottom:8px}
     <button role="tab" data-tab="events">Events <span class="tn" id="tn-events"></span></button>
     <button role="tab" data-tab="help">Help</button>
   </nav>
+    <div class="search" role="search">
+      <input type="search" id="q" placeholder="Search events, tasks, dates…" aria-label="Search this patch" autocomplete="off">
+      <div class="results" id="results" hidden></div>
+    </div>
+  </div>
 
   <div id="app">
     <p class="loading" id="loading"><img class="emo" src="emotes/dash.gif" alt=""><span id="loading-text">Loading patch…</span></p>
@@ -398,7 +425,10 @@ details.fold[open] > summary{padding-bottom:8px}
   const key = (k) => `mpp.${P.id}.${k}`;
   let world = S.get('mpp.world', 'heroic');
   // Inline server-specific text: {H|heroic text} and {I|interactive text}
-  const W = (str) => String(str ?? '').replace(/\{([HI])\|([^}]*)\}/g, (_, k, t) => {
+  // Reset times in the viewer's chosen clock: {WED} = event weeklies, {THU} = shops & passes
+  const resetLabel = (dow) => { const d = nextUTCWeekday(new Date(), dow);
+    return d.toLocaleDateString(undefined, {weekday:'short', timeZone: tz()}) + ' ' + fmtTime(d); };
+  const W = (str) => String(str ?? '').replace(/\{WED\}/g, () => resetLabel(3)).replace(/\{THU\}/g, () => resetLabel(4)).replace(/\{([HI])\|([^}]*)\}/g, (_, k, t) => {
     const w = k === 'H' ? 'heroic' : 'interactive';
     if (world === 'both') return ` <span class="wtag ${w}">${k === 'H' ? 'Heroic' : 'Interactive'}</span> ${t.trim()}`;
     return world === w ? t : '';
@@ -415,10 +445,10 @@ details.fold[open] > summary{padding-bottom:8px}
   const WHERE = {main:'Main world', cw:'Challenger World', quanah:'Quanah'};
   const whereChips = (x) => (x && x.where ? x.where : []).map(w => `<span class="where w-${w}">${WHERE[w]||w}</span>`).join('');
   function itemHTML(prefix, i, checked, right, hist){
-    return `<div class="item ${checked?'checked':''}">
+    return `<div class="item ${checked?'checked':''}" data-item="${prefix}-${i.id}">
       <input type="checkbox" id="${prefix}-${i.id}" data-id="${i.id}" ${checked?'checked':''}>
       <label for="${prefix}-${i.id}"><span class="title">${esc(i.title)}${whereChips(i)}${i.tag?`<span class="tag">${i.tag}</span>`:''}</span>
-      <span class="how">${esc(i.how)}</span>${right && !hist?`<span class="freq">${right}</span>`:''}</label>${hist ? `<div class="metarow">${right?`<span class="freq">${right}</span>`:''}${hist}</div>` : ''}</div>`;
+      <span class="how">${esc(i.how)}</span></label>${(right || hist || i.card) ? `<div class="metarow">${right?`<span class="freq">${right}</span>`:''}${i.card?`<a href="#" class="evlink" data-card="${i.card}">${i.card} →</a>`:''}${hist||''}</div>` : ''}</div>`;
   }
   function bindList(rootId, store, keyFn){
     document.querySelectorAll(`#${rootId} input`).forEach(el => el.onchange = () => {
@@ -462,8 +492,8 @@ details.fold[open] > summary{padding-bottom:8px}
   function renderClocks(now){
     const clocks = [
       ['Daily reset', utcMidnight(now,1), 'Log-in rewards, daily caps'],
-      ['Event weeklies', nextUTCWeekday(now,3), 'Wed reset: event missions, Shadow Bounties, Specter Blast'],
-      ['Shops & passes', nextUTCWeekday(now,4), 'Thu reset: coin-shop limits, Challenger Pass, Battlesim'],
+      ['Event weeklies', nextUTCWeekday(now,3), `Every ${resetLabel(3)}: event missions, Shadow Bounties, Specter Blast`],
+      ['Shops & passes', nextUTCWeekday(now,4), `Every ${resetLabel(4)}: coin-shop limits, Challenger Pass, Battlesim`],
     ];
     document.getElementById('clocks').innerHTML = clocks.map(([n,d,w]) => `
       <div class="clock"><span class="eyebrow">${n}</span><span class="t">${rel(d,now).txt}</span>
@@ -500,7 +530,7 @@ details.fold[open] > summary{padding-bottom:8px}
       const winLen = liveAt && soonest ? rel(soonest, liveAt).txt : '';
       document.getElementById('day0-window').innerHTML = (preLive
         ? `<span class="eyebrow">Maintenance ends in</span><span class="big">${rel(liveAt, now).txt}</span>
-           <p>Expected at <b>${fmtTime(liveAt)}</b>${P.liveAtNote ? ` (${P.liveAtNote.replace(/^Maintenance expected to end /,'')})` : ''}.${soonest ? ` The next reset is at ${fmtTime(soonest)}, so you’ll have about <b>${winLen}</b> to do the “before the reset” list below.` : ''}</p>`
+           <p>Expected at <b>${fmtTime(liveAt)}</b>${P.liveAtNote && useUTC ? ` (${P.liveAtNote.replace(/^Maintenance expected to end /,'')})` : ''}.${soonest ? ` The next reset is at ${fmtTime(soonest)}, so you’ll have about <b>${winLen}</b> to do the “before the reset” list below.` : ''}</p>`
         : soonest
         ? `<span class="eyebrow">Double-dip window closes in</span><span class="big">${rel(soonest, now).txt}</span>
            <p>This patch went live on a <b>${startDay}</b> (UTC)${liveAt ? `, around ${fmtTime(liveAt)}` : ''}. The next reset comes at ${fmtDate(soonest)} ${fmtTime(soonest)}, so anything that resets then gets two rounds close together. Event weeklies (bosses for Shadow Bounties, Ultima missions) get a full first week, until ${fmtDate(firstWed)} ${fmtTime(firstWed)}.</p>`
@@ -566,7 +596,7 @@ details.fold[open] > summary{padding-bottom:8px}
       }
       return out;
     };
-    for (const [r, el, label] of [['wed','list-wed','Event weeklies · reset Wed'],['thu','list-thu','Shops & passes · reset Thu']]){
+    for (const [r, el, label] of [['wed','list-wed',`Event weeklies · resets ${resetLabel(3)}`],['thu','list-thu',`Shops & passes · resets ${resetLabel(4)}`]]){
       const items = P.weekly.filter(i => i.reset === r);
       const live = items.filter(i => now <= U(i.until));
       const box = document.getElementById(el);
@@ -711,6 +741,61 @@ details.fold[open] > summary{padding-bottom:8px}
   }
 
   let tab = S.get('mpp.tab', 'today');
+  // ---------- search ----------
+  function searchIndex(){
+    if (!P) return [];
+    const out = [];
+    const add = (kind, tab, x, opts = {}) => out.push({kind, tab, title: x.title || x.name, text: [x.title, x.name, x.how, x.what, x.tip, x.sub, x.who, x.card, x.tag].map(W).join(' '), card: x.card || (kind === 'Event' ? x.name : null), where: x.where, ...opts});
+    (P.cards || []).forEach(c => add('Event', 'events', c));
+    (P.day0.beforeReset || []).forEach(i => add('Patch day', 'today', i, {target:'d0-'+i.id, fold:'before'}));
+    (P.day0.setup || []).forEach(i => add('Patch day', 'today', i, {target:'d0-'+i.id, fold:'setup'}));
+    (P.daily || []).forEach(i => add('Daily', 'today', i, {target:'dy-'+i.id}));
+    (P.weekly || []).forEach(i => add('Weekly', 'today', i, {target:'w'+i.reset+'-'+i.id}));
+    (P.wrapup || []).forEach(i => add('Wrap-up', 'wrapup', i, {target:'wr-'+i.id}));
+    (P.dates || []).forEach(x => add('Calendar', 'calendar', x, {date: x.t}));
+    (P.openings || []).forEach(x => add('Calendar', 'calendar', x, {date: x.starts}));
+    return out;
+  }
+  function runSearch(){
+    const q = document.getElementById('q').value.trim().toLowerCase();
+    const box = document.getElementById('results');
+    if (!q){ box.hidden = true; box.innerHTML = ''; return; }
+    const words = q.split(/\s+/);
+    const hits = searchIndex().map(h => {
+      const t = (h.title + ' ' + h.text).toLowerCase();
+      if (!words.every(w => t.includes(w))) return null;
+      const score = (h.title.toLowerCase().includes(q) ? 0 : 1) + (h.kind === 'Event' ? 0 : 0.5);
+      return {...h, score};
+    }).filter(Boolean).sort((a,b) => a.score - b.score).slice(0, 12);
+    box.hidden = false;
+    box.innerHTML = hits.length ? hits.map((h, n) => `<button class="hit" data-n="${n}">
+        <span class="hit-kind">${h.kind}</span>
+        <span class="hit-main"><b>${h.title}</b>${h.card && h.kind !== 'Event' ? `<span class="hit-ev">part of ${h.card}</span>` : ''}${h.date ? `<span class="hit-ev">${fmtDate(U(h.date))}</span>` : ''}</span>
+        <span class="hit-where">${whereChips(h)}</span></button>`).join('')
+      : `<p class="muted" style="padding:10px 12px;margin:0">Nothing matches “${q.replace(/</g,'&lt;')}”.</p>`;
+    box.querySelectorAll('.hit').forEach(b => b.onclick = () => openHit(hits[+b.dataset.n]));
+  }
+  function openHit(h){
+    document.getElementById('results').hidden = true;
+    if (h.kind === 'Event'){ showCard(h.title); return; }
+    if (h.fold){ const f = S.get('mpp.fold', {}); f[h.fold] = true; S.set('mpp.fold', f); }
+    if (h.tab === 'wrapup') S.set('mpp.wrapLaterOpen', true);
+    setTab(h.tab, false);
+    let el = h.target ? document.querySelector(`[data-item="${h.target}"]`) : null;
+    if (!el && h.tab === 'calendar'){
+      if (!showPast && U(h.date) < new Date()){ showPast = true; S.set('mpp.past', true); render(); }
+      el = [...document.querySelectorAll('#deadlines tr')].find(r => r.textContent.includes(h.title));
+    }
+    if (el){ el.scrollIntoView({behavior:'smooth', block:'center'}); el.classList.add('flash'); setTimeout(() => el.classList.remove('flash'), 1600); }
+  }
+  document.getElementById('q').addEventListener('input', runSearch);
+  document.getElementById('q').addEventListener('focus', runSearch);
+  document.getElementById('q').addEventListener('keydown', (e) => {
+    if (e.key === 'Escape'){ e.target.value = ''; runSearch(); }
+    if (e.key === 'Enter'){ const b = document.querySelector('#results .hit'); if (b) b.click(); }
+  });
+  document.addEventListener('click', (e) => { if (!e.target.closest('.search')) document.getElementById('results').hidden = true; });
+
   function showCard(name){
     statusFilter = 'all'; filter = 'any'; setTab('events', false);
     const card = [...document.querySelectorAll('#cards .card')].find(a => a.querySelector('h3').textContent === name);

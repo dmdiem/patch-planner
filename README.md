@@ -37,4 +37,10 @@ All times are UTC, written as `YYYY-MM-DDTHH:MM:SS` with no `Z`.
 - Put `"world": "heroic"` or `"world": "interactive"` on any item, date or card that only applies to one server type. It's hidden for the other.
 - Inside any text, write `{H|heroic-only text}` or `{I|interactive-only text}`. The page shows the matching part. Heroic is the default, and "Both" shows each part with a tag.
 
+### Other text features
+
+- `{WED}` and `{THU}` in any text become the next event-weeklies or shops & passes reset, in the viewer's chosen clock (for example "Tue 4:00 PM").
+- `card` on a task, wrap-up item, date or opening links it to the event card with that `name`.
+- `where` is a list of `main`, `cw` and `quanah` and shows the Main world / Challenger World / Quanah chips.
+
 Checklist items need an `id` that is unique within the patch, because ticks are saved under it.
