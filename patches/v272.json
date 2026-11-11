@@ -666,7 +666,8 @@
       "where": [
         "cw"
       ],
-      "notes": "ChallengerWorld"
+      "notes": "ChallengerWorld",
+      "page": "cw-vs-quanah"
     },
     {
       "g": "quanah",
@@ -688,7 +689,8 @@
         "QuanahMesoShop",
         "QuanahMaplePointShop"
       ],
-      "source": "quanahfiles"
+      "source": "quanahfiles",
+      "page": "cw-vs-quanah"
     },
     {
       "g": "paid",
@@ -1427,5 +1429,13 @@
       "title": "The Quanah Files (PierecedMoon)",
       "url": "https://docs.google.com/document/d/1X2P51gaWxZ_Ltxr466CEH26pK9OouXyDT5rOdbYxOhE/edit"
     }
-  }
+  },
+  "pages": [
+    {
+      "id": "cw-vs-quanah",
+      "title": "Challenger World vs Quanah",
+      "href": "cw-vs-quanah.html",
+      "about": "What each side project gives your main, the effort, and the deadlines."
+    }
+  ]
 }

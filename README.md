@@ -41,6 +41,10 @@ All times are UTC, written as `YYYY-MM-DDTHH:MM:SS` with no `Z`.
 
 Official notes come first. Tips from community guides go in items or cards with `source: "<key>"`, where `sources.<key>` is `{title, url}`. The page shows them with a "Community tip" chip so they're never mistaken for patch-note facts. If a guide contradicts the notes, follow the notes.
 
+### Extra pages
+
+`pages[]` lists standalone pages for a patch (`id`, `title`, `href`, `about`). They show under "Guides for this patch" in the Help tab, and a card with `page: "<id>"` links to one. Example: `cw-vs-quanah.html`, the v.272 Challenger World vs Quanah infographic.
+
 ### Other text features
 
 - `{WED}` and `{THU}` in any text become the next event-weeklies or shops & passes reset, in the viewer's chosen clock (for example "Tue 4:00 PM").

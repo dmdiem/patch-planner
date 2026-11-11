@@ -315,6 +315,11 @@ h4.grp{display:flex;align-items:center;justify-content:space-between;margin:14px
 h4.grp .where{margin:0;font-size:12px}
 .srcchip{font-size:11.5px;font-weight:600;text-decoration:none;color:var(--accent);background:var(--accent-soft);border-radius:6px;padding:1px 7px;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
 .srcchip:hover{text-decoration:underline}
+.pages{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.pagecard{display:flex;flex-direction:column;gap:4px;padding:14px 16px;border-radius:14px;background:var(--surface);border:1px solid var(--line);text-decoration:none;color:var(--ink)}
+.pagecard:hover{border-color:var(--ice)}
+.pagecard b{font-family:var(--f-display);font-weight:600;color:var(--ice)}
+.pagecard span{font-size:13.5px;color:var(--muted)}
 [hidden]{display:none!important}
 </style>
 
@@ -429,6 +434,10 @@ h4.grp .where{margin:0;font-size:12px}
       </div>
 
       <div class="tabpanel" data-panel="help">
+        <section aria-labelledby="h-pages" id="pages-sec" hidden>
+          <h2 id="h-pages">Guides for this patch</h2>
+          <div class="pages" id="pages"></div>
+        </section>
         <section aria-labelledby="h-gl">
           <div class="sec-head"><h2 id="h-gl">Patch-note phrases, decoded</h2><img class="emo" src="emotes/confused.gif" alt="" style="width:40px;height:40px"></div>
           <dl class="gl card">
@@ -768,6 +777,11 @@ h4.grp .where{margin:0;font-size:12px}
         <td class="col-date"><span class="mono">until ${fmtDate(o.e)}, ${fmtYear(o.e)}<br>${fmtTime(o.e)}</span></td></tr>`;
     }).join(''));
 
+    // ---- extra pages ----
+    document.getElementById('pages-sec').hidden = !(P.pages || []).length;
+    document.getElementById('pages').innerHTML = (P.pages || []).map(x =>
+      `<a class="pagecard" href="${x.href}"><b>${x.title} →</b><span>${x.about || ''}</span></a>`).join('');
+
     // ---- tab badges ----
     {
       const dueToday = dailyItems.filter(i => !doneNow('dy:'+i.id, dayKey)).length +
@@ -834,6 +848,7 @@ h4.grp .where{margin:0;font-size:12px}
         ${st ? `<dt>Opens</dt><dd>${fmtDate(st)}, ${fmtYear(st)} · <span class="mono">${fmtTime(st)}</span></dd>`:''}
         ${end ? `<dt>Ends</dt><dd>${fmtDate(end)}, ${fmtYear(end)} · <span class="mono">${fmtTime(end)}</span></dd>`:''}</dl>
         ${c.tip?`<p class="tip">${W(c.tip)}</p>`:''}
+        ${c.page && (P.pages||[]).find(x=>x.id===c.page) ? `<a class="nlink" href="${P.pages.find(x=>x.id===c.page).href}">Compare: ${P.pages.find(x=>x.id===c.page).title} →</a>` : ''}
         ${c.notes && P.notesUrl ? `<a class="nlink" href="${P.notesUrl}#${c.notes}" target="_blank" rel="noopener">Read it in the patch notes ↗</a>` : ''}
         ${c.source && P.sources && P.sources[c.source] ? `<a class="nlink" href="${P.sources[c.source].url}" target="_blank" rel="noopener">Community guide: ${P.sources[c.source].title} ↗</a>` : ''}</div></details></article>`;
     }).join('') : `<p class="muted">Nothing here for this filter.</p>`;
