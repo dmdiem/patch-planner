@@ -162,6 +162,7 @@ details.later{border:0;padding:0;background:none;border-top:1px solid var(--line
 details.later summary{font-size:14px;color:var(--muted)}
 #wrap-banner a{color:var(--ice);font-weight:600}
 #wrap-banner .emo{width:64px;height:64px}
+.ctl{display:inline-flex;align-items:center;gap:8px;font-size:13px}
 [hidden]{display:none!important}
 </style>
 
@@ -172,13 +173,19 @@ details.later summary{font-size:14px;color:var(--muted)}
     <div class="titlebar"><h1>Patch day, dailies, weeklies, deadlines</h1><img class="emo" src="emotes/sparkle.gif" alt=""></div>
     <p class="lede">Each patch's notes boiled down to what you need to do and how long you have. Checkboxes are saved in this browser. Daily and weekly boxes start fresh at each reset, and the squares under each task keep your history.</p>
     <div class="toolbar">
-      <label for="patch" class="muted" style="font-size:13px">Patch</label>
-      <select id="patch" class="patchpick"></select>
-      <span class="muted" style="font-size:13px">Times in</span>
-      <div class="seg" role="group" aria-label="Time zone">
-        <button id="tz-local" aria-pressed="true">My time</button>
-        <button id="tz-utc" aria-pressed="false">UTC (game time)</button>
-      </div>
+      <span class="ctl"><label for="patch" class="muted">Patch</label>
+        <select id="patch" class="patchpick"></select></span>
+      <span class="ctl"><span class="muted">Times in</span>
+        <span class="seg" role="group" aria-label="Time zone">
+          <button id="tz-local" aria-pressed="true">My time</button>
+          <button id="tz-utc" aria-pressed="false">UTC (game time)</button>
+        </span></span>
+      <span class="ctl"><span class="muted">Theme</span>
+        <span class="seg" role="group" aria-label="Theme">
+          <button id="th-auto" aria-pressed="true">Auto</button>
+          <button id="th-light" aria-pressed="false">Light</button>
+          <button id="th-dark" aria-pressed="false">Dark</button>
+        </span></span>
     </div>
     <div class="clocks" id="clocks"></div>
   </header>
@@ -532,6 +539,18 @@ details.later summary{font-size:14px;color:var(--muted)}
     window.addEventListener('hashchange', () => loadPatch(fromHash()));
     loadPatch(fromHash());
   }
+
+  // Theme: Auto follows the viewer's own theme (whatever was on the page at load); Light/Dark override it.
+  const root = document.documentElement;
+  const hostTheme = root.getAttribute('data-theme');
+  function applyTheme(t){
+    if (t === 'light' || t === 'dark') root.setAttribute('data-theme', t);
+    else if (hostTheme) root.setAttribute('data-theme', hostTheme);
+    else root.removeAttribute('data-theme');
+    for (const k of ['auto','light','dark']) document.getElementById('th-'+k).setAttribute('aria-pressed', (t||'auto') === k);
+  }
+  for (const k of ['auto','light','dark']) document.getElementById('th-'+k).onclick = () => { S.set('mpp.theme', k); applyTheme(k); };
+  applyTheme(S.get('mpp.theme', 'auto'));
 
   document.getElementById('tz-local').onclick = () => { useUTC = false; S.set('mpp.utc', false); render(); };
   document.getElementById('tz-utc').onclick = () => { useUTC = true; S.set('mpp.utc', true); render(); };
