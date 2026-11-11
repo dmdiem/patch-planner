@@ -227,6 +227,12 @@ details.fold[open] .chev::after{content:"Hide ▴"}
 .fold-next{grid-column:1 / -1;font-size:13px;color:var(--muted)}
 details.fold[open] .fold-next{display:none}
 details.fold[open] > summary{padding-bottom:8px}
+.where{display:inline-block;font-size:11px;font-weight:600;border-radius:6px;padding:0 6px;margin-left:6px;white-space:nowrap;vertical-align:1px;line-height:1.6}
+.w-main{background:var(--surface);color:var(--ink);border:1px solid var(--line)}
+.w-cw{background:color-mix(in srgb, #8A5CF6 16%, transparent);color:color-mix(in srgb, #8A5CF6 75%, var(--ink))}
+.w-quanah{background:color-mix(in srgb, #0EA5A4 16%, transparent);color:color-mix(in srgb, #0EA5A4 70%, var(--ink))}
+.wherebar{display:flex;flex-wrap:wrap;gap:4px;margin-top:-4px}
+.wherebar .where{margin-left:0}
 [hidden]{display:none!important}
 </style>
 
@@ -339,6 +345,12 @@ details.fold[open] > summary{padding-bottom:8px}
             <dt>"Karma …"</dt><dd>The item can be traded once more before it locks.</dd>
             <dt>Heroic vs Interactive</dt><dd>Heroic worlds (formerly Reboot) and Interactive (trading) worlds often get different rewards in the notes.</dd>
           </dl>
+          <h2 style="margin-top:8px">Where to play</h2>
+          <dl class="gl card">
+            <dt><span class="where w-main" style="margin:0">Main world</span></dt><dd>Your regular server (Heroic or Interactive, set with the Server switch). Operation Ultima, Legion, Sunny Sundays and most of the patch happen here.</dd>
+            <dt><span class="where w-cw" style="margin:0">Challenger World</span></dt><dd>New season characters only (up to 5). Climb tiers for rewards; Emerald and up can be claimed on your main world. Pick the same type as your main world. Characters can leap out from Dec 16.</dd>
+            <dt><span class="where w-quanah" style="margin:0">Quanah</span></dt><dd>Only for a Challenger World character marked “Quanah World Leap” at creation, after Lv.260 and 6th job. Roguelite training world until Mar 9. No Operation Ultima or Cash Shop there.</dd>
+          </dl>
           <p class="muted" style="font-size:13.5px">Squares under daily and weekly tasks are your history: filled is done, red outline is missed. Click a past square to fix it.</p>
         </section>
       </div>
@@ -400,10 +412,12 @@ details.fold[open] > summary{padding-bottom:8px}
   }
   const esc = (s) => W(s);
 
+  const WHERE = {main:'Main world', cw:'Challenger World', quanah:'Quanah'};
+  const whereChips = (x) => (x && x.where ? x.where : []).map(w => `<span class="where w-${w}">${WHERE[w]||w}</span>`).join('');
   function itemHTML(prefix, i, checked, right, hist){
     return `<div class="item ${checked?'checked':''}">
       <input type="checkbox" id="${prefix}-${i.id}" data-id="${i.id}" ${checked?'checked':''}>
-      <label for="${prefix}-${i.id}"><span class="title">${esc(i.title)}${i.tag?`<span class="tag">${i.tag}</span>`:''}</span>
+      <label for="${prefix}-${i.id}"><span class="title">${esc(i.title)}${whereChips(i)}${i.tag?`<span class="tag">${i.tag}</span>`:''}</span>
       <span class="how">${esc(i.how)}</span>${right && !hist?`<span class="freq">${right}</span>`:''}</label>${hist ? `<div class="metarow">${right?`<span class="freq">${right}</span>`:''}${hist}</div>` : ''}</div>`;
   }
   function bindList(rootId, store, keyFn){
@@ -608,7 +622,8 @@ details.fold[open] > summary{padding-bottom:8px}
 
     // ---- deadlines ----
     document.getElementById('show-past').checked = showPast;
-    const opensRows = (P.openings || []).map(o => ({t:o.starts, d:U(o.starts), e:U(o.ends), title:o.title, sub:o.how, opens:true, m:o.m, card:o.card}));
+    const opensRows = (P.openings || []).map(o => ({t:o.starts, d:U(o.starts), e:U(o.ends), title:o.title, sub:o.how, opens:true, m:o.m, card:o.card, where:o.where}));
+    const cardWhere = (x) => x.where ? x : (x.card ? P.cards.find(c => c.name === x.card) : null);
     const titleHTML = (x) => x.card ? `<a href="#" class="cardlink" data-card="${x.card}">${x.title}</a>` : x.title;
     const liveRows = opensRows.filter(o => o.d <= now && o.e > now).sort((a,b) => a.e - b.e);
     let sweatUsed = false;
@@ -621,12 +636,12 @@ details.fold[open] > summary{padding-bottom:8px}
       const kind = x.opens ? '<span class="pill opens-pill">opens</span> ' : x.sunday ? '<span class="pill soon">Sunny Sunday</span> ' : x.deadline ? '<span class="pill urgent">deadline</span> ' : '';
       if (x.opens) x.sub = `${x.sub} Open until ${fmtDate(x.e)}, ${fmtTime(x.e)}.`;
       return `<tr class="${past?'past':''}"><td><span class="days ${cls}">${label}${cls==='urgent' && !sweatUsed && (sweatUsed = true) ?'<img class="emo" src="emotes/sweat.gif" alt="">':''}</span></td>
-        <td>${kind}<strong>${titleHTML(x)}</strong>${x.sub?`<div class="sub">${W(x.sub)}</div>`:''}</td>
+        <td>${kind}<strong>${titleHTML(x)}</strong>${whereChips(cardWhere(x))}${x.sub?`<div class="sub">${W(x.sub)}</div>`:''}</td>
         <td class="col-date"><span class="mono">${fmtDate(x.d)}, ${fmtYear(x.d)}<br>${fmtTime(x.d)}</span></td></tr>`;
     }).join('') : `<tr><td colspan="3" class="muted"><span class="cheer" style="background:none"><img class="emo" src="emotes/sleepy.gif" alt="">Every date in this patch has passed.</span></td></tr>`;
     document.getElementById('deadlines').insertAdjacentHTML('afterbegin', liveRows.map(o => {
       const r = rel(o.e, now);
-      return `<tr><td><span class="pill live">open now</span></td><td><strong>${titleHTML(o)}</strong><div class="sub">${W(o.sub)} Closes in ${r.txt}.</div></td>
+      return `<tr><td><span class="pill live">open now</span></td><td><strong>${titleHTML(o)}</strong>${whereChips(cardWhere(o))}<div class="sub">${W(o.sub)} Closes in ${r.txt}.</div></td>
         <td class="col-date"><span class="mono">until ${fmtDate(o.e)}, ${fmtYear(o.e)}<br>${fmtTime(o.e)}</span></td></tr>`;
     }).join(''));
 
@@ -669,7 +684,7 @@ details.fold[open] > summary{padding-bottom:8px}
 
     document.getElementById('active-jump').onclick = (e) => { e.preventDefault(); statusFilter = 'active'; S.set('mpp.status','active'); setTab('events'); };
 
-    const GROUPS = [['all','Everyone'],['main','Lv.260+ mains'],['alt','Alts and new characters'],['cw','Challenger World'],['quanah','Event world'],['paid','Paid']]
+    const GROUPS = [['all','Everyone'],['main','Lv.260+ mains'],['alt','Alts and new characters'],['cw','Challenger World'],['quanah','Quanah'],['paid','Paid']]
       .filter(([g]) => P.cards.some(c => c.g === g));
     if (filter !== 'any' && !GROUPS.some(([g]) => g === filter)) filter = 'any';
     document.getElementById('filters').innerHTML = [['any','Everyone and everything'], ...GROUPS.filter(([g]) => g !== 'all')].map(([k,l]) =>
@@ -687,7 +702,7 @@ details.fold[open] > summary{padding-bottom:8px}
         : stt === 'ended' ? `<span class="pill">ended</span>`
         : `<span class="pill live">● active${end ? ` · ends in ${r.txt}` : ''}</span>`;
       return `<article class="card ${stt}"><div class="meta">${pill}<span class="pill">${gName[c.g]||c.g}</span></div>
-        <h3>${c.name}</h3><p>${W(c.what)}</p>
+        <h3>${c.name}</h3><div class="wherebar">${whereChips(c)}</div><p>${W(c.what)}</p>
         <dl><dt>Who</dt><dd>${W(c.who)}</dd><dt>How</dt><dd>${W(c.start)}</dd>
         ${st ? `<dt>Opens</dt><dd>${fmtDate(st)}, ${fmtYear(st)} · <span class="mono">${fmtTime(st)}</span></dd>`:''}
         ${end ? `<dt>Ends</dt><dd>${fmtDate(end)}, ${fmtYear(end)} · <span class="mono">${fmtTime(end)}</span></dd>`:''}</dl>
