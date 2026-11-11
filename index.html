@@ -218,6 +218,15 @@ details.later summary{font-size:14px;color:var(--muted)}
 .wtag{font-size:10.5px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;border-radius:5px;padding:1px 5px;white-space:nowrap}
 .wtag.heroic{background:var(--accent-soft);color:var(--accent)}
 .wtag.interactive{background:var(--ice-soft);color:var(--ice)}
+details.fold{padding:16px}
+details.fold > summary{cursor:pointer;list-style:none;display:grid;grid-template-columns:1fr auto;gap:2px 8px;align-items:baseline;padding:0}
+details.fold > summary::-webkit-details-marker{display:none}
+.fold-r{display:inline-flex;gap:10px;align-items:center}
+.chev::after{content:"Show ▾";font-size:12.5px;font-weight:600;color:var(--ice)}
+details.fold[open] .chev::after{content:"Hide ▴"}
+.fold-next{grid-column:1 / -1;font-size:13px;color:var(--muted)}
+details.fold[open] .fold-next{display:none}
+details.fold[open] > summary{padding-bottom:8px}
 [hidden]{display:none!important}
 </style>
 
@@ -484,9 +493,22 @@ details.later summary{font-size:14px;color:var(--muted)}
         : `<span class="eyebrow">Patch week ends in</span><span class="big">${rel(day0End, now).txt}</span>
            <p>The double-dip window has closed. Finish the one-time setup below.</p>`).replace(/^/, '<div class="wtext">') + `</div>${soonest ? '<img class="emo" src="emotes/alert.gif" alt="">' : ''}`;
       const setup = P.day0.setup || [];
+      const fold = S.get('mpp.fold', {});
+      const foldList = (k, title, items, defOpen) => {
+        const done = items.filter(i=>d0[i.id]).length;
+        const open = k in fold ? fold[k] : (done === items.length ? false : defOpen);
+        const next = items.find(i => !d0[i.id]);
+        return `<details class="list fold" data-fold="${k}" ${open?'open':''}>
+          <summary class="list-head"><h3>${title}</h3><span class="fold-r"><span class="count">${done}/${items.length}</span><span class="chev" aria-hidden="true"></span></span>
+            <span class="fold-next">${next ? 'Next: '+W(next.title) : 'All done'}</span></summary>
+          ${items.map(i => itemHTML('d0', i, !!d0[i.id])).join('')}</details>`;
+      };
       document.getElementById('day0-lists').innerHTML =
-        (before.length ? `<div class="list"><div class="list-head"><h3>Before the next reset</h3><span class="count">${before.filter(i=>d0[i.id]).length}/${before.length}</span></div>${before.map(i => itemHTML('d0', i, !!d0[i.id])).join('')}</div>` : '') +
-        `<div class="list"><div class="list-head"><h3>Set up once</h3><span class="count">${setup.filter(i=>d0[i.id]).length}/${setup.length}</span></div>${setup.map(i => itemHTML('d0', i, !!d0[i.id])).join('')}</div>`;
+        (before.length ? foldList('before', 'Before the next reset', before, true) : '') +
+        foldList('setup', 'Set up once', setup, false);
+      document.querySelectorAll('#day0-lists details.fold').forEach(d => d.ontoggle = () => {
+        const f = S.get('mpp.fold', {}); f[d.dataset.fold] = d.open; S.set('mpp.fold', f);
+      });
       bindList('day0-lists', 'd0', () => true);
     }
 
