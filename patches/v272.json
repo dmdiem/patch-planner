@@ -156,7 +156,11 @@
           "quanah"
         ],
         "card": "Event World: Quanah",
-        "how": "When creating a Challenger World character, tick <b>Quanah World Leap</b>. The notes only offer this at creation. That character gets Hyper Burning MAX to Lv.260, then leaps to Quanah after 6th job. It can’t use Beyond Burning, Item Burning or most events. Quanah ends Mar 9, so start early if you want one. Community tip: it’s fine to wait a day or two if you’re unsure of the class, because it’s your only Quanah character."
+        "how": "When creating a Challenger World character, tick <b>Quanah World Leap</b>. The notes only offer this at creation. That character gets Hyper Burning MAX to Lv.260, then leaps to Quanah after 6th job. It can only join Hyper Burning MAX, Hyper Blink, the Maplayer One video, Luxe Sauna and A Gift for the Future, so no Beyond Burning, Item Burning or <b>New Recruit Support</b>. A Quanah Lethe misses the Lethe-only New Recruit rewards (mostly cosmetics plus the Sovereign Summoner title). Players report you can’t move the Quanah flag to another character afterwards. Quanah ends Mar 9. Community tip: it’s fine to wait a day or two if you’re unsure of the class.",
+        "source": [
+          "players",
+          "quanahfiles"
+        ]
       },
       {
         "id": "quanah-prep",
@@ -758,7 +762,7 @@
       "how": "Event List → New Recruit Missions",
       "ends": "2027-02-09T23:59:00",
       "what": "Rewards for milestones: 5th job, Lv.250, 6th job, solo Chaos Vellum, solo Easy Lucid.",
-      "tip": "Lethe characters unlock extra rewards.",
+      "tip": "Lethe characters unlock extra rewards: pet, mount, damage skin, effect, furnishings and the Sovereign Summoner title (All Stats +20, ATT/MATT +10, Boss +10%). Quanah characters can’t join this event.",
       "where": [
         "main",
         "cw"
@@ -1434,6 +1438,10 @@
     },
     "dubsmafh": {
       "title": "Dubs and Mafh (community)",
+      "url": ""
+    },
+    "players": {
+      "title": "Player reports",
       "url": ""
     }
   },
