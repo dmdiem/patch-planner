@@ -156,8 +156,9 @@
           "quanah"
         ],
         "card": "Event World: Quanah",
-        "how": "When creating a Challenger World character, tick <b>Quanah World Leap</b>. The notes only offer this at creation. That character gets Hyper Burning MAX to Lv.260, then leaps to Quanah after 6th job. It can only join Hyper Burning MAX, Hyper Blink, the Maplayer One video, Luxe Sauna and A Gift for the Future, so no Beyond Burning, Item Burning or <b>New Recruit Support</b>. A Quanah Lethe misses the Lethe-only New Recruit rewards (mostly cosmetics plus the Sovereign Summoner title). Players report you can’t move the Quanah flag to another character afterwards. Quanah ends Mar 9. Community tip: it’s fine to wait a day or two if you’re unsure of the class.",
+        "how": "When you create a Challenger World character, a pop-up asks <b>“Do you want to set this character as your Quanah World Leap character?”</b> Pick <b>Set as Quanah World Leap Character</b>, or <b>Set as Another Burning Type</b> for Hyper Burning MAX or Tera Burning. The screen says the Hyper Burning MAX effect can’t be cancelled, and players report the Quanah flag can’t be moved to another character. That character can only join Hyper Burning MAX, Hyper Blink, the Maplayer One video, Luxe Sauna and A Gift for the Future, so no Beyond Burning, Item Burning or <b>New Recruit Support</b> (a Quanah Lethe misses the Lethe-only rewards). Quanah ends Mar 9. Community tip: it’s fine to wait a day or two if you’re unsure of the class.",
         "source": [
+          "ingame",
           "players",
           "quanahfiles"
         ]
@@ -680,10 +681,10 @@
       "g": "quanah",
       "name": "Event World: Quanah",
       "who": "Challenger character marked for Quanah, Lv.260 + 6th job",
-      "how": "Mark at creation, then leap via the Event List",
+      "how": "Pick “Set as Quanah World Leap Character” in the pop-up when creating a Challenger World character. At Lv.260 with 6th job, leap from the Event List ([World Leap] Another Dimension).",
       "ends": "2027-03-09T23:59:00",
       "what": "A roguelite training world with a big buff (+1,000% EXP), its own gear and enhancement system, the Proving Fields and the Battlesim dungeon. Dying resets your Inspector Level to 1. The Inspector’s Mapae badge from Black Mage (Hard or Extreme) is the main reward you can take to another character.",
-      "tip": "Use tab must be empty to leap, no Cash Shop, no cubes, flames or scrolls, no MVP perks. Gear up to 22★ leaves with the Quanah character when it leaps and follows the destination world’s rules; Libae’s Supercharged Equipment stays in Quanah. The Mapae badge can be moved once to another character on your account. You leave to the same world type you started in.",
+      "tip": "Use tab must be empty to leap. No Cash Shop, no cubes, flames or scrolls, no MVP perks; the in-game screen adds that items are balanced like Heroic World, with no Bonus Potential or Scroll Enhancement. Gear up to 22★ leaves with the Quanah character when it leaps and follows the destination world’s rules; Libae’s Supercharged Equipment stays in Quanah. The Mapae badge can be moved once to another character on your account. You leave to the same world type you started in.",
       "where": [
         "quanah"
       ],
@@ -1442,6 +1443,10 @@
     },
     "players": {
       "title": "Player reports",
+      "url": ""
+    },
+    "ingame": {
+      "title": "In-game creation screen",
       "url": ""
     }
   },
